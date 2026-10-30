@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import PageDoodles from "./components/PageDoodles";
+import ProjectArtwork from "./components/ProjectArtwork";
 
 const FACTS: { text: React.ReactNode }[] = [
   {
@@ -72,8 +73,7 @@ const PROJECTS = [
   {
     title: "Caissa",
     date: "aug '26",
-    image:
-      "https://images.unsplash.com/photo-1586165368502-1bad197a6461?auto=format&fit=crop&w=1200&q=85",
+    artwork: "caissa" as const,
     description:
       "A C# chess engine and WinForms desktop app built from scratch, with reusable board, piece, move, and game-state models. Implements full movement, check, checkmate, and capture logic for all 6 piece types across Standard, Chess960, and Atomic rule sets, plus an AI opponent with its own move-evaluation logic and a UI layer with move highlighting, clocks, and move history.",
     tags: ["C#", ".NET", "WinForms"],
@@ -81,8 +81,7 @@ const PROJECTS = [
   {
     title: "Task Management Web App",
     date: "jul '26",
-    image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=85",
+    artwork: "tasks" as const,
     description:
       "A full-stack task manager built with Next.js and TypeScript, supporting task creation, editing, organization, and status tracking end to end. Backed by a SQL schema and persistence layer so tasks and project state reliably survive across sessions.",
     tags: ["TypeScript", "Next.js", "SQL"],
@@ -90,8 +89,7 @@ const PROJECTS = [
   {
     title: "Portfolio",
     date: "aug '26",
-    image:
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=85",
+    artwork: "portfolio" as const,
     description:
       "This site — a responsive personal portfolio built with Next.js and TypeScript, with a light/dark mode toggle and scroll-triggered animation. Deployed on Vercel with continuous deployment so every pushed change goes live automatically.",
     tags: ["Next.js", "TypeScript"],
@@ -99,8 +97,7 @@ const PROJECTS = [
   {
     title: "Java Image Editor",
     date: "jun '26",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85",
+    artwork: "editor" as const,
     description:
       "A desktop image editor built in Java Swing, separating image data, editing operations, and UI into distinct components. Event-driven controls apply edits interactively, including grayscale, cropping, rotation, and brightness adjustment via custom pixel-manipulation algorithms.",
     tags: ["Java", "Swing", "OOP"],
@@ -108,8 +105,7 @@ const PROJECTS = [
   {
     title: "Simon",
     date: "may '26",
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=85",
+    artwork: "simon" as const,
     description:
       "A memory game built on Arduino, focused on embedded programming and hardware interaction — reading button input, driving LEDs, and timing sequences directly on the board.",
     tags: ["Arduino", "C++"],
@@ -117,8 +113,7 @@ const PROJECTS = [
   {
     title: "NBA Research",
     date: "apr '26",
-    image:
-      "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=85",
+    artwork: "nba" as const,
     description:
       "A data project exploring the relationship between player height and rebounding using publicly available NBA statistics.",
     tags: ["Python", "Data"],
@@ -381,11 +376,7 @@ export default function Home() {
           {PROJECTS.map((project) => (
             <article className="project" key={project.title}>
               <div className="project-image-wrapper">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="project-image"
-                />
+                <ProjectArtwork type={project.artwork} />
               </div>
 
               <div className="project-meta">
