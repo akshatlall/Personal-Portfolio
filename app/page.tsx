@@ -183,6 +183,7 @@ const SKILL_GROUPS = [
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -229,16 +230,32 @@ export default function Home() {
           ===================================================== */}
 
       <div className="top-toolbar">
-        <a
-          href="mailto:a7lal@uwaterloo.ca"
-          aria-label="Email"
+        <button
+          type="button"
+          aria-label={emailCopied ? "Email copied" : "Email"}
+          title={emailCopied ? "Email copied — paste it into your mail app" : "Email"}
           className="toolbar-btn"
+          onClick={async () => {
+            try {
+              await navigator.clipboard?.writeText("a7lal@uwaterloo.ca");
+            } catch {
+              // Clipboard access can be unavailable in preview environments.
+            }
+            setEmailCopied(true);
+            window.setTimeout(() => setEmailCopied(false), 2200);
+          }}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="5" width="18" height="14" rx="2" />
             <path d="m3 7 9 6 9-6" />
           </svg>
-        </a>
+        </button>
+
+        {emailCopied && (
+          <span className="toolbar-email-status" role="status">
+            a7lal@uwaterloo.ca copied
+          </span>
+        )}
 
         <a
           href="https://linkedin.com/in/lal-akshat"
@@ -253,7 +270,7 @@ export default function Home() {
         </a>
 
         <a
-          href="#"
+          href="https://github.com/lal-akshat"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
@@ -348,7 +365,7 @@ export default function Home() {
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
             <a href="#skills">Skills</a>
-            <a href="mailto:a7lal@uwaterloo.ca">Contact</a>
+            <a href="/contact">Contact</a>
           </nav>
         </div>
       </section>
@@ -442,9 +459,15 @@ export default function Home() {
       <footer className="reveal">
         <span>© 2026 Akshat Lal</span>
         <div className="footer-links">
-          <a href="mailto:a7lal@uwaterloo.ca">Email</a>
+          <a href="/contact">Email</a>
           <a href="https://linkedin.com/in/lal-akshat">LinkedIn</a>
-          <a href="#">GitHub</a>
+          <a
+            href="https://github.com/lal-akshat"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
         </div>
       </footer>
     </main>

@@ -1,3 +1,5 @@
+import CopyEmailButton from "../components/CopyEmailButton";
+
 export default function Contact() {
   return (
     <>
@@ -9,33 +11,30 @@ export default function Contact() {
       </p>
 
       <div className="panel-reserved">
-        {/* TODO: replace every placeholder below with your real details */}
         <div className="contact-row">
           <span className="reserved-label">Email</span>
-          <a className="trace-link" href="mailto:YOUR-EMAIL@uwaterloo.ca">
-            YOUR-EMAIL@uwaterloo.ca
-          </a>
+          <CopyEmailButton className="trace-link" />
         </div>
         <div className="contact-row">
           <span className="reserved-label">GitHub</span>
           <a
             className="trace-link"
-            href="https://github.com/YOUR-USERNAME"
+            href="https://github.com/lal-akshat"
             target="_blank"
             rel="noreferrer"
           >
-            github.com/YOUR-USERNAME
+            github.com/lal-akshat
           </a>
         </div>
         <div className="contact-row">
           <span className="reserved-label">LinkedIn</span>
           <a
             className="trace-link"
-            href="https://linkedin.com/in/YOUR-USERNAME"
+            href="https://linkedin.com/in/lal-akshat"
             target="_blank"
             rel="noreferrer"
           >
-            linkedin.com/in/YOUR-USERNAME
+            linkedin.com/in/lal-akshat
           </a>
         </div>
       </div>

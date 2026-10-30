@@ -210,6 +210,20 @@ footer {
   color: var(--accent-dark);
 }
 
+.toolbar-email-status {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  white-space: nowrap;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 11px;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
 .toolbar-divider {
   width: 1px;
   height: 20px;

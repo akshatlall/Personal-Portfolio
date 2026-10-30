@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const LINKS = [
   { href: "/", label: "Home", index: "01" },
@@ -13,13 +13,12 @@ const LINKS = [
 
 export default function Nav() {
   const pathname = usePathname();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  // Sync local state with the theme the init script already applied.
-  useEffect(() => {
-    const current = document.documentElement.getAttribute("data-theme");
-    if (current === "dark" || current === "light") setTheme(current);
-  }, []);
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof document === "undefined") return "light";
+    return document.documentElement.getAttribute("data-theme") === "dark"
+      ? "dark"
+      : "light";
+  });
 
   function toggleTheme() {
     const next = theme === "dark" ? "light" : "dark";
@@ -66,11 +65,10 @@ export default function Nav() {
         </button>
 
         <div className="socials">
-          {/* TODO: swap these for your real profiles */}
-          <a href="https://github.com/YOUR-USERNAME" target="_blank" rel="noreferrer">
+          <a href="https://github.com/lal-akshat" target="_blank" rel="noreferrer">
             gh
           </a>
-          <a href="https://linkedin.com/in/YOUR-USERNAME" target="_blank" rel="noreferrer">
+          <a href="https://linkedin.com/in/lal-akshat" target="_blank" rel="noreferrer">
             in
           </a>
         </div>
