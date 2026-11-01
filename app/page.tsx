@@ -200,10 +200,7 @@ const SKILL_GROUPS = [
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
 
-  // Top-right email state
   const [emailCopied, setEmailCopied] = useState(false);
-
-  // Bottom email state
   const [footerEmailCopied, setFooterEmailCopied] = useState(false);
 
   async function copyTopEmail() {
@@ -294,8 +291,52 @@ export default function Home() {
         </button>
 
         {emailCopied && (
-          <span className="toolbar-email-status" role="status">
-            a7lal@uwaterloo.ca copied
+          <span
+            className="toolbar-email-status"
+            role="status"
+            style={{
+              position: "absolute",
+              top: "calc(100% + 14px)",
+              left: "50%",
+              right: "auto",
+              zIndex: 10,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              width: "max-content",
+              minWidth: "184px",
+              padding: "10px 16px",
+              border: 0,
+              borderRadius: "999px",
+              background: "var(--accent-dark)",
+              color: "#ffffff",
+              fontSize: "12px",
+              fontWeight: 600,
+              lineHeight: 1.2,
+              textAlign: "center",
+              whiteSpace: "nowrap",
+              boxShadow:
+                "0 8px 18px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.08)",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                display: "grid",
+                placeItems: "center",
+                width: "17px",
+                height: "17px",
+                borderRadius: "50%",
+                background: "rgba(255, 255, 255, 0.2)",
+                fontSize: "11px",
+                fontWeight: 700,
+              }}
+            >
+              ✓
+            </span>
+            Email copied to clipboard
           </span>
         )}
 
