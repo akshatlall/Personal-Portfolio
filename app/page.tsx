@@ -157,50 +157,6 @@ const EXPERIENCE = [
   },
 ];
 
-const SKILL_GROUPS = [
-  {
-    label: "Languages",
-    cls: "sky",
-    items: [
-      "C#",
-      "Java",
-      "C++",
-      "Python",
-      "TypeScript",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "SQL",
-    ],
-  },
-  {
-    label: "Frameworks & Tools",
-    cls: "mint",
-    items: [
-      ".NET",
-      "WinForms",
-      "React",
-      "Next.js",
-      "Arduino",
-      "Git",
-      "Vercel",
-      "Altium Designer",
-    ],
-  },
-  {
-    label: "Concepts",
-    cls: "lavender",
-    items: [
-      "OOP",
-      "Data Structures & Algorithms",
-      "API Integration",
-      "GUI Development",
-      "Debugging",
-      "PCB Design",
-    ],
-  },
-];
-
 async function writeEmailToClipboard() {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(EMAIL);
@@ -211,6 +167,7 @@ async function writeEmailToClipboard() {
   textArea.value = EMAIL;
   textArea.style.position = "fixed";
   textArea.style.opacity = "0";
+
   document.body.appendChild(textArea);
   textArea.focus();
   textArea.select();
@@ -221,7 +178,7 @@ async function writeEmailToClipboard() {
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
 
-  // These states are intentionally separate.
+  // The top and footer copied states are intentionally separate.
   const [topEmailCopied, setTopEmailCopied] = useState(false);
   const [footerEmailCopied, setFooterEmailCopied] = useState(false);
 
@@ -250,11 +207,11 @@ export default function Home() {
   }, [darkMode]);
 
   useEffect(() => {
-    const reduced = window.matchMedia(
+    const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    if (reduced) {
+    if (reducedMotion) {
       document
         .querySelectorAll(".reveal")
         .forEach((element) => element.classList.add("is-visible"));
@@ -289,11 +246,14 @@ export default function Home() {
       <LoadingScreen />
       <PageDoodles />
 
+      {/* Top-right toolbar */}
       <div className="top-toolbar">
         <button
           type="button"
           className="toolbar-btn"
-          aria-label={topEmailCopied ? "Email copied" : "Copy email address"}
+          aria-label={
+            topEmailCopied ? "Email copied" : "Copy email address"
+          }
           title={topEmailCopied ? "Email copied" : "Copy email"}
           onClick={copyTopEmail}
         >
@@ -383,8 +343,10 @@ export default function Home() {
         <button
           type="button"
           className="toolbar-btn theme-toggle"
-          aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-          onClick={() => setDarkMode((current) => !current)}
+          aria-label={
+            darkMode ? "Switch to light mode" : "Switch to dark mode"
+          }
+          onClick={() => setDarkMode((currentMode) => !currentMode)}
         >
           {darkMode ? (
             <svg
@@ -415,6 +377,7 @@ export default function Home() {
         </button>
       </div>
 
+      {/* Hero */}
       <section className="hero">
         <div className="hero-inner">
           <div className="hero-stickers" aria-hidden="true">
@@ -435,6 +398,7 @@ export default function Home() {
             <span className="chip chip-yellow chip-role">
               Computer Engineering
             </span>
+
             <span className="hero-role-muted">@University of Waterloo</span>
           </p>
 
@@ -460,14 +424,17 @@ export default function Home() {
           <nav className="hero-nav" aria-label="Page sections">
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
             <a href="#thoughts">My Thoughts</a>
             <Link href="/contact">Contact</Link>
           </nav>
         </div>
       </section>
 
-      <section id="projects" className="container-wide projects-section reveal">
+      {/* Projects */}
+      <section
+        id="projects"
+        className="container-wide projects-section reveal"
+      >
         <h2 className="section-title">Projects</h2>
 
         <div className="project-grid">
@@ -494,6 +461,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Experience */}
       <section id="experience" className="container lower-section reveal">
         <h2 className="section-title">Experience</h2>
 
@@ -501,7 +469,7 @@ export default function Home() {
           {EXPERIENCE.map((job) => (
             <article
               className={`experience-card accent-${job.accent}`}
-              key={job.role + job.org}
+              key={`${job.role}-${job.org}`}
             >
               <div className="experience-head">
                 <div>
@@ -522,34 +490,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="skills" className="container lower-section reveal">
-        <h2 className="section-title">Skills</h2>
-
-        <div className="skills-groups">
-          {SKILL_GROUPS.map((group) => (
-            <div className="skills-group" key={group.label}>
-              <p className="skills-group-title">{group.label}</p>
-
-              <div className="skill-tags">
-                {group.items.map((item) => (
-                  <span
-                    key={item}
-                    className={`skill-tag skill-tag-${group.cls}`}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
+      {/* My Thoughts */}
       <section
         id="thoughts"
         className="container lower-section thoughts-preview reveal"
       >
-        <p className="thoughts-preview-eyebrow">Notes, ideas &amp; questions</p>
+        <p className="thoughts-preview-eyebrow">
+          Notes, ideas &amp; questions
+        </p>
+
         <h2 className="section-title">My Thoughts</h2>
 
         <p className="thoughts-preview-intro">
@@ -574,6 +523,7 @@ export default function Home() {
 
           <span className="thoughts-preview-copy">
             <strong>Open my notes</strong>
+
             <span>
               Collections, beliefs, project logs, guides, questions, and more.
             </span>
@@ -585,6 +535,7 @@ export default function Home() {
         </Link>
       </section>
 
+      {/* Footer */}
       <footer className="reveal">
         <span>© 2026 Akshat Lal</span>
 
@@ -594,7 +545,9 @@ export default function Home() {
             className="footer-email-button"
             onClick={copyFooterEmail}
             aria-label={
-              footerEmailCopied ? "Footer email copied" : "Copy email address"
+              footerEmailCopied
+                ? "Footer email copied"
+                : "Copy email address"
             }
           >
             {footerEmailCopied ? "Email copied" : "Email"}

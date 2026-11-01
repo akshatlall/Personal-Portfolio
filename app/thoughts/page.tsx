@@ -1,415 +1,576 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import styles from "./thoughts.module.css";
+import { useEffect, useState } from "react";
+import LoadingScreen from "./components/LoadingScreen";
+import PageDoodles from "./components/PageDoodles";
+import ProjectArtwork from "./components/ProjectArtwork";
+import "./home-polish.css";
 
-type Note = {
-  id: string;
-  label: string;
-};
+const EMAIL = "a7lal@uwaterloo.ca";
 
-type NoteGroup = {
-  title: string;
-  notes: Note[];
-};
-
-const NOTE_GROUPS: NoteGroup[] = [
+const FACTS: { text: React.ReactNode }[] = [
   {
-    title: "Collections",
-    notes: [
-      { id: "advice", label: "Advice" },
-      { id: "beliefs", label: "Beliefs *" },
-      { id: "green-flags", label: "Green Flags" },
-      { id: "idea-adoption-center", label: "Idea Adoption Center" },
-      { id: "questions", label: "Questions" },
-      { id: "words", label: "Words" },
-      { id: "working-modes", label: "Working Modes" },
-    ],
+    text: (
+      <>
+        led <span className="chip chip-sky">VEX Robotics</span> for four
+        seasons, going from team member to Team Lead directing design, build,
+        and test
+      </>
+    ),
   },
   {
-    title: "Specific Collections",
-    notes: [
-      { id: "inventions-from-love", label: "Inventions from Love" },
-      { id: "humans-are-awesome", label: "Humans are Awesome" },
-    ],
+    text: (
+      <>
+        built <span className="chip chip-peach">Caissa</span>, a chess engine
+        in <span className="chip chip-lavender">C#</span> with an AI opponent
+        across 3 rule sets
+      </>
+    ),
   },
   {
-    title: "Microblogs",
-    notes: [
-      { id: "notes-on-socratica", label: "Notes on Socratica *" },
-      { id: "technological-wishlist", label: "Technological Wishlist" },
-      { id: "to-contain-a-brain", label: "To Contain a Brain" },
-    ],
+    text: (
+      <>
+        laying out PCBs in <span className="chip chip-mint">Altium</span> for a
+        robotic arm on the Student Design Team
+      </>
+    ),
   },
   {
-    title: "Guides",
-    notes: [
-      { id: "make-a-documentary", label: "To Make a Documentary" },
-      { id: "leave-a-company", label: "To Leave a Company" },
-      { id: "meetings-well", label: "To Do Meetings Well" },
-      { id: "radio-notes", label: "radio notes" },
-      { id: "organize-road-trip", label: "To Organize a Road Trip" },
-      { id: "shoot-on-set", label: "To Shoot on Set" },
-      { id: "enjoy-uwaterloo", label: "To Enjoy UWaterloo *" },
-    ],
+    text: (
+      <>
+        shipped a full-stack{" "}
+        <span className="chip chip-rose">task manager</span> with Next.js,
+        TypeScript &amp; SQL
+      </>
+    ),
   },
   {
-    title: "Utils",
-    notes: [
-      {
-        id: "electricity-napkin-math",
-        label: "Electricity Napkin Math",
-      },
-    ],
+    text: (
+      <>
+        built a <span className="chip chip-yellow">Java Swing</span> image
+        editor with custom pixel-manipulation filters
+      </>
+    ),
   },
   {
-    title: "Project Logs",
-    notes: [
-      { id: "electronics-learning-log", label: "Electronics Learning Log" },
-      { id: "rust-log", label: "Rust Log" },
-      { id: "documentary-log", label: "Documentary Log" },
-    ],
+    text: (
+      <>
+        starting Computer Engineering{" "}
+        <span className="chip chip-sky">@Waterloo</span> this fall
+      </>
+    ),
   },
   {
-    title: "Times",
-    notes: [
-      {
-        id: "unnaturally-lucky",
-        label: "Times I've Felt Unnaturally Lucky",
-      },
-      { id: "said-wow", label: "Times I've Said Wow" },
-    ],
-  },
-  {
-    title: "Ongoing",
-    notes: [{ id: "beliefs", label: "Beliefs *" }],
+    text: <>seeking summer 2027 co-op opportunities</>,
   },
 ];
 
-function ThoughtIllustration() {
-  return (
-    <svg
-      className={styles.illustration}
-      viewBox="0 0 180 130"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path
-        d="M48 38c9-21 42-30 65-20 25 10 31 39 15 57-13 15-36 18-54 10L49 103l7-27C44 66 41 51 48 38Z"
-        strokeWidth="5"
-      />
-      <path d="M67 48c7-4 13-4 20 0M97 48c7-4 13-4 20 0" strokeWidth="4" />
-      <path d="M67 63c5 4 12 4 18 0 6 4 13 4 19 0 5 4 11 4 16 0" strokeWidth="4" />
-    </svg>
-  );
+const STICKERS = [
+  { label: "♞", cls: "sticker-peach", rotate: -8 },
+  { label: "C#", cls: "sticker-lavender", rotate: 5 },
+  { label: "⌁", cls: "sticker-sky", rotate: -3 },
+  { label: "</>", cls: "sticker-mint", rotate: 7 },
+];
+
+const PROJECTS = [
+  {
+    title: "Caissa",
+    date: "aug '26",
+    artwork: "caissa" as const,
+    description:
+      "A C# chess engine and WinForms desktop app built from scratch, with reusable board, piece, move, and game-state models. Implements full movement, check, checkmate, and capture logic for all 6 piece types across Standard, Chess960, and Atomic rule sets, plus an AI opponent with its own move-evaluation logic and a UI layer with move highlighting, clocks, and move history.",
+    tags: ["C#", ".NET", "WinForms"],
+  },
+  {
+    title: "Task Management Web App",
+    date: "jul '26",
+    artwork: "tasks" as const,
+    description:
+      "A full-stack task manager built with Next.js and TypeScript, supporting task creation, editing, organization, and status tracking end to end. Backed by a SQL schema and persistence layer so tasks and project state reliably survive across sessions.",
+    tags: ["TypeScript", "Next.js", "SQL"],
+  },
+  {
+    title: "Portfolio",
+    date: "aug '26",
+    artwork: "portfolio" as const,
+    description:
+      "This site — a responsive personal portfolio built with Next.js and TypeScript, with a light/dark mode toggle and scroll-triggered animation. Deployed on Vercel with continuous deployment so every pushed change goes live automatically.",
+    tags: ["Next.js", "TypeScript"],
+  },
+  {
+    title: "Java Image Editor",
+    date: "jun '26",
+    artwork: "editor" as const,
+    description:
+      "A desktop image editor built in Java Swing, separating image data, editing operations, and UI into distinct components. Event-driven controls apply edits interactively, including grayscale, cropping, rotation, and brightness adjustment via custom pixel-manipulation algorithms.",
+    tags: ["Java", "Swing", "OOP"],
+  },
+  {
+    title: "Simon",
+    date: "may '26",
+    artwork: "simon" as const,
+    description:
+      "A memory game built on Arduino, focused on embedded programming and hardware interaction — reading button input, driving LEDs, and timing sequences directly on the board.",
+    tags: ["Arduino", "C++"],
+  },
+  {
+    title: "NBA Research",
+    date: "apr '26",
+    artwork: "nba" as const,
+    description:
+      "A data project exploring the relationship between player height and rebounding using publicly available NBA statistics.",
+    tags: ["Python", "Data"],
+  },
+];
+
+const EXPERIENCE = [
+  {
+    role: "Team Lead",
+    org: "VEX Robotics Team",
+    date: "2022 – 2026",
+    accent: "peach",
+    bullets: [
+      "Competed for 4 consecutive seasons, progressing from team member to Team Lead directing the full design, build, test, and iteration cycle",
+      "Directed mechanical design, robot assembly, and programming priorities to deliver a functioning competition robot each season",
+      "Ran reliability tests ahead of competition to catch failure points early, reducing the risk of in-match breakdowns",
+    ],
+  },
+  {
+    role: "New Member, Electrical Team",
+    org: "Student Design Team",
+    date: "2026 – Present",
+    accent: "mint",
+    bullets: [
+      "Design and lay out printed circuit boards in Altium Designer for onboard vehicle electronics",
+      "Collaborate with senior electrical and mechanical members on component selection and board layout ahead of a moving robotic-arm subsystem build",
+    ],
+  },
+  {
+    role: "Computer Engineering",
+    org: "University of Waterloo",
+    date: "2026 – 2031",
+    accent: "sky",
+    bullets: [
+      "Bachelor of Applied Science, starting Computer Engineering this fall",
+    ],
+  },
+];
+
+async function writeEmailToClipboard() {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(EMAIL);
+    return;
+  }
+
+  const textArea = document.createElement("textarea");
+  textArea.value = EMAIL;
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  document.execCommand("copy");
+  textArea.remove();
 }
 
-function BeliefsNote() {
-  return (
-    <div className={styles.noteBody}>
-      <header className={styles.noteHeader}>
-        <div className={styles.statusRow}>
-          <span className={styles.statusDot} aria-hidden="true" />
-          <span>Ongoing</span>
-        </div>
+export default function Home() {
+  const [darkMode, setDarkMode] = useState(false);
 
-        <h1>
-          Beliefs <sup>*</sup>
-        </h1>
+  // The top and footer copied states are intentionally separate.
+  const [topEmailCopied, setTopEmailCopied] = useState(false);
+  const [footerEmailCopied, setFooterEmailCopied] = useState(false);
 
-        <p className={styles.subtitle}>
-          A stream of consciousness from my screen to yours.
-        </p>
-
-        <p className={styles.updateNotice}>
-          These are ever changing. I will try to keep them as updated as
-          possible.
-        </p>
-      </header>
-
-      <section className={styles.articleSection}>
-        <h2>Meta-philosophy</h2>
-        <p>Values are defined and refined by real-life actions.</p>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>Life</h2>
-
-        <p>
-          It is instrumentally useful to believe that brains are antennae for
-          consciousness.
-        </p>
-
-        <p>
-          Self-confidence comes from trusting yourself to follow through with
-          hard things you say you will do. You can build this trust through
-          hard conversations or challenging work, but there are also ways to
-          microdose the feeling. Working out is definitely one.
-        </p>
-
-        <p>
-          Having too little agency sucks, but having too much agency without
-          certainty about how to direct it is worse.
-        </p>
-
-        <p>
-          Accumulating knowledge is like accumulating debt. You have to do
-          things with it to pay it off, or it builds up like a toxin in your
-          body.
-        </p>
-
-        <p>
-          Paying attention reveals and reinforces what you actually love.
-          Hating counts as a form of attention.
-        </p>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>People</h2>
-
-        <p>
-          Betting against human ingenuity is often a losing game, but we are
-          bad at estimating time scales.
-        </p>
-
-        <p>
-          Interactions become more enriching when we assume positive intent
-          and believe the other person has something to teach us.
-        </p>
-
-        <p>
-          Altruism comes from context. We do not have to worry too much about
-          people initially doing good things for the “wrong reasons,” because
-          that is how many people come to genuinely care more.
-        </p>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>Work</h2>
-
-        <p>
-          People should be compensated for their work. If you cannot pay
-          someone, give them equity, grant money, or the best recommendation
-          letter of their life.
-        </p>
-
-        <p>
-          Many of the most interesting new ideas appear at the intersection of
-          three things. We do ourselves a disservice when we do not applaud
-          people for trying, and possibly failing, at something new.
-        </p>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>Technology</h2>
-
-        <p>Technology really exists for two reasons:</p>
-
-        <div className={styles.principleGrid}>
-          <article className={styles.principle}>
-            <span>01</span>
-            <h3>Face to face</h3>
-            <p>
-              Technology should enable people to show up more fully for the
-              people they love. Quality-of-life improvements can reduce the
-              time and energy spent worrying about material needs.
-            </p>
-          </article>
-
-          <article className={styles.principle}>
-            <span>02</span>
-            <h3>Shoulder to shoulder</h3>
-            <p>
-              Technology should help people have better experiences together,
-              including the shared awe created by beautiful megastructures.
-            </p>
-          </article>
-        </div>
-
-        <p>
-          All software, sufficiently advanced, is indistinguishable from a
-          dating app.
-        </p>
-
-        <p>
-          Generally, the goal of good software is to get the user off of it.
-          Hinge, in its small area of application, got this right. Software
-          should complete the task at hand and free the user’s time, energy,
-          and resources.
-        </p>
-
-        <p>
-          Along this thread, I subscribe to technology as intelligence
-          augmentation rather than a replacement mechanism for jobs, social
-          interaction, education, and other parts of life. The physical world
-          contains tacit knowledge and patterns that are useful to engage
-          with, even when we cannot fully explain them.
-        </p>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>Climate</h2>
-
-        <p>
-          The alarmism of early-2000s and early-2010s activism served its
-          purpose by bringing climate change to the surface of public
-          attention. We now need a different mode of climate storytelling:
-          pragmatic, focused on co-benefits, and politically neutral.
-        </p>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>Urbanism</h2>
-
-        <p>Bike highways are super cool. Extremely original thought.</p>
-
-        <p>
-          Plants and vertical wooden panels are aesthetically gorgeous ways to
-          reduce echo in a space.
-        </p>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>Education</h2>
-
-        <p>
-          The only certainty is that things will change faster and individuals
-          will gain capabilities that once belonged to entire firms. The
-          school of the future should:
-        </p>
-
-        <ul>
-          <li>
-            Set and demonstrate a standard of excellence that people can
-            aspire to across a variety of ages and occupations.
-          </li>
-          <li>
-            Provide social support systems while students figure things out.
-          </li>
-        </ul>
-      </section>
-
-      <section className={styles.articleSection}>
-        <h2>Community</h2>
-
-        <p>
-          Communities need to be organized and cultivated by the people within
-          them. At Socratica, we call this the “host mindset”: all participants
-          are hosts, and all hosts are participants.
-        </p>
-
-        <p>
-          A successful community is not necessarily one that lasts forever. It
-          should inspire forks and downstream developments.
-        </p>
-      </section>
-
-      <p className={styles.endMark}>Last updated as the thinking changes.</p>
-    </div>
-  );
-}
-
-function EmptyNote({ title }: { title: string }) {
-  return (
-    <div className={styles.emptyNote}>
-      <p className={styles.emptyLabel}>Collection entry</p>
-      <h1>{title.replace(" *", "")}</h1>
-      <p>
-        This note is still being written. Check back later as this collection
-        grows.
-      </p>
-    </div>
-  );
-}
-
-export default function ThoughtsPage() {
-  const [activeNote, setActiveNote] = useState("beliefs");
-  const [activeTitle, setActiveTitle] = useState("Beliefs *");
-
-  function selectNote(note: Note) {
-    setActiveNote(note.id);
-    setActiveTitle(note.label);
-
-    if (window.innerWidth <= 820) {
-      window.setTimeout(() => {
-        document
-          .getElementById("thought-content")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 0);
+  async function copyTopEmail() {
+    try {
+      await writeEmailToClipboard();
+      setTopEmailCopied(true);
+      window.setTimeout(() => setTopEmailCopied(false), 2400);
+    } catch {
+      setTopEmailCopied(false);
     }
   }
 
+  async function copyFooterEmail() {
+    try {
+      await writeEmailToClipboard();
+      setFooterEmailCopied(true);
+      window.setTimeout(() => setFooterEmailCopied(false), 2200);
+    } catch {
+      setFooterEmailCopied(false);
+    }
+  }
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reducedMotion) {
+      document
+        .querySelectorAll(".reveal")
+        .forEach((element) => element.classList.add("is-visible"));
+
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    document
+      .querySelectorAll(".reveal")
+      .forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <main className={styles.page}>
-      <header className={styles.appHeader}>
-        <Link href="/" className={styles.brand}>
-          Akshat&apos;s Notes
-        </Link>
+    <main className="site">
+      <LoadingScreen />
+      <PageDoodles />
 
-        <span className={styles.headerMeta}>personal notebook</span>
+      {/* Top-right toolbar */}
+      <div className="top-toolbar">
+        <button
+          type="button"
+          className="toolbar-btn"
+          aria-label={
+            topEmailCopied ? "Email copied" : "Copy email address"
+          }
+          title={topEmailCopied ? "Email copied" : "Copy email"}
+          onClick={copyTopEmail}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="m3 7 9 6 9-6" />
+          </svg>
+        </button>
 
-        <Link href="/" className={styles.backLink}>
-          ← Portfolio
-        </Link>
-      </header>
+        {topEmailCopied && (
+          <div className="toolbar-email-status" role="status">
+            <span className="toolbar-email-status-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m5 12 4 4L19 6" />
+              </svg>
+            </span>
 
-      <div className={styles.layout}>
-        <aside className={styles.sidebar} aria-label="Thought collections">
-          <div className={styles.sidebarIntro}>
-            <p>Notebook index</p>
-            <span>
-              A collection of ideas, guides, logs, questions, and unfinished
-              thoughts.
+            <span className="toolbar-email-status-copy">
+              <strong>Email copied</strong>
+              <small>{EMAIL}</small>
             </span>
           </div>
+        )}
 
-          <nav className={styles.noteNavigation}>
-            {NOTE_GROUPS.map((group) => (
-              <section className={styles.noteGroup} key={group.title}>
-                <h2>{group.title}</h2>
+        <a
+          href="https://linkedin.com/in/lal-akshat"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+          className="toolbar-btn"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002ZM7 8.48H3V21h4V8.48Zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-3.96 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.68-2.91V8.48Z" />
+          </svg>
+        </a>
 
-                <div className={styles.noteLinks}>
-                  {group.notes.map((note) => (
-                    <button
-                      key={`${group.title}-${note.id}`}
-                      type="button"
-                      className={
-                        note.id === activeNote
-                          ? `${styles.noteLink} ${styles.activeNote}`
-                          : styles.noteLink
-                      }
-                      aria-pressed={note.id === activeNote}
-                      onClick={() => selectNote(note)}
-                    >
-                      {note.label}
-                    </button>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </nav>
-        </aside>
+        <a
+          href="https://github.com/lal-akshat"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          className="toolbar-btn"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
+          </svg>
+        </a>
 
-        <article className={styles.content} id="thought-content">
-          <div className={styles.banner}>
-            <ThoughtIllustration />
-          </div>
+        <a
+          href="/resume.pdf"
+          download
+          aria-label="Download resume"
+          className="toolbar-btn"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 3v12" />
+            <path d="m7 10 5 5 5-5" />
+            <path d="M5 21h14" />
+          </svg>
+        </a>
 
-          {activeNote === "beliefs" ? (
-            <BeliefsNote />
+        <span className="toolbar-divider" aria-hidden="true" />
+
+        <button
+          type="button"
+          className="toolbar-btn theme-toggle"
+          aria-label={
+            darkMode ? "Switch to light mode" : "Switch to dark mode"
+          }
+          onClick={() => setDarkMode((currentMode) => !currentMode)}
+        >
+          {darkMode ? (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
           ) : (
-            <EmptyNote title={activeTitle} />
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+            </svg>
           )}
-        </article>
+        </button>
       </div>
 
-      <footer className={styles.notesFooter}>
+      {/* Hero */}
+      <section className="hero">
+        <div className="hero-inner">
+          <div className="hero-stickers" aria-hidden="true">
+            {STICKERS.map((sticker) => (
+              <span
+                key={sticker.label}
+                className={`sticker ${sticker.cls}`}
+                style={{ transform: `rotate(${sticker.rotate}deg)` }}
+              >
+                {sticker.label}
+              </span>
+            ))}
+          </div>
+
+          <h1 className="hero-name">AKSHAT LAL</h1>
+
+          <p className="hero-role">
+            <span className="chip chip-yellow chip-role">
+              Computer Engineering
+            </span>
+
+            <span className="hero-role-muted">@University of Waterloo</span>
+          </p>
+
+          <p className="hero-bio">
+            i build at the <span className="circled">intersection</span> of{" "}
+            <span className="squiggle">hardware</span>,{" "}
+            <span className="squiggle">software</span>, and problem-solving
+          </p>
+
+          <div className="facts-list">
+            {FACTS.map((fact, index) => (
+              <p
+                key={index}
+                className="fact-row"
+                style={{ animationDelay: `${0.55 + index * 0.08}s` }}
+              >
+                <span className="fact-arrow">&gt;</span>
+                {fact.text}
+              </p>
+            ))}
+          </div>
+
+          <nav className="hero-nav" aria-label="Page sections">
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#thoughts">My Thoughts</a>
+            <Link href="/contact">Contact</Link>
+          </nav>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section
+        id="projects"
+        className="container-wide projects-section reveal"
+      >
+        <h2 className="section-title">Projects</h2>
+
+        <div className="project-grid">
+          {PROJECTS.map((project) => (
+            <article className="project" key={project.title}>
+              <div className="project-image-wrapper">
+                <ProjectArtwork type={project.artwork} />
+              </div>
+
+              <div className="project-meta">
+                <span>{project.title}</span>
+                <span className="date">{project.date}</span>
+              </div>
+
+              <p className="project-description">{project.description}</p>
+
+              <div className="project-tags">
+                {project.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Experience */}
+      <section id="experience" className="container lower-section reveal">
+        <h2 className="section-title">Experience</h2>
+
+        <div className="experience-list">
+          {EXPERIENCE.map((job) => (
+            <article
+              className={`experience-card accent-${job.accent}`}
+              key={`${job.role}-${job.org}`}
+            >
+              <div className="experience-head">
+                <div>
+                  <p className="experience-role">{job.role}</p>
+                  <p className="experience-org">{job.org}</p>
+                </div>
+
+                <span className="experience-date">{job.date}</span>
+              </div>
+
+              <ul className="experience-bullets">
+                {job.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* My Thoughts */}
+      <section
+        id="thoughts"
+        className="container lower-section thoughts-preview reveal"
+      >
+        <p className="thoughts-preview-eyebrow">
+          Notes, ideas &amp; questions
+        </p>
+
+        <h2 className="section-title">My Thoughts</h2>
+
+        <p className="thoughts-preview-intro">
+          An evolving notebook about technology, people, work, education,
+          community, and the ideas I am still figuring out.
+        </p>
+
+        <Link className="thoughts-preview-card" href="/thoughts">
+          <span className="thoughts-preview-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 64 64"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M13 13h38v29H29L17 52l2-10h-6V13Z" />
+              <path d="M22 23h20M22 30h15M22 37h11" />
+            </svg>
+          </span>
+
+          <span className="thoughts-preview-copy">
+            <strong>Open my notes</strong>
+
+            <span>
+              Collections, beliefs, project logs, guides, questions, and more.
+            </span>
+          </span>
+
+          <span className="thoughts-preview-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer className="reveal">
         <span>© 2026 Akshat Lal</span>
-        <Link href="/">Return to portfolio</Link>
+
+        <div className="footer-links">
+          <button
+            type="button"
+            className="footer-email-button"
+            onClick={copyFooterEmail}
+            aria-label={
+              footerEmailCopied
+                ? "Footer email copied"
+                : "Copy email address"
+            }
+          >
+            {footerEmailCopied ? "Email copied" : "Email"}
+          </button>
+
+          <Link href="/thoughts">My Thoughts</Link>
+
+          <a
+            href="https://linkedin.com/in/lal-akshat"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </a>
+
+          <a
+            href="https://github.com/lal-akshat"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        </div>
       </footer>
     </main>
   );
