@@ -1,9 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
+import "./home-polish.css";
+
+const EMAIL = "a7lal@uwaterloo.ca";
 
 const FACTS: { text: React.ReactNode }[] = [
   {
@@ -197,32 +201,48 @@ const SKILL_GROUPS = [
   },
 ];
 
+async function writeEmailToClipboard() {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(EMAIL);
+    return;
+  }
+
+  const textArea = document.createElement("textarea");
+  textArea.value = EMAIL;
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  document.execCommand("copy");
+  textArea.remove();
+}
+
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
 
-  const [emailCopied, setEmailCopied] = useState(false);
+  // These states are intentionally separate.
+  const [topEmailCopied, setTopEmailCopied] = useState(false);
   const [footerEmailCopied, setFooterEmailCopied] = useState(false);
 
   async function copyTopEmail() {
     try {
-      await navigator.clipboard?.writeText("a7lal@uwaterloo.ca");
+      await writeEmailToClipboard();
+      setTopEmailCopied(true);
+      window.setTimeout(() => setTopEmailCopied(false), 2400);
     } catch {
-      // Clipboard access can be unavailable in preview environments.
+      setTopEmailCopied(false);
     }
-
-    setEmailCopied(true);
-    window.setTimeout(() => setEmailCopied(false), 2200);
   }
 
   async function copyFooterEmail() {
     try {
-      await navigator.clipboard?.writeText("a7lal@uwaterloo.ca");
+      await writeEmailToClipboard();
+      setFooterEmailCopied(true);
+      window.setTimeout(() => setFooterEmailCopied(false), 2200);
     } catch {
-      // Clipboard access can be unavailable in preview environments.
+      setFooterEmailCopied(false);
     }
-
-    setFooterEmailCopied(true);
-    window.setTimeout(() => setFooterEmailCopied(false), 2200);
   }
 
   useEffect(() => {
@@ -237,7 +257,8 @@ export default function Home() {
     if (reduced) {
       document
         .querySelectorAll(".reveal")
-        .forEach((el) => el.classList.add("is-visible"));
+        .forEach((element) => element.classList.add("is-visible"));
+
       return;
     }
 
@@ -250,12 +271,15 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      }
     );
 
     document
       .querySelectorAll(".reveal")
-      .forEach((el) => observer.observe(el));
+      .forEach((element) => observer.observe(element));
 
     return () => observer.disconnect();
   }, []);
@@ -268,13 +292,9 @@ export default function Home() {
       <div className="top-toolbar">
         <button
           type="button"
-          aria-label={emailCopied ? "Email copied" : "Email"}
-          title={
-            emailCopied
-              ? "Email copied — paste it into your mail app"
-              : "Email"
-          }
           className="toolbar-btn"
+          aria-label={topEmailCopied ? "Email copied" : "Copy email address"}
+          title={topEmailCopied ? "Email copied" : "Copy email"}
           onClick={copyTopEmail}
         >
           <svg
@@ -284,60 +304,33 @@ export default function Home() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            aria-hidden="true"
           >
             <rect x="3" y="5" width="18" height="14" rx="2" />
             <path d="m3 7 9 6 9-6" />
           </svg>
         </button>
 
-        {emailCopied && (
-          <span
-            className="toolbar-email-status"
-            role="status"
-            style={{
-              position: "absolute",
-              top: "calc(100% + 14px)",
-              left: "50%",
-              right: "auto",
-              zIndex: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-              width: "max-content",
-              minWidth: "184px",
-              padding: "10px 16px",
-              border: 0,
-              borderRadius: "999px",
-              background: "var(--accent-dark)",
-              color: "#ffffff",
-              fontSize: "12px",
-              fontWeight: 600,
-              lineHeight: 1.2,
-              textAlign: "center",
-              whiteSpace: "nowrap",
-              boxShadow:
-                "0 8px 18px rgba(0, 0, 0, 0.16), 0 2px 5px rgba(0, 0, 0, 0.08)",
-              transform: "translateX(-50%)",
-            }}
-          >
-            <span
-              aria-hidden="true"
-              style={{
-                display: "grid",
-                placeItems: "center",
-                width: "17px",
-                height: "17px",
-                borderRadius: "50%",
-                background: "rgba(255, 255, 255, 0.2)",
-                fontSize: "11px",
-                fontWeight: 700,
-              }}
-            >
-              ✓
+        {topEmailCopied && (
+          <div className="toolbar-email-status" role="status">
+            <span className="toolbar-email-status-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m5 12 4 4L19 6" />
+              </svg>
             </span>
-            Email copied to clipboard
-          </span>
+
+            <span className="toolbar-email-status-copy">
+              <strong>Email copied</strong>
+              <small>{EMAIL}</small>
+            </span>
+          </div>
         )}
 
         <a
@@ -347,7 +340,7 @@ export default function Home() {
           aria-label="LinkedIn"
           className="toolbar-btn"
         >
-          <svg viewBox="0 0 24 24" fill="currentColor">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002ZM7 8.48H3V21h4V8.48Zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-3.96 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.68-2.91V8.48Z" />
           </svg>
         </a>
@@ -359,7 +352,7 @@ export default function Home() {
           aria-label="GitHub"
           className="toolbar-btn"
         >
-          <svg viewBox="0 0 24 24" fill="currentColor">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
           </svg>
         </a>
@@ -367,7 +360,7 @@ export default function Home() {
         <a
           href="/resume.pdf"
           download
-          aria-label="Resume"
+          aria-label="Download resume"
           className="toolbar-btn"
         >
           <svg
@@ -377,6 +370,7 @@ export default function Home() {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
+            aria-hidden="true"
           >
             <path d="M12 3v12" />
             <path d="m7 10 5 5 5-5" />
@@ -384,13 +378,13 @@ export default function Home() {
           </svg>
         </a>
 
-        <span className="toolbar-divider" />
+        <span className="toolbar-divider" aria-hidden="true" />
 
         <button
           type="button"
           className="toolbar-btn theme-toggle"
-          aria-label="Toggle theme"
-          onClick={() => setDarkMode(!darkMode)}
+          aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+          onClick={() => setDarkMode((current) => !current)}
         >
           {darkMode ? (
             <svg
@@ -400,6 +394,7 @@ export default function Home() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               <circle cx="12" cy="12" r="4" />
               <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
@@ -412,6 +407,7 @@ export default function Home() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
@@ -422,13 +418,13 @@ export default function Home() {
       <section className="hero">
         <div className="hero-inner">
           <div className="hero-stickers" aria-hidden="true">
-            {STICKERS.map((s) => (
+            {STICKERS.map((sticker) => (
               <span
-                key={s.label}
-                className={`sticker ${s.cls}`}
-                style={{ transform: `rotate(${s.rotate}deg)` }}
+                key={sticker.label}
+                className={`sticker ${sticker.cls}`}
+                style={{ transform: `rotate(${sticker.rotate}deg)` }}
               >
-                {s.label}
+                {sticker.label}
               </span>
             ))}
           </div>
@@ -438,7 +434,7 @@ export default function Home() {
           <p className="hero-role">
             <span className="chip chip-yellow chip-role">
               Computer Engineering
-            </span>{" "}
+            </span>
             <span className="hero-role-muted">@University of Waterloo</span>
           </p>
 
@@ -449,11 +445,11 @@ export default function Home() {
           </p>
 
           <div className="facts-list">
-            {FACTS.map((fact, i) => (
+            {FACTS.map((fact, index) => (
               <p
-                key={i}
+                key={index}
                 className="fact-row"
-                style={{ animationDelay: `${0.55 + i * 0.08}s` }}
+                style={{ animationDelay: `${0.55 + index * 0.08}s` }}
               >
                 <span className="fact-arrow">&gt;</span>
                 {fact.text}
@@ -461,11 +457,12 @@ export default function Home() {
             ))}
           </div>
 
-          <nav className="hero-nav">
+          <nav className="hero-nav" aria-label="Page sections">
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
             <a href="#skills">Skills</a>
-            <a href="/contact">Contact</a>
+            <a href="#thoughts">My Thoughts</a>
+            <Link href="/contact">Contact</Link>
           </nav>
         </div>
       </section>
@@ -502,7 +499,7 @@ export default function Home() {
 
         <div className="experience-list">
           {EXPERIENCE.map((job) => (
-            <div
+            <article
               className={`experience-card accent-${job.accent}`}
               key={job.role + job.org}
             >
@@ -516,11 +513,11 @@ export default function Home() {
               </div>
 
               <ul className="experience-bullets">
-                {job.bullets.map((b, i) => (
-                  <li key={i}>{b}</li>
+                {job.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
                 ))}
               </ul>
-            </div>
+            </article>
           ))}
         </div>
       </section>
@@ -548,29 +545,62 @@ export default function Home() {
         </div>
       </section>
 
+      <section
+        id="thoughts"
+        className="container lower-section thoughts-preview reveal"
+      >
+        <p className="thoughts-preview-eyebrow">Notes, ideas &amp; questions</p>
+        <h2 className="section-title">My Thoughts</h2>
+
+        <p className="thoughts-preview-intro">
+          An evolving notebook about technology, people, work, education,
+          community, and the ideas I am still figuring out.
+        </p>
+
+        <Link className="thoughts-preview-card" href="/thoughts">
+          <span className="thoughts-preview-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 64 64"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M13 13h38v29H29L17 52l2-10h-6V13Z" />
+              <path d="M22 23h20M22 30h15M22 37h11" />
+            </svg>
+          </span>
+
+          <span className="thoughts-preview-copy">
+            <strong>Open my notes</strong>
+            <span>
+              Collections, beliefs, project logs, guides, questions, and more.
+            </span>
+          </span>
+
+          <span className="thoughts-preview-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </Link>
+      </section>
+
       <footer className="reveal">
         <span>© 2026 Akshat Lal</span>
 
         <div className="footer-links">
           <button
             type="button"
+            className="footer-email-button"
             onClick={copyFooterEmail}
             aria-label={
-              footerEmailCopied
-                ? "Footer email copied"
-                : "Copy email address"
+              footerEmailCopied ? "Footer email copied" : "Copy email address"
             }
-            style={{
-              padding: 0,
-              border: 0,
-              background: "transparent",
-              color: "inherit",
-              font: "inherit",
-              cursor: "pointer",
-            }}
           >
             {footerEmailCopied ? "Email copied" : "Email"}
           </button>
+
+          <Link href="/thoughts">My Thoughts</Link>
 
           <a
             href="https://linkedin.com/in/lal-akshat"
