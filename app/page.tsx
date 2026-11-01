@@ -200,6 +200,7 @@ const SKILL_GROUPS = [
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [footerEmailCopied, setFooterEmailCopied] = useState(false);
 
   async function copyEmail() {
     try {
@@ -210,6 +211,17 @@ export default function Home() {
 
     setEmailCopied(true);
     window.setTimeout(() => setEmailCopied(false), 2200);
+  }
+
+  async function copyFooterEmail() {
+    try {
+      await navigator.clipboard?.writeText("a7lal@uwaterloo.ca");
+    } catch {
+      // Clipboard access can be unavailable in preview environments.
+    }
+
+    setFooterEmailCopied(true);
+    window.setTimeout(() => setFooterEmailCopied(false), 2200);
   }
 
   useEffect(() => {
@@ -497,8 +509,12 @@ export default function Home() {
         <div className="footer-links">
           <button
             type="button"
-            onClick={copyEmail}
-            aria-label={emailCopied ? "Email copied" : "Copy email address"}
+            onClick={copyFooterEmail}
+            aria-label={
+              footerEmailCopied
+                ? "Email copied"
+                : "Copy email address"
+            }
             style={{
               padding: 0,
               border: 0,
@@ -508,7 +524,7 @@ export default function Home() {
               cursor: "pointer",
             }}
           >
-            {emailCopied ? "Email copied" : "Email"}
+            {footerEmailCopied ? "Email copied" : "Email"}
           </button>
 
           <a
