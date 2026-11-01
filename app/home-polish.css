@@ -1,54 +1,82 @@
 /* =========================================================
    HOMEPAGE ALIGNMENT AND POLISH
-   Loaded after globals.css by app/page.tsx.
+   ========================================================= */
+
+.site {
+  --home-section-gap: 110px;
+}
+
+/* =========================================================
+   HERO
+   Keep the content left-aligned inside a centered column.
    ========================================================= */
 
 .hero {
-  text-align: center;
+  text-align: left;
 }
 
 .hero-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
 }
 
 .hero-stickers {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hero-role {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hero-bio {
-  margin-inline: auto;
+  margin-right: auto;
+  margin-left: 0;
+  text-align: left;
   text-wrap: balance;
 }
 
 .facts-list {
   width: 100%;
   max-width: 640px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .fact-row {
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
   line-height: 1.65;
 }
 
+.fact-arrow {
+  flex: 0 0 auto;
+}
+
 .hero-nav {
-  justify-content: center;
+  justify-content: flex-start;
+}
+
+/* =========================================================
+   CONSISTENT SECTION SPACING
+   ========================================================= */
+
+.projects-section {
+  padding: var(--home-section-gap) 24px 0;
+}
+
+.lower-section {
+  margin-top: var(--home-section-gap);
 }
 
 .section-title {
+  text-align: center;
   text-wrap: balance;
 }
 
-.projects-section {
-  padding-inline: 24px;
-}
+/* =========================================================
+   PROJECTS
+   ========================================================= */
 
 .project-grid {
   align-items: stretch;
@@ -77,9 +105,9 @@
   margin-top: auto;
 }
 
-.lower-section {
-  text-align: center;
-}
+/* =========================================================
+   EXPERIENCE
+   ========================================================= */
 
 .experience-list {
   width: 100%;
@@ -92,6 +120,10 @@
 .experience-bullets {
   max-width: 620px;
 }
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
 
 .skills-group {
   text-align: center;
@@ -122,6 +154,7 @@
 
   border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
   border-radius: 12px;
+
   background: var(--background);
   color: var(--text);
 
@@ -134,6 +167,7 @@
 
   transform: translateX(-50%);
   transform-origin: top center;
+
   animation: polished-notification-in 0.28s var(--ease-out) both;
 }
 
@@ -151,6 +185,7 @@
   height: 30px;
 
   border-radius: 50%;
+
   background: var(--accent-soft);
   color: var(--accent-dark);
 }
@@ -203,12 +238,14 @@
   max-width: 720px;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .thoughts-preview-eyebrow {
   margin: 0 0 9px;
 
   color: var(--accent);
+
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
   font-weight: 500;
@@ -225,6 +262,7 @@
   margin: 0 auto;
 
   color: var(--muted);
+
   font-size: 14px;
   line-height: 1.75;
   text-wrap: balance;
@@ -243,6 +281,7 @@
 
   border: 1px solid var(--line);
   border-radius: 14px;
+
   background: var(--panel);
 
   text-align: left;
@@ -257,7 +296,9 @@
 
 .thoughts-preview-card:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+
   transform: translateY(-3px);
 }
 
@@ -269,6 +310,7 @@
   height: 48px;
 
   border-radius: 12px;
+
   background: var(--accent-soft);
   color: var(--accent-dark);
 }
@@ -321,6 +363,7 @@
   padding: 0;
 
   border: 0;
+
   background: transparent;
   color: var(--muted);
 
@@ -335,32 +378,65 @@
 }
 
 /* =========================================================
-   RESPONSIVE
+   TABLET AND MOBILE
    ========================================================= */
 
 @media (max-width: 700px) {
+  .site {
+    --home-section-gap: 90px;
+  }
+
+  .hero {
+    text-align: left;
+  }
+
+  .hero-inner {
+    max-width: 100%;
+  }
+
   .hero-name {
     font-size: clamp(64px, 22vw, 96px);
   }
 
-  .hero-nav {
-    gap: 18px 24px;
+  .hero-role {
+    justify-content: flex-start;
+  }
+
+  .hero-bio {
+    text-align: left;
+  }
+
+  .facts-list {
+    align-items: stretch;
   }
 
   .fact-row {
-    max-width: 520px;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .hero-nav {
+    justify-content: flex-start;
+    gap: 18px 24px;
   }
 
   .projects-section {
-    padding-inline: 20px;
+    padding: var(--home-section-gap) 20px 0;
+  }
+
+  .lower-section {
+    margin-top: var(--home-section-gap);
   }
 
   .toolbar-email-status {
     left: auto;
     right: 0;
+
     min-width: 214px;
+
     transform: none;
     transform-origin: top right;
+
     animation-name: polished-notification-mobile-in;
   }
 
