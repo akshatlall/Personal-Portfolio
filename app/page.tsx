@@ -201,6 +201,17 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
 
+  async function copyEmail() {
+    try {
+      await navigator.clipboard?.writeText("a7lal@uwaterloo.ca");
+    } catch {
+      // Clipboard access can be unavailable in preview environments.
+    }
+
+    setEmailCopied(true);
+    window.setTimeout(() => setEmailCopied(false), 2200);
+  }
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
@@ -251,16 +262,7 @@ export default function Home() {
               : "Email"
           }
           className="toolbar-btn"
-          onClick={async () => {
-            try {
-              await navigator.clipboard?.writeText("a7lal@uwaterloo.ca");
-            } catch {
-              // Clipboard access can be unavailable in preview environments.
-            }
-
-            setEmailCopied(true);
-            window.setTimeout(() => setEmailCopied(false), 2200);
-          }}
+          onClick={copyEmail}
         >
           <svg
             viewBox="0 0 24 24"
@@ -301,7 +303,7 @@ export default function Home() {
           className="toolbar-btn"
         >
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.34 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
+            <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
           </svg>
         </a>
 
@@ -493,7 +495,21 @@ export default function Home() {
         <span>© 2026 Akshat Lal</span>
 
         <div className="footer-links">
-          <a href="mailto:a7lal@uwaterloo.ca">Email</a>
+          <button
+            type="button"
+            onClick={copyEmail}
+            aria-label={emailCopied ? "Email copied" : "Copy email address"}
+            style={{
+              padding: 0,
+              border: 0,
+              background: "transparent",
+              color: "inherit",
+              font: "inherit",
+              cursor: "pointer",
+            }}
+          >
+            {emailCopied ? "Email copied" : "Email"}
+          </button>
 
           <a
             href="https://linkedin.com/in/lal-akshat"
