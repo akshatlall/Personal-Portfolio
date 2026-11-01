@@ -10,25 +10,25 @@ const FACTS: { text: React.ReactNode }[] = [
     text: (
       <>
         led <span className="chip chip-sky">VEX Robotics</span> for four
-        seasons, going from team member to Team Lead directing design,
-        build, and test
+        seasons, going from team member to Team Lead directing design, build,
+        and test
       </>
     ),
   },
   {
     text: (
       <>
-        built <span className="chip chip-peach">Caissa</span>, a chess
-        engine in <span className="chip chip-lavender">C#</span> with an AI
-        opponent across 3 rule sets
+        built <span className="chip chip-peach">Caissa</span>, a chess engine
+        in <span className="chip chip-lavender">C#</span> with an AI opponent
+        across 3 rule sets
       </>
     ),
   },
   {
     text: (
       <>
-        laying out PCBs in <span className="chip chip-mint">Altium</span>{" "}
-        for a robotic arm on the Student Design Team
+        laying out PCBs in <span className="chip chip-mint">Altium</span> for a
+        robotic arm on the Student Design Team
       </>
     ),
   },
@@ -147,7 +147,9 @@ const EXPERIENCE = [
     org: "University of Waterloo",
     date: "2026 – 2031",
     accent: "sky",
-    bullets: ["Bachelor of Applied Science, starting Computer Engineering this fall"],
+    bullets: [
+      "Bachelor of Applied Science, starting Computer Engineering this fall",
+    ],
   },
 ];
 
@@ -155,12 +157,31 @@ const SKILL_GROUPS = [
   {
     label: "Languages",
     cls: "sky",
-    items: ["C#", "Java", "C++", "Python", "TypeScript", "JavaScript", "HTML", "CSS", "SQL"],
+    items: [
+      "C#",
+      "Java",
+      "C++",
+      "Python",
+      "TypeScript",
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "SQL",
+    ],
   },
   {
     label: "Frameworks & Tools",
     cls: "mint",
-    items: [".NET", "WinForms", "React", "Next.js", "Arduino", "Git", "Vercel", "Altium Designer"],
+    items: [
+      ".NET",
+      "WinForms",
+      "React",
+      "Next.js",
+      "Arduino",
+      "Git",
+      "Vercel",
+      "Altium Designer",
+    ],
   },
   {
     label: "Concepts",
@@ -220,15 +241,15 @@ export default function Home() {
       <LoadingScreen />
       <PageDoodles />
 
-      {/* =====================================================
-          TOP-RIGHT LINK TOOLBAR
-          ===================================================== */}
-
       <div className="top-toolbar">
         <button
           type="button"
           aria-label={emailCopied ? "Email copied" : "Email"}
-          title={emailCopied ? "Email copied — paste it into your mail app" : "Email"}
+          title={
+            emailCopied
+              ? "Email copied — paste it into your mail app"
+              : "Email"
+          }
           className="toolbar-btn"
           onClick={async () => {
             try {
@@ -236,11 +257,19 @@ export default function Home() {
             } catch {
               // Clipboard access can be unavailable in preview environments.
             }
+
             setEmailCopied(true);
             window.setTimeout(() => setEmailCopied(false), 2200);
           }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <rect x="3" y="5" width="18" height="14" rx="2" />
             <path d="m3 7 9 6 9-6" />
           </svg>
@@ -272,7 +301,7 @@ export default function Home() {
           className="toolbar-btn"
         >
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
+            <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.34 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
           </svg>
         </a>
 
@@ -282,7 +311,14 @@ export default function Home() {
           aria-label="Resume"
           className="toolbar-btn"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M12 3v12" />
             <path d="m7 10 5 5 5-5" />
             <path d="M5 21h14" />
@@ -298,21 +334,31 @@ export default function Home() {
           onClick={() => setDarkMode(!darkMode)}
         >
           {darkMode ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="12" cy="12" r="4" />
               <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
             </svg>
           ) : (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
           )}
         </button>
       </div>
-
-      {/* =====================================================
-          HERO
-          ===================================================== */}
 
       <section className="hero">
         <div className="hero-inner">
@@ -365,10 +411,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =====================================================
-          PROJECTS
-          ===================================================== */}
-
       <section id="projects" className="container-wide projects-section reveal">
         <h2 className="section-title">Projects</h2>
 
@@ -396,21 +438,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =====================================================
-          EXPERIENCE
-          ===================================================== */}
-
       <section id="experience" className="container lower-section reveal">
         <h2 className="section-title">Experience</h2>
 
         <div className="experience-list">
           {EXPERIENCE.map((job) => (
-            <div className={`experience-card accent-${job.accent}`} key={job.role + job.org}>
+            <div
+              className={`experience-card accent-${job.accent}`}
+              key={job.role + job.org}
+            >
               <div className="experience-head">
                 <div>
                   <p className="experience-role">{job.role}</p>
                   <p className="experience-org">{job.org}</p>
                 </div>
+
                 <span className="experience-date">{job.date}</span>
               </div>
 
@@ -424,10 +466,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =====================================================
-          SKILLS
-          ===================================================== */}
-
       <section id="skills" className="container lower-section reveal">
         <h2 className="section-title">Skills</h2>
 
@@ -435,9 +473,13 @@ export default function Home() {
           {SKILL_GROUPS.map((group) => (
             <div className="skills-group" key={group.label}>
               <p className="skills-group-title">{group.label}</p>
+
               <div className="skill-tags">
                 {group.items.map((item) => (
-                  <span key={item} className={`skill-tag skill-tag-${group.cls}`}>
+                  <span
+                    key={item}
+                    className={`skill-tag skill-tag-${group.cls}`}
+                  >
                     {item}
                   </span>
                 ))}
@@ -449,9 +491,18 @@ export default function Home() {
 
       <footer className="reveal">
         <span>© 2026 Akshat Lal</span>
+
         <div className="footer-links">
-          <a href="/contact">Email</a>
-          <a href="https://linkedin.com/in/lal-akshat">LinkedIn</a>
+          <a href="mailto:a7lal@uwaterloo.ca">Email</a>
+
+          <a
+            href="https://linkedin.com/in/lal-akshat"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </a>
+
           <a
             href="https://github.com/lal-akshat"
             target="_blank"
