@@ -1,17 +1,20 @@
 /* =========================================================
-   HOMEPAGE ALIGNMENT AND POLISH
+   HOMEPAGE ALIGNMENT AND SPACING
    ========================================================= */
 
 .site {
-  --home-section-gap: 110px;
+  --home-section-gap: 96px;
 }
 
 /* =========================================================
    HERO
    Keep the content left-aligned inside a centered column.
+   Remove the forced viewport height that created excess space.
    ========================================================= */
 
 .hero {
+  min-height: auto;
+  padding: 140px 24px 0;
   text-align: left;
 }
 
@@ -185,7 +188,6 @@
   height: 30px;
 
   border-radius: 50%;
-
   background: var(--accent-soft);
   color: var(--accent-dark);
 }
@@ -296,9 +298,7 @@
 
 .thoughts-preview-card:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
-
   transform: translateY(-3px);
 }
 
@@ -353,6 +353,10 @@
    FOOTER
    ========================================================= */
 
+footer {
+  margin-top: var(--home-section-gap);
+}
+
 .footer-links {
   justify-content: center;
   flex-wrap: wrap;
@@ -383,10 +387,12 @@
 
 @media (max-width: 700px) {
   .site {
-    --home-section-gap: 90px;
+    --home-section-gap: 76px;
   }
 
   .hero {
+    min-height: auto;
+    padding: 120px 20px 0;
     text-align: left;
   }
 
@@ -448,6 +454,10 @@
 
   .thoughts-preview-arrow {
     display: none;
+  }
+
+  footer {
+    margin-top: var(--home-section-gap);
   }
 
   .footer-links {
