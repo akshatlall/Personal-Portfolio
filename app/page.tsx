@@ -199,10 +199,14 @@ const SKILL_GROUPS = [
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+
+  // Top-right email state
   const [emailCopied, setEmailCopied] = useState(false);
+
+  // Bottom email state
   const [footerEmailCopied, setFooterEmailCopied] = useState(false);
 
-  async function copyEmail() {
+  async function copyTopEmail() {
     try {
       await navigator.clipboard?.writeText("a7lal@uwaterloo.ca");
     } catch {
@@ -274,7 +278,7 @@ export default function Home() {
               : "Email"
           }
           className="toolbar-btn"
-          onClick={copyEmail}
+          onClick={copyTopEmail}
         >
           <svg
             viewBox="0 0 24 24"
@@ -512,7 +516,7 @@ export default function Home() {
             onClick={copyFooterEmail}
             aria-label={
               footerEmailCopied
-                ? "Email copied"
+                ? "Footer email copied"
                 : "Copy email address"
             }
             style={{
