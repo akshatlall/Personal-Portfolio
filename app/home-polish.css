@@ -8,58 +8,56 @@
 
 /* =========================================================
    HERO
-   Keep content left-aligned inside a centered column.
+   Keep content centered inside a centered column.
    ========================================================= */
 
 .hero {
-  text-align: left;
+  text-align: center;
 }
 
 .hero-inner {
   display: block;
   width: 100%;
-  max-width: 900px;
+  max-width: 640px;
   margin-inline: auto;
 }
 
 .hero-stickers {
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .hero-role {
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .hero-bio {
   margin-right: auto;
-  margin-left: 0;
-  max-width: none;
-  text-align: left;
+  margin-left: auto;
+  max-width: 640px;
+  text-align: center;
   text-wrap: nowrap;
 }
 
 .facts-list {
   width: 100%;
-  max-width: 900px;
+  max-width: 640px;
   align-items: stretch;
 }
 
 .fact-row {
   display: block;
-  justify-content: flex-start;
-  text-align: left;
+  text-align: center;
   line-height: 1.65;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .fact-arrow {
-  flex: 0 0 auto;
   display: inline-block;
   margin-right: 6px;
 }
 
 .hero-nav {
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 /* =========================================================
@@ -385,7 +383,7 @@
   }
 
   .hero {
-    text-align: left;
+    text-align: center;
   }
 
   .hero-inner {
@@ -397,11 +395,11 @@
   }
 
   .hero-role {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .hero-bio {
-    text-align: left;
+    text-align: center;
     text-wrap: normal;
     white-space: normal;
   }
@@ -412,13 +410,12 @@
 
   .fact-row {
     display: block;
-    justify-content: flex-start;
-    text-align: left;
+    text-align: center;
     white-space: normal;
   }
 
   .hero-nav {
-    justify-content: flex-start;
+    justify-content: center;
     gap: 18px 24px;
   }
 
