@@ -8,11 +8,11 @@
 
 /* =========================================================
    HERO
-   Keep content centered inside a centered column.
+   Keep content left-aligned inside a centered column.
    ========================================================= */
 
 .hero {
-  text-align: center;
+  text-align: left;
 }
 
 .hero-inner {
@@ -23,19 +23,18 @@
 }
 
 .hero-stickers {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hero-role {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hero-bio {
   margin-right: auto;
-  margin-left: auto;
-  max-width: 640px;
-  text-align: center;
-  text-wrap: nowrap;
+  margin-left: 0;
+  text-align: left;
+  text-wrap: balance;
 }
 
 .facts-list {
@@ -45,19 +44,17 @@
 }
 
 .fact-row {
-  display: block;
+  justify-content: flex-start;
   text-align: left;
   line-height: 1.65;
-  white-space: normal;
 }
 
 .fact-arrow {
-  display: inline-block;
-  margin-right: 6px;
+  flex: 0 0 auto;
 }
 
 .hero-nav {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* =========================================================
@@ -383,7 +380,7 @@
   }
 
   .hero {
-    text-align: center;
+    text-align: left;
   }
 
   .hero-inner {
@@ -395,13 +392,11 @@
   }
 
   .hero-role {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .hero-bio {
-    text-align: center;
-    text-wrap: normal;
-    white-space: normal;
+    text-align: left;
   }
 
   .facts-list {
@@ -409,13 +404,12 @@
   }
 
   .fact-row {
-    display: block;
+    justify-content: flex-start;
     text-align: left;
-    white-space: normal;
   }
 
   .hero-nav {
-    justify-content: center;
+    justify-content: flex-start;
     gap: 18px 24px;
   }
 
