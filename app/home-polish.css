@@ -46,7 +46,7 @@
 
 .fact-row {
   display: block;
-  text-align: center;
+  text-align: left;
   line-height: 1.65;
   white-space: normal;
 }
@@ -410,7 +410,7 @@
 
   .fact-row {
     display: block;
-    text-align: center;
+    text-align: left;
     white-space: normal;
   }
 
