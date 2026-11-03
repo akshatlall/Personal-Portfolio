@@ -69,7 +69,7 @@ const FACTS: { text: React.ReactNode }[] = [
 const STICKERS = [
   { label: "♞", cls: "sticker-peach", rotate: -8 },
   { label: "C#", cls: "sticker-lavender", rotate: 5 },
-  { label: "⚡", cls: "sticker-sky", rotate: -3 },
+  { label: "🗲", cls: "sticker-sky", rotate: -3 },
   { label: "</>", cls: "sticker-mint", rotate: 7 },
 ];
 
