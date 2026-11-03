@@ -48,21 +48,19 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        built a <span className="chip chip-yellow">Java Swing</span> image
-        editor with custom pixel-manipulation filters
+        working on <span className="chip chip-yellow">humanoid robotics</span> with <span className="chip chip-mint">WATonomous</span>, the Waterloo Design Team
       </>
     ),
   },
   {
     text: (
       <>
-        starting Computer Engineering{" "}
-        <span className="chip chip-sky">@Waterloo</span> this fall
+        studying Computer Engineering <span className="chip chip-sky">@Waterloo</span>
       </>
     ),
   },
   {
-    text: <>seeking summer 2027 co-op opportunities</>,
+    text: <>seeking spring 2027 co-op opportunities</>,
   },
 ];
 

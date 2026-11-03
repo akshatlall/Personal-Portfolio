@@ -18,7 +18,7 @@
 .hero-inner {
   display: block;
   width: 100%;
-  max-width: 640px;
+  max-width: 900px;
   margin-inline: auto;
 }
 
@@ -33,24 +33,29 @@
 .hero-bio {
   margin-right: auto;
   margin-left: 0;
+  max-width: none;
   text-align: left;
-  text-wrap: balance;
+  text-wrap: nowrap;
 }
 
 .facts-list {
   width: 100%;
-  max-width: 640px;
+  max-width: 900px;
   align-items: stretch;
 }
 
 .fact-row {
+  display: block;
   justify-content: flex-start;
   text-align: left;
   line-height: 1.65;
+  white-space: nowrap;
 }
 
 .fact-arrow {
   flex: 0 0 auto;
+  display: inline-block;
+  margin-right: 6px;
 }
 
 .hero-nav {
@@ -397,6 +402,8 @@
 
   .hero-bio {
     text-align: left;
+    text-wrap: normal;
+    white-space: normal;
   }
 
   .facts-list {
@@ -404,8 +411,10 @@
   }
 
   .fact-row {
+    display: block;
     justify-content: flex-start;
     text-align: left;
+    white-space: normal;
   }
 
   .hero-nav {
