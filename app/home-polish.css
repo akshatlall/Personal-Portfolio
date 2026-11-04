@@ -33,8 +33,10 @@
 .hero-bio {
   margin-right: auto;
   margin-left: 0;
+  max-width: none;
   text-align: left;
-  text-wrap: balance;
+  text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .facts-list {
@@ -397,6 +399,8 @@
 
   .hero-bio {
     text-align: left;
+    text-wrap: normal;
+    white-space: normal;
   }
 
   .facts-list {

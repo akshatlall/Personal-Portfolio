@@ -14,8 +14,7 @@ const FACTS: { text: React.ReactNode }[] = [
     text: (
       <>
         led <span className="chip chip-sky">VEX Robotics</span> for four
-        seasons, going from team member to Team Lead directing design, build,
-        and test
+        seasons, from team member to Team Lead
       </>
     ),
   },
@@ -48,8 +47,9 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        built a <span className="chip chip-yellow">Java Swing</span> image
-        editor with custom pixel-manipulation filters
+        working on <span className="chip chip-yellow">humanoid robotics</span>{" "}
+        with <span className="chip chip-mint">WATonomous</span>, the Waterloo
+        Design Team
       </>
     ),
   },
