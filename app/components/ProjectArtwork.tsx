@@ -1,82 +1,47 @@
+import Image from "next/image";
+
 type Artwork = "caissa" | "tasks" | "portfolio" | "editor" | "simon" | "nba";
 
-const labels: Record<Artwork, string> = {
-  caissa: "Illustration of a chess board and knight",
-  tasks: "Illustration of a task management board",
-  portfolio: "Illustration of a portfolio web page",
-  editor: "Illustration of an image editor",
-  simon: "Illustration of an Arduino memory game",
-  nba: "Illustration of basketball data research",
+const artwork: Record<Artwork, { src: string; alt: string }> = {
+  caissa: {
+    src: "/projects/caissa.svg",
+    alt: "Caissa chess application interface with a chessboard, game clock, and move history",
+  },
+  tasks: {
+    src: "/projects/tasks.svg",
+    alt: "Task management application interface with organized project columns and task cards",
+  },
+  portfolio: {
+    src: "/projects/portfolio.svg",
+    alt: "Responsive portfolio displayed across desktop and mobile browser windows",
+  },
+  editor: {
+    src: "/projects/editor.svg",
+    alt: "Image editor interface demonstrating photo adjustments and editing tools",
+  },
+  simon: {
+    src: "/projects/simon.svg",
+    alt: "Arduino Simon memory game with illuminated controls and connected electronics",
+  },
+  nba: {
+    src: "/projects/nba.svg",
+    alt: "NBA research dashboard charting player height against rebounds",
+  },
 };
 
 export default function ProjectArtwork({ type }: { type: Artwork }) {
+  const image = artwork[type];
+
   return (
-    <div className={`project-art project-art-${type}`} role="img" aria-label={labels[type]}>
-      <span className="art-dot art-dot-one" />
-      <span className="art-dot art-dot-two" />
-
-      {type === "caissa" && (
-        <>
-          <div className="art-chessboard">
-            {Array.from({ length: 64 }, (_, index) => <span key={index} />)}
-          </div>
-          <span className="art-knight">♞</span>
-          <span className="art-label">CAISSA</span>
-        </>
-      )}
-
-      {type === "tasks" && (
-        <>
-          <div className="art-window">
-            <span /><span /><span />
-            <div className="art-task-columns">
-              <div><i /><i /><i /></div>
-              <div><i /><i /></div>
-              <div><i /><i /><i /></div>
-            </div>
-          </div>
-          <span className="art-label">TASKS</span>
-        </>
-      )}
-
-      {type === "portfolio" && (
-        <>
-          <div className="art-browser">
-            <div className="art-browser-bar"><span /><span /><span /></div>
-            <div className="art-browser-content"><b>AL</b><i /><i /><i /></div>
-          </div>
-          <span className="art-code">&lt;/&gt;</span>
-          <span className="art-label">WEB</span>
-        </>
-      )}
-
-      {type === "editor" && (
-        <>
-          <div className="art-editor-frame">
-            <div className="art-editor-photo"><span /><span /></div>
-            <div className="art-editor-tools"><i /><i /><i /></div>
-          </div>
-          <span className="art-cursor">↖</span>
-          <span className="art-label">PIXELS</span>
-        </>
-      )}
-
-      {type === "simon" && (
-        <>
-          <div className="art-simon-board"><span /><span /><span /><span /></div>
-          <div className="art-wire art-wire-one" /><div className="art-wire art-wire-two" />
-          <span className="art-label">SIMON</span>
-        </>
-      )}
-
-      {type === "nba" && (
-        <>
-          <div className="art-chart"><i /><i /><i /><i /></div>
-          <span className="art-basketball">●</span>
-          <span className="art-hoop">⌒</span>
-          <span className="art-label">DATA</span>
-        </>
-      )}
+    <div className={`project-art project-art-${type}`}>
+      <Image
+        className="project-image"
+        src={image.src}
+        alt={image.alt}
+        width={1600}
+        height={1000}
+        sizes="(max-width: 700px) calc(100vw - 40px), 420px"
+      />
     </div>
   );
 }

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Caissa chess engine</title><desc id="desc">A polished dark chess application with board, clocks, and move history.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17231f"/><stop offset="1" stop-color="#0a1110"/></linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#95d5b2"/><stop offset="1" stop-color="#5f9ed1"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#000" flood-opacity=".35"/></filter>
+    <pattern id="grid" width="70" height="70" patternUnits="userSpaceOnUse"><path d="M70 0H0V70" fill="none" stroke="#d9f4e4" stroke-opacity=".045"/></pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/><rect width="1600" height="1000" fill="url(#grid)"/>
+  <circle cx="1415" cy="92" r="220" fill="#82b8d6" opacity=".09"/><circle cx="110" cy="930" r="260" fill="#8bc9aa" opacity=".08"/>
+  <g filter="url(#shadow)">
+    <rect x="130" y="94" width="1340" height="812" rx="34" fill="#111a18" stroke="#31443e" stroke-width="3"/>
+    <path d="M130 170h1340" stroke="#31443e" stroke-width="3"/>
+    <circle cx="184" cy="133" r="11" fill="#ef8fa9"/><circle cx="220" cy="133" r="11" fill="#f3c86a"/><circle cx="256" cy="133" r="11" fill="#8bc9aa"/>
+    <text x="316" y="143" fill="#f5f1e8" font-family="Arial,sans-serif" font-size="30" font-weight="700">CAISSA</text>
+    <rect x="1226" y="112" width="182" height="43" rx="21" fill="#1c2b27" stroke="#3b514a"/><circle cx="1253" cy="133" r="7" fill="#95d5b2"/><text x="1274" y="140" fill="#bcd0c8" font-family="Arial,sans-serif" font-size="18">ENGINE ON</text>
+  </g>
+  <g transform="translate(196 222)" filter="url(#shadow)">
+    <rect width="620" height="620" rx="18" fill="#e9eadf"/>
+    <g fill="#6c9b87">
+      <path d="M77.5 0h77.5v77.5H77.5zm155 0h77.5v77.5h-77.5zm155 0H465v77.5h-77.5zm155 0H620v77.5h-77.5zM0 77.5h77.5V155H0zm155 0h77.5V155H155zm155 0h77.5V155H310zm155 0h77.5V155H465zM77.5 155h77.5v77.5H77.5zm155 0h77.5v77.5h-77.5zm155 0H465v77.5h-77.5zm155 0H620v77.5h-77.5zM0 232.5h77.5V310H0zm155 0h77.5V310H155zm155 0h77.5V310H310zm155 0h77.5V310H465zM77.5 310h77.5v77.5H77.5zm155 0h77.5v77.5h-77.5zm155 0H465v77.5h-77.5zm155 0H620v77.5h-77.5zM0 387.5h77.5V465H0zm155 0h77.5V465H155zm155 0h77.5V465H310zm155 0h77.5V465H465zM77.5 465h77.5v77.5H77.5zm155 0h77.5v77.5h-77.5zm155 0H465v77.5h-77.5zm155 0H620v77.5h-77.5zM0 542.5h77.5V620H0zm155 0h77.5V620H155zm155 0h77.5V620H310zm155 0h77.5V620H465z"/>
+    </g>
+    <rect x="310" y="310" width="77.5" height="77.5" fill="#f3c86a" opacity=".78"/><rect x="310" y="232.5" width="77.5" height="77.5" fill="#f3c86a" opacity=".45"/>
+    <g text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="800">
+      <g fill="#1d2b26"><text x="39" y="49">R</text><text x="116" y="49">N</text><text x="194" y="49">B</text><text x="271" y="49">Q</text><text x="349" y="49">K</text><text x="426" y="49">B</text><text x="504" y="49">N</text><text x="581" y="49">R</text>
+        <text x="39" y="127">P</text><text x="116" y="127">P</text><text x="194" y="127">P</text><text x="271" y="127">P</text><text x="426" y="127">P</text><text x="504" y="127">P</text><text x="581" y="127">P</text><text x="349" y="282">P</text>
+      </g>
+      <g fill="#f9faf4" stroke="#26382e" stroke-width="2"><circle cx="271" cy="349" r="25"/><circle cx="349" cy="349" r="25"/><circle cx="194" cy="427" r="25"/><text x="271" y="359" fill="#26382e" stroke="none">P</text><text x="349" y="359" fill="#26382e" stroke="none">P</text><text x="194" y="437" fill="#26382e" stroke="none">N</text>
+        <circle cx="39" cy="581" r="25"/><circle cx="116" cy="581" r="25"/><circle cx="194" cy="581" r="25"/><circle cx="271" cy="581" r="25"/><circle cx="349" cy="581" r="25"/><circle cx="426" cy="581" r="25"/><circle cx="504" cy="581" r="25"/><circle cx="581" cy="581" r="25"/><g fill="#26382e" stroke="none"><text x="39" y="591">R</text><text x="116" y="591">N</text><text x="194" y="591">B</text><text x="271" y="591">Q</text><text x="349" y="591">K</text><text x="426" y="591">B</text><text x="504" y="591">N</text><text x="581" y="591">R</text></g>
+        <circle cx="39" cy="504" r="22"/><circle cx="116" cy="504" r="22"/><circle cx="194" cy="504" r="22"/><circle cx="271" cy="504" r="22"/><circle cx="349" cy="504" r="22"/><circle cx="426" cy="504" r="22"/><circle cx="504" cy="504" r="22"/><circle cx="581" cy="504" r="22"/><g fill="#26382e" stroke="none" font-size="23"><text x="39" y="512">P</text><text x="116" y="512">P</text><text x="194" y="512">P</text><text x="271" y="512">P</text><text x="349" y="512">P</text><text x="426" y="512">P</text><text x="504" y="512">P</text><text x="581" y="512">P</text></g>
+      </g>
+    </g>
+  </g>
+  <g transform="translate(866 222)">
+    <rect width="538" height="102" rx="18" fill="#1b2925" stroke="#3b514a"/><circle cx="48" cy="51" r="24" fill="url(#glow)"/><text x="91" y="48" fill="#f5f1e8" font-family="Arial,sans-serif" font-size="21" font-weight="700">CAISSA AI</text><text x="91" y="76" fill="#8fa49c" font-family="Arial,sans-serif" font-size="17">evaluating 18,240 positions</text><text x="469" y="64" fill="#95d5b2" font-family="monospace" font-size="27" font-weight="700">04:32</text>
+    <rect y="126" width="538" height="354" rx="18" fill="#141f1c" stroke="#31443e"/><text x="30" y="170" fill="#8fa49c" font-family="Arial,sans-serif" font-size="16" letter-spacing="2">MOVE HISTORY</text>
+    <g font-family="monospace" font-size="20"><text x="34" y="218" fill="#788d85">01</text><text x="92" y="218" fill="#e3e9e6">e4</text><text x="262" y="218" fill="#e3e9e6">e5</text><text x="34" y="265" fill="#788d85">02</text><text x="92" y="265" fill="#e3e9e6">Nf3</text><text x="262" y="265" fill="#e3e9e6">Nc6</text><text x="34" y="312" fill="#788d85">03</text><text x="92" y="312" fill="#e3e9e6">Bb5</text><text x="262" y="312" fill="#e3e9e6">a6</text><rect x="21" y="332" width="496" height="54" rx="10" fill="#253b34"/><text x="34" y="367" fill="#95d5b2">04</text><text x="92" y="367" fill="#f5f1e8">Ba4</text><text x="262" y="367" fill="#f3c86a">Nf6</text></g>
+    <path d="M30 415h478" stroke="#31443e"/><text x="30" y="452" fill="#8fa49c" font-family="Arial,sans-serif" font-size="16">+0.34 · depth 16 · 86 ms</text>
+    <g transform="translate(0 506)"><rect width="166" height="48" rx="24" fill="#95d5b2"/><text x="83" y="31" text-anchor="middle" fill="#10201a" font-family="Arial,sans-serif" font-size="18" font-weight="700">STANDARD</text><rect x="182" width="166" height="48" rx="24" fill="#1b2925" stroke="#3b514a"/><text x="265" y="31" text-anchor="middle" fill="#afc1ba" font-family="Arial,sans-serif" font-size="18">CHESS960</text><rect x="364" width="174" height="48" rx="24" fill="#1b2925" stroke="#3b514a"/><text x="451" y="31" text-anchor="middle" fill="#afc1ba" font-family="Arial,sans-serif" font-size="18">ATOMIC</text></g>
+  </g>
+</svg>
