@@ -654,20 +654,19 @@ html.dark .circled::after {
   height: 100%;
   overflow: hidden;
 
-  background: #f8f3e8;
-  font-family: var(--font-anton), Impact, sans-serif;
+  background: #17231f;
 }
 
 .project-art::before {
   content: "";
 
   position: absolute;
-  inset: 12px;
+  inset: 0;
+  z-index: 1;
 
-  border: 2px solid rgba(37, 52, 43, 0.58);
-  border-radius: 4px;
-
-  transform: rotate(-1.5deg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .art-dot {
