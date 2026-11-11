@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import LoadingScreen from "./components/LoadingScreen";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
 import "./home-polish.css";
@@ -12,31 +13,33 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        led <strong>VEX Robotics</strong> for four seasons, from team member
-        to Team Lead
+        led <span className="chip chip-sky">VEX Robotics</span> for four
+        seasons, from team member to Team Lead
       </>
     ),
   },
   {
     text: (
       <>
-        built <strong>Caissa</strong>, a chess engine in <strong>C#</strong>{" "}
-        with an AI opponent across 3 rule sets
+        built <span className="chip chip-peach">Caissa</span>, a chess engine
+        in <span className="chip chip-lavender">C#</span> with an AI opponent
+        across 3 rule sets
       </>
     ),
   },
   {
     text: (
       <>
-        laying out PCBs in <strong>Altium</strong> for a robotic arm on the
-        Student Design Team
+        laying out PCBs in <span className="chip chip-mint">Altium</span> for a
+        robotic arm on the Student Design Team
       </>
     ),
   },
   {
     text: (
       <>
-        shipped a full-stack <strong>task manager</strong> with Next.js,
+        shipped a full-stack{" "}
+        <span className="chip chip-rose">task manager</span> with Next.js,
         TypeScript &amp; SQL
       </>
     ),
@@ -44,21 +47,30 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        working on <strong>humanoid robotics</strong> with{" "}
-        <strong>WATonomous</strong>, the Waterloo Design Team
+        working on <span className="chip chip-yellow">humanoid robotics</span>{" "}
+        with <span className="chip chip-mint">WATonomous</span>, the Waterloo
+        Design Team
       </>
     ),
   },
   {
     text: (
       <>
-        starting Computer Engineering <strong>@Waterloo</strong> this fall
+        starting Computer Engineering{" "}
+        <span className="chip chip-sky">@Waterloo</span> this fall
       </>
     ),
   },
   {
     text: <>seeking summer 2027 co-op opportunities</>,
   },
+];
+
+const STICKERS = [
+  { label: "♞", cls: "sticker-peach", rotate: -8 },
+  { label: "C#", cls: "sticker-lavender", rotate: 5 },
+  { label: "🗲", cls: "sticker-sky", rotate: -3 },
+  { label: "</>", cls: "sticker-mint", rotate: 7 },
 ];
 
 const PROJECTS = [
@@ -117,6 +129,7 @@ const EXPERIENCE = [
     role: "Team Lead",
     org: "VEX Robotics Team",
     date: "2022 – 2026",
+    accent: "peach",
     bullets: [
       "Competed for 4 consecutive seasons, progressing from team member to Team Lead directing the full design, build, test, and iteration cycle",
       "Directed mechanical design, robot assembly, and programming priorities to deliver a functioning competition robot each season",
@@ -127,6 +140,7 @@ const EXPERIENCE = [
     role: "New Member, Electrical Team",
     org: "Student Design Team",
     date: "2026 – Present",
+    accent: "mint",
     bullets: [
       "Design and lay out printed circuit boards in Altium Designer for onboard vehicle electronics",
       "Collaborate with senior electrical and mechanical members on component selection and board layout ahead of a moving robotic-arm subsystem build",
@@ -136,6 +150,7 @@ const EXPERIENCE = [
     role: "Computer Engineering",
     org: "University of Waterloo",
     date: "2026 – 2031",
+    accent: "sky",
     bullets: [
       "Bachelor of Applied Science, starting Computer Engineering this fall",
     ],
@@ -228,6 +243,7 @@ export default function Home() {
 
   return (
     <main className="site">
+      <LoadingScreen />
       <PageDoodles />
 
       {/* Top-right toolbar */}
@@ -364,16 +380,32 @@ export default function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="hero-inner">
+          <div className="hero-stickers" aria-hidden="true">
+            {STICKERS.map((sticker) => (
+              <span
+                key={sticker.label}
+                className={`sticker ${sticker.cls}`}
+                style={{ transform: `rotate(${sticker.rotate}deg)` }}
+              >
+                {sticker.label}
+              </span>
+            ))}
+          </div>
+
           <h1 className="hero-name">AKSHAT LAL</h1>
 
           <p className="hero-role">
-            <strong className="hero-role-title">Computer Engineering</strong>
-            <span className="hero-role-muted">University of Waterloo</span>
+            <span className="chip chip-yellow chip-role">
+              Computer Engineering
+            </span>
+
+            <span className="hero-role-muted">@University of Waterloo</span>
           </p>
 
           <p className="hero-bio">
-            i build at the <span className="circled">intersection</span> of
-            hardware, software, and problem-solving
+            i build at the <span className="circled">intersection</span> of{" "}
+            <span className="squiggle">hardware</span>,{" "}
+            <span className="squiggle">software</span>, and problem-solving
           </p>
 
           <div className="facts-list">
@@ -384,26 +416,16 @@ export default function Home() {
                 style={{ animationDelay: `${0.55 + index * 0.08}s` }}
               >
                 <span className="fact-arrow">&gt;</span>
-                <span className="fact-copy">{fact.text}</span>
+                {fact.text}
               </p>
             ))}
           </div>
 
-          <div className="hero-actions">
-            <a className="hero-primary-action" href={`mailto:${EMAIL}`}>
-              Get in touch
-            </a>
-            <a className="hero-secondary-action" href="#projects">
-              View selected work
-            </a>
-          </div>
-
-          <nav className="hero-nav" aria-label="More links">
+          <nav className="hero-nav" aria-label="Page sections">
+            <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
-            <a href="#thoughts">Notes</a>
-            <a href="/resume.pdf" download>
-              Resume
-            </a>
+            <a href="#thoughts">My Thoughts</a>
+            <Link href="/contact">Contact</Link>
           </nav>
         </div>
       </section>
@@ -413,14 +435,11 @@ export default function Home() {
         id="projects"
         className="container-wide projects-section reveal"
       >
-        <h2 className="section-title">Selected work</h2>
+        <h2 className="section-title">Projects</h2>
 
         <div className="project-grid">
-          {PROJECTS.map((project, index) => (
-            <article
-              className={`project${index === 0 ? " project-featured" : ""}`}
-              key={project.title}
-            >
+          {PROJECTS.map((project) => (
+            <article className="project" key={project.title}>
               <div className="project-image-wrapper">
                 <ProjectArtwork type={project.artwork} />
               </div>
@@ -432,7 +451,11 @@ export default function Home() {
 
               <p className="project-description">{project.description}</p>
 
-              <p className="project-tags">{project.tags.join(" · ")}</p>
+              <div className="project-tags">
+                {project.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
             </article>
           ))}
         </div>
@@ -445,7 +468,7 @@ export default function Home() {
         <div className="experience-list">
           {EXPERIENCE.map((job) => (
             <article
-              className="experience-card"
+              className={`experience-card accent-${job.accent}`}
               key={`${job.role}-${job.org}`}
             >
               <div className="experience-head">
@@ -467,32 +490,48 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Notes */}
+      {/* My Thoughts */}
       <section
         id="thoughts"
         className="container lower-section thoughts-preview reveal"
       >
-        <h2 className="section-title">Notes</h2>
+        <p className="thoughts-preview-eyebrow">
+          Notes, ideas &amp; questions
+        </p>
+
+        <h2 className="section-title">My Thoughts</h2>
 
         <p className="thoughts-preview-intro">
           An evolving notebook about technology, people, work, education,
           community, and the ideas I am still figuring out.
         </p>
 
-        <Link className="thoughts-preview-link" href="/thoughts">
-          Read my thoughts
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14" />
-            <path d="m13 6 6 6-6 6" />
-          </svg>
+        <Link className="thoughts-preview-card" href="/thoughts">
+          <span className="thoughts-preview-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 64 64"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M13 13h38v29H29L17 52l2-10h-6V13Z" />
+              <path d="M22 23h20M22 30h15M22 37h11" />
+            </svg>
+          </span>
+
+          <span className="thoughts-preview-copy">
+            <strong>Open my notes</strong>
+
+            <span>
+              Collections, beliefs, project logs, guides, questions, and more.
+            </span>
+          </span>
+
+          <span className="thoughts-preview-arrow" aria-hidden="true">
+            ↗
+          </span>
         </Link>
       </section>
 
