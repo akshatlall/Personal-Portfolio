@@ -384,7 +384,7 @@ export default function Home() {
                 style={{ animationDelay: `${0.55 + index * 0.08}s` }}
               >
                 <span className="fact-arrow">&gt;</span>
-                {fact.text}
+                <span className="fact-copy">{fact.text}</span>
               </p>
             ))}
           </div>
@@ -480,7 +480,19 @@ export default function Home() {
         </p>
 
         <Link className="thoughts-preview-link" href="/thoughts">
-          Read my thoughts <span aria-hidden="true">→</span>
+          Read my thoughts
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
         </Link>
       </section>
 
