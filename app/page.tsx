@@ -54,15 +54,7 @@ const FACTS: { text: React.ReactNode }[] = [
     ),
   },
   {
-    text: (
-      <>
-        starting Computer Engineering{" "}
-        <span className="chip chip-sky">@Waterloo</span> this fall
-      </>
-    ),
-  },
-  {
-    text: <>seeking summer 2027 co-op opportunities</>,
+    text: <>seeking spring 2027 internship opportunities</>,
   },
 ];
 
