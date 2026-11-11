@@ -214,7 +214,9 @@
 }
 
 .fact-row {
-  display: block;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: start;
   text-align: left;
   line-height: 1.65;
 }
@@ -224,8 +226,6 @@
 }
 
 .fact-arrow {
-  display: inline-block;
-  width: 18px;
   color: var(--accent);
   font-family: inherit;
   font-weight: 700;
@@ -474,11 +474,13 @@
   font-weight: 700;
 }
 
-.thoughts-preview-link span {
+.thoughts-preview-link svg {
+  width: 16px;
+  height: 16px;
   transition: transform 0.2s var(--ease-out);
 }
 
-.thoughts-preview-link:hover span {
+.thoughts-preview-link:hover svg {
   transform: translateX(3px);
 }
 
