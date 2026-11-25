@@ -1,5 +1,5 @@
 /* =========================================================
-   PROJECTS SHOWCASE (scroll-driven)
+   PROJECTS SHOWCASE (scroll-driven carousel)
    JS sets clip-path, transforms and opacity per frame.
    ========================================================= */
 
@@ -10,7 +10,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 520vh; /* scroll distance for the whole sequence */
+  height: 560vh; /* scroll distance for the whole sequence */
 }
 
 html.dark .showcase {
@@ -147,18 +147,23 @@ html.dark .showcase {
   pointer-events: none;
 }
 
-/* ---------- Project cards ---------- */
+/* ---------- Carousel cards ---------- */
 
 .showcase-cards {
   position: absolute;
   inset: 0;
   z-index: 4;
+
+  perspective: 1400px;
   pointer-events: none;
 }
 
 .showcase-card {
   position: absolute;
-  width: min(44vw, 520px);
+  top: 50%;
+  left: 50%;
+
+  width: min(40vw, 480px);
   padding: 10px 10px 12px;
 
   border: 3px solid var(--text);
@@ -170,17 +175,10 @@ html.dark .showcase {
 
   opacity: 0;
   visibility: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
   will-change: transform, opacity;
-}
-
-.showcase-card.slot-a {
-  top: 9%;
-  left: 7%;
-}
-
-.showcase-card.slot-b {
-  right: 7%;
-  bottom: 11%;
 }
 
 .showcase-card-bar {
@@ -210,6 +208,7 @@ html.dark .showcase {
   color: var(--muted);
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
+  white-space: nowrap;
 }
 
 .showcase-art {
@@ -245,26 +244,22 @@ html.dark .showcase {
   font-size: 10px;
 }
 
-/* ---------- Hint + counter ---------- */
+/* ---------- Scroll hint ---------- */
 
-.showcase-hint,
-.showcase-counter {
+.showcase-hint {
   position: absolute;
   z-index: 5;
   left: 50%;
   bottom: 26px;
   margin: 0;
 
+  color: var(--muted);
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   letter-spacing: 0.08em;
 
   transform: translateX(-50%);
   pointer-events: none;
-}
-
-.showcase-hint {
-  color: var(--muted);
 }
 
 .showcase-hint::after {
@@ -275,22 +270,89 @@ html.dark .showcase {
   animation: showcase-nudge 1.4s var(--ease-swing) infinite;
 }
 
-.showcase-counter {
-  color: var(--wall-ink);
-  opacity: 0;
-}
-
 @keyframes showcase-nudge {
   50% {
     transform: translateY(4px);
   }
 }
 
+/* ---------- Prev / next + counter ---------- */
+
+.showcase-nav {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  color: var(--wall-ink);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.showcase-nav button {
+  display: grid;
+  place-items: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+
+  border: 1.5px solid var(--wall-ink);
+  border-radius: 50%;
+  background: var(--wall-bg);
+  color: var(--wall-ink);
+
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.showcase-nav button:hover:not(:disabled) {
+  background: var(--wall-ink);
+  color: var(--wall-bg);
+}
+
+.showcase-nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.showcase-nav-count {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 90px;
+  justify-content: center;
+}
+
+.showcase-nav-count em {
+  max-width: 180px;
+  overflow: hidden;
+  font-style: normal;
+  opacity: 0.7;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ---------- Mobile ---------- */
 
 @media (max-width: 700px) {
   .showcase {
-    height: 460vh;
+    height: 500vh;
   }
 
   .wall-row {
@@ -298,23 +360,17 @@ html.dark .showcase {
   }
 
   .showcase-card {
-    width: 66vw;
+    width: 64vw;
     padding: 8px 8px 10px;
     box-shadow: 6px 7px 0 var(--card-shadow);
   }
 
-  .showcase-card.slot-a {
-    top: 8%;
-    left: 5%;
-  }
-
-  .showcase-card.slot-b {
-    right: 5%;
-    bottom: 12%;
-  }
-
   .showcase-card-meta {
     font-size: 13px;
+  }
+
+  .showcase-nav-count em {
+    display: none;
   }
 }
 
@@ -347,7 +403,7 @@ html.dark .showcase {
   .showcase-wall,
   .work-label,
   .showcase-hint,
-  .showcase-counter {
+  .showcase-nav {
     display: none;
   }
 
@@ -358,13 +414,13 @@ html.dark .showcase {
     gap: 32px;
     max-width: 920px;
     margin: 0 auto;
+    perspective: none;
   }
 
-  .showcase-card,
-  .showcase-card.slot-a,
-  .showcase-card.slot-b {
+  .showcase-card {
     position: static;
     width: auto;
+    cursor: default;
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;
