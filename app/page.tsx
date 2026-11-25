@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
+import ProjectsShowcase from "./components/ProjectsShowcase";
 import "./home-polish.css";
 
 const EMAIL = "a7lal@uwaterloo.ca";
@@ -14,7 +15,8 @@ const FACTS: { text: React.ReactNode }[] = [
     text: (
       <>
         led <span className="chip chip-sky">VEX Robotics</span> for four
-        seasons, from team member to Team Lead
+        seasons, going from team member to Team Lead directing design, build,
+        and test
       </>
     ),
   },
@@ -47,14 +49,21 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        working on <span className="chip chip-yellow">humanoid robotics</span>{" "}
-        with <span className="chip chip-mint">WATonomous</span>, the Waterloo
-        Design Team
+        built a <span className="chip chip-yellow">Java Swing</span> image
+        editor with custom pixel-manipulation filters
       </>
     ),
   },
   {
-    text: <>seeking spring 2027 internship opportunities</>,
+    text: (
+      <>
+        starting Computer Engineering{" "}
+        <span className="chip chip-sky">@Waterloo</span> this fall
+      </>
+    ),
+  },
+  {
+    text: <>seeking spring 2027 co-op opportunities</>,
   },
 ];
 
@@ -422,12 +431,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Projects */}
+      {/* Projects: scroll-driven showcase */}
+      <ProjectsShowcase projects={PROJECTS} />
+
+      {/* Projects: full details */}
       <section
-        id="projects"
+        id="project-details"
         className="container-wide projects-section reveal"
       >
-        <h2 className="section-title">Projects</h2>
+        <h2 className="section-title">Project Details</h2>
 
         <div className="project-grid">
           {PROJECTS.map((project) => (
