@@ -6,6 +6,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import PageDoodles from "../components/PageDoodles";
 import ProjectArtwork from "../components/ProjectArtwork";
 import "../home-polish.css";
+import "./home-polish.css";
 
 const EMAIL = "a7lal@uwaterloo.ca";
 
