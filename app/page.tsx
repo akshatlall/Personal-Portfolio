@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -5,7 +6,6 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
-import ProjectsShowcase from "./components/ProjectsShowcase";
 import "./home-polish.css";
 
 const EMAIL = "a7lal@uwaterloo.ca";
@@ -68,9 +68,9 @@ const FACTS: { text: React.ReactNode }[] = [
 ];
 
 const STICKERS = [
-  { label: "♞", cls: "sticker-peach", rotate: -8 },
+  { label: "â™ž", cls: "sticker-peach", rotate: -8 },
   { label: "C#", cls: "sticker-lavender", rotate: 5 },
-  { label: "🗲", cls: "sticker-sky", rotate: -3 },
+  { label: "ðŸ—²", cls: "sticker-sky", rotate: -3 },
   { label: "</>", cls: "sticker-mint", rotate: 7 },
 ];
 
@@ -96,7 +96,7 @@ const PROJECTS = [
     date: "aug '26",
     artwork: "portfolio" as const,
     description:
-      "This site — a responsive personal portfolio built with Next.js and TypeScript, with a light/dark mode toggle and scroll-triggered animation. Deployed on Vercel with continuous deployment so every pushed change goes live automatically.",
+      "This site â€” a responsive personal portfolio built with Next.js and TypeScript, with a light/dark mode toggle and scroll-triggered animation. Deployed on Vercel with continuous deployment so every pushed change goes live automatically.",
     tags: ["Next.js", "TypeScript"],
   },
   {
@@ -112,7 +112,7 @@ const PROJECTS = [
     date: "may '26",
     artwork: "simon" as const,
     description:
-      "A memory game built on Arduino, focused on embedded programming and hardware interaction — reading button input, driving LEDs, and timing sequences directly on the board.",
+      "A memory game built on Arduino, focused on embedded programming and hardware interaction â€” reading button input, driving LEDs, and timing sequences directly on the board.",
     tags: ["Arduino", "C++"],
   },
   {
@@ -129,7 +129,7 @@ const EXPERIENCE = [
   {
     role: "Team Lead",
     org: "VEX Robotics Team",
-    date: "2022 – 2026",
+    date: "2022 â€“ 2026",
     accent: "peach",
     bullets: [
       "Competed for 4 consecutive seasons, progressing from team member to Team Lead directing the full design, build, test, and iteration cycle",
@@ -140,7 +140,7 @@ const EXPERIENCE = [
   {
     role: "New Member, Electrical Team",
     org: "Student Design Team",
-    date: "2026 – Present",
+    date: "2026 â€“ Present",
     accent: "mint",
     bullets: [
       "Design and lay out printed circuit boards in Altium Designer for onboard vehicle electronics",
@@ -150,7 +150,7 @@ const EXPERIENCE = [
   {
     role: "Computer Engineering",
     org: "University of Waterloo",
-    date: "2026 – 2031",
+    date: "2026 â€“ 2031",
     accent: "sky",
     bullets: [
       "Bachelor of Applied Science, starting Computer Engineering this fall",
@@ -431,15 +431,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Projects: scroll-driven showcase */}
-      <ProjectsShowcase projects={PROJECTS} />
-
-      {/* Projects: full details */}
+      {/* Projects */}
       <section
-        id="project-details"
+        id="projects"
         className="container-wide projects-section reveal"
       >
-        <h2 className="section-title">Project Details</h2>
+        <h2 className="section-title">Projects</h2>
 
         <div className="project-grid">
           {PROJECTS.map((project) => (
@@ -534,14 +531,14 @@ export default function Home() {
           </span>
 
           <span className="thoughts-preview-arrow" aria-hidden="true">
-            ↗
+            â†—
           </span>
         </Link>
       </section>
 
       {/* Footer */}
       <footer className="reveal">
-        <span>© 2026 Akshat Lal</span>
+        <span>Â© 2026 Akshat Lal</span>
 
         <div className="footer-links">
           <button
