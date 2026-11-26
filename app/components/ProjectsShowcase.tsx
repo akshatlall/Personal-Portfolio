@@ -31,11 +31,12 @@ const SHADOWS = [
 const LETTERS_PER_ROW = 22;
 
 /* Scroll timeline (0 → 1 across the pinned section) */
-const INTRO_END = 0.22; // pill expands into the full wall
-const ENTER_START = 0.15; // cards start sliding in
-const ENTER_END = 0.3; // ...and have fully arrived
-const CARDS_START = 0.26; // carousel starts moving (first card centered)
-const CARDS_END = 0.96; // carousel ends (last card centered)
+const INTRO_END = 0.16; // pill expands into the full wall
+const ENTER_START = 0.11; // cards start sliding in
+const ENTER_END = 0.24; // ...and have fully arrived
+const CARDS_START = 0.2; // carousel starts moving (first card centered)
+const CARDS_END = 0.94; // carousel ends (last card centered)
+const OUTRO_START = 0.95; // pill contracts back near the end of the sequence
 
 const clamp = (v: number, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -47,6 +48,9 @@ const pad = (n: number, size = 2) => String(n).padStart(size, "0");
 export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const countRef = useRef(projects.length);
+  countRef.current = projects.length;
+
   const [active, setActive] = useState(0);
 
   const rows = word.toUpperCase().split("");
@@ -55,14 +59,16 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
   /* Scroll the page so that card `index` sits in the center */
   function goTo(index: number) {
     const section = sectionRef.current;
-    if (!section) return;
+    const totalItems = countRef.current;
+    if (!section || totalItems <= 0) return;
 
-    const target = clamp(index, 0, count - 1);
-    const total = section.offsetHeight - window.innerHeight;
+    const target = clamp(index, 0, totalItems - 1);
+    const total = Math.max(section.offsetHeight - window.innerHeight, 1);
     const top = section.getBoundingClientRect().top + window.scrollY;
     const p =
       CARDS_START +
-      (count > 1 ? target / (count - 1) : 0) * (CARDS_END - CARDS_START);
+      (totalItems > 1 ? target / (totalItems - 1) : 0) *
+        (CARDS_END - CARDS_START);
 
     window.scrollTo({ top: top + p * total, behavior: "smooth" });
   }
@@ -74,112 +80,183 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const wall = stage.querySelector<HTMLElement>(".showcase-wall")!;
-    const plane = stage.querySelector<HTMLElement>(".wall-plane")!;
+    const wall = stage.querySelector<HTMLElement>(".showcase-wall");
+    const plane = stage.querySelector<HTMLElement>(".wall-plane");
     const rowEls = Array.from(stage.querySelectorAll<HTMLElement>(".wall-row"));
     const cardEls = Array.from(
       stage.querySelectorAll<HTMLElement>(".showcase-card")
     );
-    const label = stage.querySelector<HTMLElement>(".work-label")!;
-    const ring = stage.querySelector<HTMLElement>(".work-pill-ring")!;
-    const hint = stage.querySelector<HTMLElement>(".showcase-hint")!;
-    const nav = stage.querySelector<HTMLElement>(".showcase-nav")!;
-    const letters = stage.querySelectorAll<HTMLElement>(".wall-row span");
+    const label = stage.querySelector<HTMLElement>(".work-label");
+    const ring = stage.querySelector<HTMLElement>(".work-pill-ring");
+    const hint = stage.querySelector<HTMLElement>(".showcase-hint");
+    const nav = stage.querySelector<HTMLElement>(".showcase-nav");
+    const letters = Array.from(
+      stage.querySelectorAll<HTMLElement>(".wall-row span")
+    );
 
-    let frame = 0;
+    if (!wall || !plane || !label || !ring || !hint || !nav) return;
+
+    let rafId = 0;
+    let smoothP: number | null = null;
     let lastActive = -1;
+    let lastTime = performance.now();
 
-    function update() {
-      frame = 0;
-      const total = section!.offsetHeight - window.innerHeight;
+    function getTargetProgress() {
+      const total = Math.max(section!.offsetHeight - window.innerHeight, 1);
       const rect = section!.getBoundingClientRect();
-      const p = clamp(-rect.top / Math.max(total, 1));
+      return clamp(-rect.top / total);
+    }
 
+    function render(p: number) {
+      const totalItems = countRef.current;
       const W = stage!.clientWidth;
       const H = stage!.clientHeight;
 
-      /* ---------- Phase 1: pill expands into the wall ---------- */
-      const e = smooth(range(p, 0, INTRO_END));
-      const pillW = Math.min(210, W * 0.32);
-      const pillH = H * 0.68;
+      /* ---------- Phase 1: pill expands & contracts cleanly ---------- */
+      const expandIn = smooth(range(p, 0, INTRO_END));
+      const collapseOut = smooth(range(p, OUTRO_START, 1));
+      const e = clamp(expandIn - collapseOut);
+
+      const pillW = Math.min(210, W * 0.34);
+      const pillH = Math.min(H * 0.72, 620);
       const insetX = lerp((W - pillW) / 2, 0, e);
       const insetY = lerp((H - pillH) / 2, 0, e);
       const radius = lerp(pillW / 2, 0, e);
 
-      wall.style.clipPath = `inset(${insetY}px ${insetX}px ${insetY}px ${insetX}px round ${radius}px)`;
+      wall!.style.clipPath = `inset(${insetY.toFixed(1)}px ${insetX.toFixed(
+        1
+      )}px ${insetY.toFixed(1)}px ${insetX.toFixed(1)}px round ${radius.toFixed(
+        1
+      )}px)`;
       stage!.style.setProperty("--pw", `${pillW}px`);
       stage!.style.setProperty("--ph", `${pillH}px`);
 
-      ring.style.opacity = String(1 - smooth(range(e, 0, 0.55)));
-      label.style.opacity = String(1 - smooth(range(e, 0.2, 0.7)));
-      label.style.transform = `translate(-50%, -50%) scale(${1 + e * 0.5})`;
-      hint.style.opacity = String(1 - range(p, 0, 0.05));
+      const pillChromeOpacity = 1 - smooth(range(e, 0.05, 0.55));
+      ring!.style.opacity = String(pillChromeOpacity);
+      label!.style.opacity = String(1 - smooth(range(e, 0.15, 0.65)));
+      label!.style.transform = `translate3d(-50%, -50%, 0) scale(${(
+        1 +
+        e * 0.45
+      ).toFixed(3)})`;
+      hint!.style.opacity = String(1 - smooth(range(p, 0, 0.06)));
 
-      /* ---------- Phase 2: the wall tilts and drifts with scroll ---------- */
-      const tiltIn = easeOut(range(p, 0, 0.5));
-      const rx = lerp(36, 8, tiltIn);
-      const rz = lerp(-10, 10, range(p, 0.1, 1));
-      const s = lerp(1.55, 1.25, tiltIn);
-      plane.style.transform = `rotateX(${rx}deg) rotateZ(${rz}deg) scale(${s})`;
+      /* ---------- Phase 2: wall tilt & alternating horizontal row drift ---------- */
+      const tiltIn = easeOut(range(p, 0, 0.45));
+      const rx = lerp(28, 7, tiltIn);
+      const rz = lerp(-6, 6, range(p, 0.08, 1));
+      const s = lerp(1.42, 1.22, tiltIn);
+      plane!.style.transform = `translate3d(0, 0, 0) rotateX(${rx.toFixed(
+        2
+      )}deg) rotateZ(${rz.toFixed(2)}deg) scale(${s.toFixed(3)})`;
 
-      const letterOpacity = String(smooth(range(e, 0.25, 0.8)));
-      letters.forEach((l) => (l.style.opacity = letterOpacity));
+      const letterOpacity = smooth(range(e, 0.15, 0.75)).toFixed(3);
+      for (let i = 0; i < letters.length; i++) {
+        letters[i].style.opacity = letterOpacity;
+      }
 
-      const drift = p * 460;
-      rowEls.forEach((row, i) => {
+      const drift = (p - 0.5) * 520;
+      for (let i = 0; i < rowEls.length; i++) {
         const dir = i % 2 === 0 ? 1 : -1;
-        row.style.transform = `translate3d(${dir * drift}px,0,0)`;
-      });
+        const rowShift = dir * drift;
+        rowEls[i].style.transform = `translate3d(${rowShift.toFixed(
+          1
+        )}px, 0, 0)`;
+      }
 
-      /* ---------- Phase 3: cards ride a horizontal carousel ---------- */
+      /* ---------- Phase 3: staggered top/bottom card carousel ---------- */
       const cardW = cardEls[0]?.offsetWidth ?? 420;
-      const spacing = cardW * 0.82; // neighbours overlap a little
-      const travel = range(p, CARDS_START, CARDS_END) * (count - 1);
+      const spacing = cardW * 0.88;
+      const denom = Math.max(totalItems - 1, 1);
+      const travel = range(p, CARDS_START, CARDS_END) * denom;
       const enter = easeOut(range(p, ENTER_START, ENTER_END));
+      const exit = 1 - smooth(range(p, OUTRO_START - 0.02, 1));
 
-      cardEls.forEach((card, i) => {
-        const d = i - travel; // distance from center, in card units
+      for (let i = 0; i < cardEls.length; i++) {
+        const card = cardEls[i];
+        const d = i - travel;
         const ad = Math.abs(d);
 
-        const x = d * spacing + (1 - enter) * W * 0.85;
-        const y = (i % 2 === 0 ? -1 : 1) * H * 0.15;
-        const scale = lerp(1.05, 0.86, clamp(ad / 2)) * lerp(0.85, 1, enter);
-        const rot = (i % 2 === 0 ? -3 : 3) + d * 2.5;
-        const rotY = clamp(d, -2, 2) * -14;
-        const opacity = enter * (1 - smooth(range(ad, 2.6, 3.4)));
+        const x = d * spacing + (1 - enter) * W * 0.78;
+        const waveY = (i % 2 === 0 ? -1 : 1) * H * 0.165;
+        const y = waveY + Math.sin(d * 0.85) * 10;
 
-        card.style.opacity = String(opacity);
+        const focus = 1 - clamp(ad / 2.2);
+        const scale =
+          lerp(0.88, 1.04, smooth(focus)) * lerp(0.88, 1, enter);
+        const rot = (i % 2 === 0 ? -2.2 : 2.2) + clamp(d, -3, 3) * 1.8;
+        const rotY = clamp(d, -2.5, 2.5) * -11;
+        const opacity = clamp(
+          enter * exit * (1 - smooth(range(ad, 2.4, 3.3)))
+        );
+
+        card.style.opacity = opacity.toFixed(3);
         card.style.visibility = opacity < 0.01 ? "hidden" : "visible";
-        card.style.zIndex = String(100 - Math.round(ad * 10));
-        card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) rotate(${rot}deg) rotateY(${rotY}deg) scale(${scale})`;
-      });
+        card.style.zIndex = String(100 - Math.round(ad * 12));
+        card.style.transform = `translate3d(-50%, -50%, 0) translate3d(${x.toFixed(
+          1
+        )}px, ${y.toFixed(1)}px, 0) rotate(${rot.toFixed(
+          2
+        )}deg) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      }
 
-      /* ---------- Nav + counter ---------- */
-      const navOpacity = smooth(range(p, INTRO_END, CARDS_START));
-      nav.style.opacity = String(navOpacity);
-      nav.style.pointerEvents = navOpacity < 0.5 ? "none" : "auto";
+      /* ---------- Nav + active counter ---------- */
+      const navOpacity = clamp(
+        smooth(range(p, INTRO_END * 0.7, CARDS_START)) * exit
+      );
+      nav!.style.opacity = navOpacity.toFixed(3);
+      nav!.style.pointerEvents = navOpacity > 0.5 ? "auto" : "none";
 
-      const current = clamp(Math.round(travel), 0, count - 1);
+      const current = clamp(Math.round(travel), 0, Math.max(totalItems - 1, 0));
       if (current !== lastActive) {
         lastActive = current;
         setActive(current);
       }
     }
 
-    function onScroll() {
-      if (!frame) frame = requestAnimationFrame(update);
+    function tick(now: number) {
+      rafId = 0;
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
+      const targetP = getTargetProgress();
+      if (smoothP === null) {
+        smoothP = targetP;
+      } else {
+        // Exponential smoothing independent of display refresh rate (60Hz / 120Hz / 144Hz)
+        const factor = 1 - Math.exp(-14 * dt);
+        smoothP += (targetP - smoothP) * factor;
+        if (Math.abs(targetP - smoothP) < 0.00015) {
+          smoothP = targetP;
+        }
+      }
+
+      render(smoothP);
+
+      if (Math.abs(targetP - smoothP) > 0.00015) {
+        rafId = requestAnimationFrame(tick);
+      }
     }
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    function schedule() {
+      if (!rafId) {
+        lastTime = performance.now();
+        rafId = requestAnimationFrame(tick);
+      }
+    }
+
+    // Initial immediate paint so above-the-fold state never flashes
+    smoothP = getTargetProgress();
+    render(smoothP);
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [count]);
+  }, []);
 
   return (
     <section id="projects" className="showcase" ref={sectionRef}>
