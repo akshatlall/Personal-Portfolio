@@ -1,47 +1,38 @@
+
 import type { Metadata } from "next";
 import {
-  IBM_Plex_Mono,
-  Playfair_Display,
-  Plus_Jakarta_Sans,
-  Spectral,
+  Anton,
+  Inter,
+  Permanent_Marker,
 } from "next/font/google";
 
 import "./globals.css";
 
-const heading = Playfair_Display({
+const anton = Anton({
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  style: ["normal", "italic"],
-  variable: "--font-heading",
+  weight: ["400"],
+  variable: "--font-anton",
   display: "swap",
 });
 
-const sans = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
   display: "swap",
 });
 
-const serif = Spectral({
+const marker = Permanent_Marker({
   subsets: ["latin"],
-  weight: ["300", "400", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
+  weight: ["400"],
+  variable: "--font-marker",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Akshat Lal | Portfolio",
+  title: "Akshat Lal",
   description:
-    "Computer Engineering student at the University of Waterloo building at the intersection of hardware, software, and problem-solving.",
+    "Computer Engineering student at the University of Waterloo.",
 };
 
 export default function RootLayout({
@@ -50,11 +41,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${heading.variable} ${sans.variable} ${serif.variable} ${mono.variable}`}
-    >
-      <body className="antialiased bg-[#04020e] text-[#eae5df] selection:bg-[#d1c8ff]/30 selection:text-white">
+    <html lang="en">
+      <body
+        className={`${anton.variable} ${inter.variable} ${marker.variable}`}
+      >
         {children}
       </body>
     </html>
