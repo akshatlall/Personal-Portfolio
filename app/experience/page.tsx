@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import LoadingScreen from "../components/LoadingScreen";
 import PageDoodles from "../components/PageDoodles";
 import ProjectArtwork from "../components/ProjectArtwork";
 import "../home-polish.css";
-import "./home-polish.css";
 
 const EMAIL = "a7lal@uwaterloo.ca";
 
@@ -244,7 +242,6 @@ export default function Home() {
 
   return (
     <main className="site">
-      <LoadingScreen />
       <PageDoodles />
 
       {/* Top-right toolbar */}

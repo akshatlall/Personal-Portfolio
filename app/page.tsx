@@ -3,7 +3,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import LoadingScreen from "./components/LoadingScreen";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
 import "./home-polish.css";
@@ -57,8 +56,8 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        starting Computer Engineering{" "}
-        <span className="chip chip-sky">@Waterloo</span> this fall
+        studying Computer Engineering{" "}
+        <span className="chip chip-sky">@Waterloo</span>
       </>
     ),
   },
@@ -68,9 +67,9 @@ const FACTS: { text: React.ReactNode }[] = [
 ];
 
 const STICKERS = [
-  { label: "â™ž", cls: "sticker-peach", rotate: -8 },
+  { label: "\u265E\uFE0E", cls: "sticker-peach", rotate: -8 },
   { label: "C#", cls: "sticker-lavender", rotate: 5 },
-  { label: "ðŸ—²", cls: "sticker-sky", rotate: -3 },
+  { label: "\u26A1\uFE0E", cls: "sticker-sky", rotate: -3 },
   { label: "</>", cls: "sticker-mint", rotate: 7 },
 ];
 
@@ -153,7 +152,7 @@ const EXPERIENCE = [
     date: "2026 â€“ 2031",
     accent: "sky",
     bullets: [
-      "Bachelor of Applied Science, starting Computer Engineering this fall",
+      "Bachelor of Applied Science in Computer Engineering (co-op), currently in first year and seeking Spring 2027 co-op roles",
     ],
   },
 ];
@@ -244,7 +243,6 @@ export default function Home() {
 
   return (
     <main className="site">
-      <LoadingScreen />
       <PageDoodles />
 
       {/* Top-right toolbar */}

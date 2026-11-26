@@ -33,7 +33,7 @@
 .hero-bio {
   margin-right: auto;
   margin-left: 0;
-  max-width: none;
+  max-width: 720px;
   text-align: left;
   text-wrap: nowrap;
   white-space: nowrap;
