@@ -89,7 +89,7 @@ export const EXPERIENCE = [
     org: "University of Waterloo",
     date: "2026 – 2031",
     bullets: [
-      "Bachelor of Applied Science, starting Computer Engineering this fall",
+      "Bachelor of Applied Science in Computer Engineering (co-op), currently in first year and seeking Spring 2027 co-op roles",
     ],
   },
 ];
