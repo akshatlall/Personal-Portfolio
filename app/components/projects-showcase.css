@@ -1,19 +1,20 @@
 /* =========================================================
-   PROJECTS SHOWCASE (scroll-driven carousel)
+   PROJECTS SHOWCASE (scroll-driven)
+   JS sets clip-path, transforms and opacity per frame.
    ========================================================= */
 
 .showcase {
-  --wall-bg: #070709;
-  --wall-ink: #ff1e56;
+  --wall-bg: #0f1a14;
+  --wall-ink: #6fcf9d;
 
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 700vh;
+  height: 520vh; /* scroll distance for the whole sequence */
 }
 
 html.dark .showcase {
-  --wall-bg: #070709;
+  --wall-bg: #173a2b;
 }
 
 .showcase-sticky {
@@ -23,7 +24,6 @@ html.dark .showcase {
   height: 100vh;
   height: 100svh;
   overflow: hidden;
-  contain: layout style paint;
 }
 
 .showcase-title {
@@ -35,7 +35,7 @@ html.dark .showcase {
   white-space: nowrap;
 }
 
-/* ---------- Grid background ---------- */
+/* ---------- Grid paper ---------- */
 
 .showcase-grid {
   position: absolute;
@@ -43,13 +43,16 @@ html.dark .showcase {
   z-index: 0;
 
   background-image:
-    linear-gradient(var(--line, rgba(0, 0, 0, 0.14)) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line, rgba(0, 0, 0, 0.14)) 1px, transparent 1px);
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 96px 96px;
   background-position: center;
+
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
+  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
 }
 
-/* ---------- Pill outline ring ---------- */
+/* ---------- Pill ring ---------- */
 
 .work-pill-ring {
   position: absolute;
@@ -57,19 +60,16 @@ html.dark .showcase {
   top: 50%;
   left: 50%;
 
-  width: calc(var(--pw, 184px) + 12px);
-  height: calc(var(--ph, 660px) + 12px);
+  width: calc(var(--pw, 200px) + 18px);
+  height: calc(var(--ph, 500px) + 18px);
 
-  border: 2px solid var(--wall-bg);
+  border: 2px solid var(--accent);
   border-radius: 999px;
 
-  opacity: 0;
-  transform: translate3d(-50%, -50%, 0);
-  will-change: opacity, transform;
-  pointer-events: none;
+  transform: translate(-50%, -50%);
 }
 
-/* ---------- Expanding pill / wall ---------- */
+/* ---------- Wall ---------- */
 
 .showcase-wall {
   position: absolute;
@@ -77,33 +77,31 @@ html.dark .showcase {
   z-index: 2;
 
   background: var(--wall-bg);
-  perspective: 1200px;
-  clip-path: inset(11% 42% 11% 42% round 999px);
-  will-change: clip-path, transform;
+  perspective: 1100px;
+  /* starts as the pill; JS animates this */
+  clip-path: inset(16% 34% 16% 34% round 999px);
 }
 
 .wall-plane {
   position: absolute;
-  inset: -20% -55%;
+  inset: -25% -40%; /* 180% x 150% of the stage, centered */
 
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
 
-  transform-origin: center center;
-  transform-style: preserve-3d;
+  transform-origin: center;
   will-change: transform;
 }
 
 .wall-row {
   display: flex;
   justify-content: center;
-  gap: 0.14em;
+  gap: 0.08em;
 
   font-family: var(--font-anton), Impact, sans-serif;
-  font-size: clamp(130px, 23vh, 250px);
-  line-height: 0.88;
-  letter-spacing: -0.02em;
+  font-size: 25vh;
+  line-height: 0.95;
   color: var(--wall-ink);
 
   will-change: transform;
@@ -113,11 +111,22 @@ html.dark .showcase {
   display: inline-block;
   flex: none;
   opacity: 0;
-  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
-  will-change: opacity;
+  text-shadow: 0.03em 0.04em 0 rgba(0, 0, 0, 0.35);
 }
 
-/* ---------- Vertical label inside pill ---------- */
+.wall-row span:nth-child(3n) {
+  transform: rotate(-3deg) translateY(2%);
+}
+
+.wall-row span:nth-child(3n + 1) {
+  transform: rotate(2deg);
+}
+
+.wall-row span:nth-child(5n) {
+  transform: rotate(-1deg) translateY(-3%);
+}
+
+/* ---------- Vertical word in the pill ---------- */
 
 .work-label {
   position: absolute;
@@ -128,79 +137,188 @@ html.dark .showcase {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  height: min(64vh, 520px);
 
   font-family: var(--font-anton), Impact, sans-serif;
-  font-size: min(13.5vh, 14vw);
-  line-height: 0.95;
+  font-size: min(10.5vh, 15vw);
+  line-height: 1.02;
   color: var(--wall-ink);
 
-  opacity: 0;
-  transform: translate3d(-50%, -50%, 0);
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  will-change: transform, opacity;
 }
 
-/* ---------- Staggered project cards ---------- */
+/* ---------- Project cards ---------- */
 
 .showcase-cards {
   position: absolute;
   inset: 0;
   z-index: 4;
-
-  perspective: 1400px;
   pointer-events: none;
 }
 
 .showcase-card {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  width: min(44vw, 520px);
+  padding: 10px 10px 12px;
 
-  width: min(43vw, 550px);
-  padding: 0;
+  border: 3px solid var(--text);
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--text);
 
-  border: 2px solid rgba(255, 255, 255, 0.14);
-  border-radius: 4px;
-  background: #141418;
-  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.58);
+  box-shadow: 9px 10px 0 var(--card-shadow);
 
   opacity: 0;
   visibility: hidden;
-  cursor: pointer;
-  pointer-events: auto;
-  transform: translate3d(-50%, -50%, 0);
-  transform-origin: center center;
-  backface-visibility: hidden;
   will-change: transform, opacity;
+}
+
+.showcase-card.slot-a {
+  top: 9%;
+  left: 7%;
+}
+
+.showcase-card.slot-b {
+  right: 7%;
+  bottom: 11%;
+}
+
+.showcase-card-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 2px 9px;
+}
+
+.showcase-card-bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--chip-rose-bg);
+}
+
+.showcase-card-bar i:nth-child(2) {
+  background: var(--chip-yellow-bg);
+}
+
+.showcase-card-bar i:nth-child(3) {
+  background: var(--chip-mint-bg);
+}
+
+.showcase-card-bar span {
+  margin-left: 8px;
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
 }
 
 .showcase-art {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1.6 / 1;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 6px;
+}
+
+.showcase-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 12px;
+  padding: 0 2px;
+  font-size: 15px;
+}
+
+.showcase-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+  padding: 0 2px;
+}
+
+.showcase-card-tags span {
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 10px;
+}
+
+/* ---------- Hint + counter ---------- */
+
+.showcase-hint,
+.showcase-counter {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 26px;
+  margin: 0;
+
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.showcase-hint {
+  color: var(--muted);
+}
+
+.showcase-hint::after {
+  content: "↓";
+  display: block;
+  margin-top: 4px;
+  text-align: center;
+  animation: showcase-nudge 1.4s var(--ease-swing) infinite;
+}
+
+.showcase-counter {
+  color: var(--wall-ink);
+  opacity: 0;
+}
+
+@keyframes showcase-nudge {
+  50% {
+    transform: translateY(4px);
+  }
 }
 
 /* ---------- Mobile ---------- */
 
 @media (max-width: 700px) {
   .showcase {
-    height: 600vh;
+    height: 460vh;
   }
 
   .wall-row {
-    font-size: 18vh;
-    gap: 0.12em;
+    font-size: 21vh;
   }
 
   .showcase-card {
-    width: 74vw;
+    width: 66vw;
+    padding: 8px 8px 10px;
+    box-shadow: 6px 7px 0 var(--card-shadow);
+  }
+
+  .showcase-card.slot-a {
+    top: 8%;
+    left: 5%;
+  }
+
+  .showcase-card.slot-b {
+    right: 5%;
+    bottom: 12%;
+  }
+
+  .showcase-card-meta {
+    font-size: 13px;
   }
 }
 
-/* ---------- Reduced motion ---------- */
+/* ---------- Reduced motion: no pinning, plain stacked cards ---------- */
 
 @media (prefers-reduced-motion: reduce) {
   .showcase {
@@ -212,7 +330,6 @@ html.dark .showcase {
     position: relative;
     height: auto;
     overflow: visible;
-    contain: none;
   }
 
   .showcase-title {
@@ -228,7 +345,9 @@ html.dark .showcase {
   .showcase-grid,
   .work-pill-ring,
   .showcase-wall,
-  .work-label {
+  .work-label,
+  .showcase-hint,
+  .showcase-counter {
     display: none;
   }
 
@@ -236,16 +355,16 @@ html.dark .showcase {
     position: static;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-    max-width: 960px;
+    gap: 32px;
+    max-width: 920px;
     margin: 0 auto;
-    perspective: none;
   }
 
-  .showcase-card {
+  .showcase-card,
+  .showcase-card.slot-a,
+  .showcase-card.slot-b {
     position: static;
     width: auto;
-    cursor: default;
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;
