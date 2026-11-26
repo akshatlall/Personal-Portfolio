@@ -1,4 +1,5 @@
 import CopyEmailButton from "../components/CopyEmailButton";
+import { LINKS } from "../portfolio";
 
 export default function Contact() {
   return (
@@ -19,7 +20,7 @@ export default function Contact() {
           <span className="reserved-label">GitHub</span>
           <a
             className="trace-link"
-            href="https://github.com/lal-akshat"
+            href={LINKS.github}
             target="_blank"
             rel="noreferrer"
           >
@@ -30,7 +31,7 @@ export default function Contact() {
           <span className="reserved-label">LinkedIn</span>
           <a
             className="trace-link"
-            href="https://linkedin.com/in/lal-akshat"
+            href={LINKS.linkedin}
             target="_blank"
             rel="noreferrer"
           >

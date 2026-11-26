@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-const EMAIL = "a7lal@uwaterloo.ca";
+import { EMAIL } from "../portfolio";
 
 export default function CopyEmailButton({
   className,

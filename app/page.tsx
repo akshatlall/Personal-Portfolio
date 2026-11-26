@@ -5,9 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
+import { EMAIL, EXPERIENCE, LINKS, PROJECTS, STICKERS } from "./portfolio";
 import "./home-polish.css";
-
-const EMAIL = "a7lal@uwaterloo.ca";
 
 const FACTS: { text: React.ReactNode }[] = [
   {
@@ -63,97 +62,6 @@ const FACTS: { text: React.ReactNode }[] = [
   },
   {
     text: <>seeking spring 2027 co-op opportunities</>,
-  },
-];
-
-const STICKERS = [
-  { label: "\u265E\uFE0E", cls: "sticker-peach", rotate: -8 },
-  { label: "C#", cls: "sticker-lavender", rotate: 5 },
-  { label: "\u26A1\uFE0E", cls: "sticker-sky", rotate: -3 },
-  { label: "</>", cls: "sticker-mint", rotate: 7 },
-];
-
-const PROJECTS = [
-  {
-    title: "Caissa",
-    date: "aug '26",
-    artwork: "caissa" as const,
-    description:
-      "A C# chess engine and WinForms desktop app built from scratch, with reusable board, piece, move, and game-state models. Implements full movement, check, checkmate, and capture logic for all 6 piece types across Standard, Chess960, and Atomic rule sets, plus an AI opponent with its own move-evaluation logic and a UI layer with move highlighting, clocks, and move history.",
-    tags: ["C#", ".NET", "WinForms"],
-  },
-  {
-    title: "Task Management Web App",
-    date: "jul '26",
-    artwork: "tasks" as const,
-    description:
-      "A full-stack task manager built with Next.js and TypeScript, supporting task creation, editing, organization, and status tracking end to end. Backed by a SQL schema and persistence layer so tasks and project state reliably survive across sessions.",
-    tags: ["TypeScript", "Next.js", "SQL"],
-  },
-  {
-    title: "Portfolio",
-    date: "aug '26",
-    artwork: "portfolio" as const,
-    description:
-      "This site â€” a responsive personal portfolio built with Next.js and TypeScript, with a light/dark mode toggle and scroll-triggered animation. Deployed on Vercel with continuous deployment so every pushed change goes live automatically.",
-    tags: ["Next.js", "TypeScript"],
-  },
-  {
-    title: "Java Image Editor",
-    date: "jun '26",
-    artwork: "editor" as const,
-    description:
-      "A desktop image editor built in Java Swing, separating image data, editing operations, and UI into distinct components. Event-driven controls apply edits interactively, including grayscale, cropping, rotation, and brightness adjustment via custom pixel-manipulation algorithms.",
-    tags: ["Java", "Swing", "OOP"],
-  },
-  {
-    title: "Simon",
-    date: "may '26",
-    artwork: "simon" as const,
-    description:
-      "A memory game built on Arduino, focused on embedded programming and hardware interaction â€” reading button input, driving LEDs, and timing sequences directly on the board.",
-    tags: ["Arduino", "C++"],
-  },
-  {
-    title: "NBA Research",
-    date: "apr '26",
-    artwork: "nba" as const,
-    description:
-      "A data project exploring the relationship between player height and rebounding using publicly available NBA statistics.",
-    tags: ["Python", "Data"],
-  },
-];
-
-const EXPERIENCE = [
-  {
-    role: "Team Lead",
-    org: "VEX Robotics Team",
-    date: "2022 â€“ 2026",
-    accent: "peach",
-    bullets: [
-      "Competed for 4 consecutive seasons, progressing from team member to Team Lead directing the full design, build, test, and iteration cycle",
-      "Directed mechanical design, robot assembly, and programming priorities to deliver a functioning competition robot each season",
-      "Ran reliability tests ahead of competition to catch failure points early, reducing the risk of in-match breakdowns",
-    ],
-  },
-  {
-    role: "New Member, Electrical Team",
-    org: "Student Design Team",
-    date: "2026 â€“ Present",
-    accent: "mint",
-    bullets: [
-      "Design and lay out printed circuit boards in Altium Designer for onboard vehicle electronics",
-      "Collaborate with senior electrical and mechanical members on component selection and board layout ahead of a moving robotic-arm subsystem build",
-    ],
-  },
-  {
-    role: "Computer Engineering",
-    org: "University of Waterloo",
-    date: "2026 â€“ 2031",
-    accent: "sky",
-    bullets: [
-      "Bachelor of Applied Science in Computer Engineering (co-op), currently in first year and seeking Spring 2027 co-op roles",
-    ],
   },
 ];
 
@@ -293,7 +201,7 @@ export default function Home() {
         )}
 
         <a
-          href="https://linkedin.com/in/lal-akshat"
+          href={LINKS.linkedin}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
@@ -305,7 +213,7 @@ export default function Home() {
         </a>
 
         <a
-          href="https://github.com/lal-akshat"
+          href={LINKS.github}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
@@ -317,7 +225,7 @@ export default function Home() {
         </a>
 
         <a
-          href="/resume.pdf"
+          href={LINKS.resume}
           download
           aria-label="Download resume"
           className="toolbar-btn"
@@ -402,9 +310,8 @@ export default function Home() {
           </p>
 
           <p className="hero-bio">
-            i build at the <span className="circled">intersection</span> of{" "}
-            <span className="squiggle">hardware</span>,{" "}
-            <span className="squiggle">software</span>, and problem-solving
+            i build at the <span className="circled">intersection</span> of
+            hardware and software
           </p>
 
           <div className="facts-list">
@@ -555,7 +462,7 @@ export default function Home() {
           <Link href="/thoughts">My Thoughts</Link>
 
           <a
-            href="https://linkedin.com/in/lal-akshat"
+            href={LINKS.linkedin}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -563,7 +470,7 @@ export default function Home() {
           </a>
 
           <a
-            href="https://github.com/lal-akshat"
+            href={LINKS.github}
             target="_blank"
             rel="noopener noreferrer"
           >
