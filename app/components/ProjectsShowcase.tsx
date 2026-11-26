@@ -19,24 +19,16 @@ type Props = {
   word?: string;
 };
 
-const SHADOWS = [
-  "var(--chip-peach-bg)",
-  "var(--chip-sky-bg)",
-  "var(--chip-yellow-bg)",
-  "var(--chip-lavender-bg)",
-  "var(--chip-rose-bg)",
-  "var(--chip-mint-bg)",
-];
-
 const LETTERS_PER_ROW = 26;
 
 /* Scroll timeline (0 -> 1 across the pinned section) */
-const INTRO_END = 0.14;   // pill expands into full wall
-const ENTER_START = 0.08; // first cards begin entering
-const ENTER_END = 0.22;   // entrance settled
-const CARDS_START = 0.16; // carousel sweep starts
-const CARDS_END = 0.88;   // carousel sweep finishes
-const OUTRO_START = 0.89; // wall contracts back into pill & exits
+const PILL_IN_END = 0.06;   // vertical pill rises into center
+const WALL_OPEN_END = 0.14; // pill expands into full wall
+const FLOW_START = 0.11;    // first card flows in from the right
+const FLOW_END = 0.88;      // last card finishes sweeping across
+const WALL_CLOSE_START = 0.89;
+const WALL_CLOSE_END = 0.95; // wall contracts back into vertical pill
+const EXIT_UP_END = 1.0;     // pill slides upward out of view
 
 const clamp = (v: number, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -61,9 +53,8 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
     const total = Math.max(section.offsetHeight - window.innerHeight, 1);
     const top = section.getBoundingClientRect().top + window.scrollY;
     const p =
-      CARDS_START +
-      (totalItems > 1 ? target / (totalItems - 1) : 0) *
-        (CARDS_END - CARDS_START);
+      FLOW_START +
+      (totalItems > 1 ? target / (totalItems - 1) : 0) * (FLOW_END - FLOW_START);
 
     window.scrollTo({ top: top + p * total, behavior: "smooth" });
   }
@@ -104,106 +95,119 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
       const W = stage!.clientWidth;
       const H = stage!.clientHeight;
 
-      /* ---------- 1. Pill -> Full Wall -> Pill + Exit Up ---------- */
-      const expandIn = smooth(range(p, 0, INTRO_END));
-      const collapseOut = smooth(range(p, OUTRO_START, 0.985));
-      const exitLift = smooth(range(p, 0.94, 1));
-      const e = clamp(expandIn - collapseOut);
+      /* ---------- 1. Pill Rise -> Wall Expand -> Pill Collapse -> Slide Up ---------- */
+      const pillRise = easeOut(range(p, 0, PILL_IN_END));
+      const openWall = smooth(range(p, PILL_IN_END * 0.65, WALL_OPEN_END));
+      const closeWall = smooth(range(p, WALL_CLOSE_START, WALL_CLOSE_END));
+      const exitUp = smooth(range(p, WALL_CLOSE_END, EXIT_UP_END));
 
-      const pillW = Math.min(185, W * 0.24);
-      const pillH = Math.min(H * 0.78, 680);
-      const insetX = lerp((W - pillW) / 2, 0, e);
-      const insetY = lerp((H - pillH) / 2, 0, e);
-      const radius = lerp(pillW / 2, 0, e);
-      const wallLiftY = -exitLift * H * 1.05;
+      const wallSpread = clamp(openWall - closeWall);
+
+      const pillW = Math.min(184, W * 0.22);
+      const pillH = Math.min(H * 0.78, 660);
+
+      const insetX = lerp((W - pillW) / 2, 0, wallSpread);
+      const insetY = lerp((H - pillH) / 2, 0, wallSpread);
+      const radius = lerp(pillW / 2, 0, wallSpread);
+
+      const enterOffsetY = (1 - pillRise) * H * 0.65;
+      const exitOffsetY = -exitUp * H * 1.1;
+      const stageOffsetY = enterOffsetY + exitOffsetY;
 
       wall!.style.clipPath = `inset(${insetY.toFixed(1)}px ${insetX.toFixed(
         1
       )}px ${insetY.toFixed(1)}px ${insetX.toFixed(1)}px round ${radius.toFixed(
         1
       )}px)`;
-      wall!.style.transform = `translate3d(0, ${wallLiftY.toFixed(1)}px, 0)`;
+      wall!.style.transform = `translate3d(0, ${stageOffsetY.toFixed(1)}px, 0)`;
 
       stage!.style.setProperty("--pw", `${pillW}px`);
       stage!.style.setProperty("--ph", `${pillH}px`);
 
-      const pillChromeOpacity = (1 - smooth(range(e, 0.04, 0.45))) * (1 - exitLift);
-      ring!.style.opacity = String(pillChromeOpacity);
-      ring!.style.transform = `translate3d(-50%, calc(-50% + ${wallLiftY.toFixed(
+      const pillChromeVisible =
+        pillRise * (1 - smooth(range(wallSpread, 0.05, 0.45))) * (1 - exitUp);
+
+      ring!.style.opacity = pillChromeVisible.toFixed(3);
+      ring!.style.transform = `translate3d(-50%, calc(-50% + ${stageOffsetY.toFixed(
         1
       )}px), 0)`;
 
-      label!.style.opacity = String(
-        (1 - smooth(range(e, 0.1, 0.55))) * (1 - exitLift)
-      );
-      label!.style.transform = `translate3d(-50%, calc(-50% + ${wallLiftY.toFixed(
+      label!.style.opacity = (
+        pillRise *
+        (1 - smooth(range(wallSpread, 0.1, 0.55))) *
+        (1 - exitUp)
+      ).toFixed(3);
+      label!.style.transform = `translate3d(-50%, calc(-50% + ${stageOffsetY.toFixed(
         1
-      )}px), 0) scale(${(1 + e * 0.35).toFixed(3)})`;
+      )}px), 0) scale(${(1 + wallSpread * 0.3).toFixed(3)})`;
 
-      /* ---------- 2. Cylindrical 4-Row WORK Wall ---------- */
-      const planeScale = lerp(1.18, 1.06, smooth(range(p, 0, 0.6)));
+      /* ---------- 2. Cylindrical WORK Wall Rows ---------- */
+      const planeScale = lerp(1.14, 1.05, smooth(range(p, WALL_OPEN_END, 0.9)));
       plane!.style.transform = `translate3d(0, 0, 0) scale(${planeScale.toFixed(
         3
       )})`;
 
-      const letterOpacity = (
-        smooth(range(e, 0.12, 0.65)) *
-        (1 - exitLift * 0.7)
+      const wallLetterOpacity = (
+        smooth(range(wallSpread, 0.15, 0.7)) *
+        (1 - exitUp)
       ).toFixed(3);
       for (let i = 0; i < letters.length; i++) {
-        letters[i].style.opacity = letterOpacity;
+        letters[i].style.opacity = wallLetterOpacity;
       }
 
-      // Alternating horizontal drift + subtle cylindrical arc lift at edges
-      const driftBase = (p - 0.5) * W * 0.42;
+      // Opposite horizontal drift per row + gentle upward arc near left/right edges
+      const progressNorm = range(p, WALL_OPEN_END * 0.5, WALL_CLOSE_END);
+      const driftTravel = (progressNorm - 0.5) * W * 0.48;
+
       for (let r = 0; r < rowEls.length; r++) {
-        const dir = r % 2 === 0 ? 1 : -1;
-        const rowX = dir * driftBase;
-        // Parabolic upward curve toward left/right edges like a curved cylinder
-        const normX = clamp(Math.abs(rowX) / Math.max(W * 0.25, 1), 0, 1.5);
-        const arcY = -normX * normX * 14;
+        const dir = r % 2 === 0 ? -1 : 1;
+        const rowX = dir * driftTravel;
+        const edgeFactor = clamp(Math.abs(rowX) / Math.max(W * 0.24, 1), 0, 1.4);
+        const arcLiftY = -edgeFactor * edgeFactor * 16;
         rowEls[r].style.transform = `translate3d(${rowX.toFixed(
           1
-        )}px, ${arcY.toFixed(1)}px, 0)`;
+        )}px, ${arcLiftY.toFixed(1)}px, 0)`;
       }
 
-      /* ---------- 3. Staggered High/Low Card Carousel ---------- */
-      const cardW = cardEls[0]?.offsetWidth ?? Math.min(W * 0.44, 540);
-      const spacing = cardW * 0.94;
+      /* ---------- 3. Separated Upper/Lower Cards Flowing Smoothly ---------- */
+      const cardW = cardEls[0]?.offsetWidth ?? Math.min(W * 0.43, 540);
+      const laneGapX = cardW * 1.04;
       const denom = Math.max(totalItems - 1, 1);
 
-      // Sweep cards across from right to left as scroll progresses
-      const sweep = range(p, CARDS_START, CARDS_END);
-      const centerIndex = sweep * denom;
-      const enter = easeOut(range(p, ENTER_START, ENTER_END));
-      const exit = 1 - smooth(range(p, OUTRO_START - 0.03, OUTRO_START + 0.05));
+      // Flow progress moves cards from right to left across the viewport
+      const flowT = range(p, FLOW_START, FLOW_END);
+      const headIndex = flowT * denom;
+      const fadeOutAll = 1 - smooth(range(p, WALL_CLOSE_START - 0.02, WALL_CLOSE_START + 0.05));
 
       for (let i = 0; i < cardEls.length; i++) {
         const card = cardEls[i];
+        const isTopLane = i % 2 === 0;
 
-        // Distance relative to current scroll position; shifts right-to-left as p increases
-        const d = i - centerIndex;
-        const ad = Math.abs(d);
+        // Position card `i` relative to the active scroll window:
+        // When `headIndex === i`, card `i` sits near the right-center and flows left as `headIndex` increases.
+        const rel = i - headIndex;
 
-        // Start offscreen right before entering, then glide smoothly across
-        const entryOffset = (1 - enter) * (W * 0.65 + i * 120);
-        const x = d * spacing + entryOffset;
+        // Smooth continuous x from right offscreen (+W * 0.78) to left offscreen (-W * 0.95)
+        const x = rel * laneGapX + W * 0.14;
 
-        // Alternating top and bottom stagger like the video
-        const isEven = i % 2 === 0;
-        const baseY = isEven ? -H * 0.2 : H * 0.2;
-        const y = baseY + d * (isEven ? -6 : 6);
+        // Distinct upper and lower vertical separation like the video
+        const laneY = isTopLane ? -H * 0.215 : H * 0.215;
+        const subtleWaveY = Math.sin(rel * 0.7) * 6;
+        const y = laneY + subtleWaveY;
 
-        const rotZ = (isEven ? -1.4 : 1.4) + clamp(d, -2.5, 2.5) * 1.1;
-        const rotY = clamp(d, -2.5, 2.5) * -7.5;
-        const scale = lerp(0.92, 1.02, 1 - clamp(ad / 2.5)) * lerp(0.92, 1, enter);
+        // Slight counter-rotation & subtle 3D depth for organic flow
+        const rotZ = (isTopLane ? -1.2 : 1.2) + clamp(rel, -2.5, 2.5) * 0.9;
+        const rotY = clamp(rel, -2.5, 2.5) * -6;
+        const scale = lerp(0.95, 1.02, 1 - clamp(Math.abs(rel) / 2.2));
 
-        const visibilityFade = 1 - smooth(range(ad, 2.2, 3.1));
-        const opacity = clamp(enter * exit * visibilityFade);
+        // Smooth entry from right & smooth exit to left
+        const enterSmooth = smooth(range(x, W * 0.85, W * 0.42));
+        const exitSmooth = 1 - smooth(range(x, -W * 0.42, -W * 0.85));
+        const cardOpacity = clamp(enterSmooth * exitSmooth * fadeOutAll);
 
-        card.style.opacity = opacity.toFixed(3);
-        card.style.visibility = opacity < 0.01 ? "hidden" : "visible";
-        card.style.zIndex = String(100 - Math.round(ad * 10));
+        card.style.opacity = cardOpacity.toFixed(3);
+        card.style.visibility = cardOpacity < 0.01 ? "hidden" : "visible";
+        card.style.zIndex = String(100 + i);
         card.style.transform = `translate3d(-50%, -50%, 0) translate3d(${x.toFixed(
           1
         )}px, ${y.toFixed(1)}px, 0) rotate(${rotZ.toFixed(
@@ -221,7 +225,7 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
       if (smoothP === null) {
         smoothP = targetP;
       } else {
-        const factor = 1 - Math.exp(-12 * dt);
+        const factor = 1 - Math.exp(-11 * dt);
         smoothP += (targetP - smoothP) * factor;
         if (Math.abs(targetP - smoothP) < 0.0001) {
           smoothP = targetP;
@@ -260,11 +264,9 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
       <div className="showcase-sticky" ref={stageRef}>
         <h2 className="showcase-title">Projects</h2>
 
-        {/* Grid background & vertical pill ring */}
         <div className="showcase-grid" aria-hidden="true" />
         <div className="work-pill-ring" aria-hidden="true" />
 
-        {/* Wall of letters revealed through expanding pill */}
         <div className="showcase-wall" aria-hidden="true">
           <div className="wall-plane">
             {rows.map((letter, r) => (
@@ -277,14 +279,12 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
           </div>
         </div>
 
-        {/* Vertical WORK label inside the pill */}
         <div className="work-label" aria-hidden="true">
           {rows.map((letter, i) => (
             <span key={i}>{letter}</span>
           ))}
         </div>
 
-        {/* Clean frameless project cards */}
         <div className="showcase-cards">
           {projects.map((project, i) => (
             <article
@@ -292,11 +292,6 @@ export default function ProjectsShowcase({ projects, word = "WORK" }: Props) {
               className="showcase-card"
               onClick={() => goTo(i)}
               aria-label={project.title}
-              style={
-                {
-                  "--card-shadow": SHADOWS[i % SHADOWS.length],
-                } as React.CSSProperties
-              }
             >
               <div className="showcase-art">
                 <ProjectArtwork type={project.artwork} />

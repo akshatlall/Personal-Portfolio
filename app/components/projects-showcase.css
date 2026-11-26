@@ -9,7 +9,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 680vh;
+  height: 700vh;
 }
 
 html.dark .showcase {
@@ -35,7 +35,7 @@ html.dark .showcase {
   white-space: nowrap;
 }
 
-/* ---------- Grid paper ---------- */
+/* ---------- Grid background ---------- */
 
 .showcase-grid {
   position: absolute;
@@ -49,7 +49,7 @@ html.dark .showcase {
   background-position: center;
 }
 
-/* ---------- Pill ring ---------- */
+/* ---------- Pill outline ring ---------- */
 
 .work-pill-ring {
   position: absolute;
@@ -57,18 +57,19 @@ html.dark .showcase {
   top: 50%;
   left: 50%;
 
-  width: calc(var(--pw, 185px) + 12px);
-  height: calc(var(--ph, 680px) + 12px);
+  width: calc(var(--pw, 184px) + 12px);
+  height: calc(var(--ph, 660px) + 12px);
 
   border: 2px solid var(--wall-bg);
   border-radius: 999px;
 
+  opacity: 0;
   transform: translate3d(-50%, -50%, 0);
   will-change: opacity, transform;
   pointer-events: none;
 }
 
-/* ---------- Wall ---------- */
+/* ---------- Expanding pill / wall ---------- */
 
 .showcase-wall {
   position: absolute;
@@ -83,7 +84,7 @@ html.dark .showcase {
 
 .wall-plane {
   position: absolute;
-  inset: -20% -50%;
+  inset: -20% -55%;
 
   display: flex;
   flex-direction: column;
@@ -116,7 +117,7 @@ html.dark .showcase {
   will-change: opacity;
 }
 
-/* ---------- Vertical word in the pill ---------- */
+/* ---------- Vertical label inside pill ---------- */
 
 .work-label {
   position: absolute;
@@ -135,12 +136,13 @@ html.dark .showcase {
   line-height: 0.95;
   color: var(--wall-ink);
 
+  opacity: 0;
   transform: translate3d(-50%, -50%, 0);
   pointer-events: none;
   will-change: transform, opacity;
 }
 
-/* ---------- Clean project cards ---------- */
+/* ---------- Staggered project cards ---------- */
 
 .showcase-cards {
   position: absolute;
@@ -156,13 +158,13 @@ html.dark .showcase {
   top: 50%;
   left: 50%;
 
-  width: min(44vw, 560px);
+  width: min(43vw, 550px);
   padding: 0;
 
-  border: 2px solid rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.14);
   border-radius: 4px;
   background: #141418;
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.58);
 
   opacity: 0;
   visibility: hidden;
@@ -185,7 +187,7 @@ html.dark .showcase {
 
 @media (max-width: 700px) {
   .showcase {
-    height: 580vh;
+    height: 600vh;
   }
 
   .wall-row {
@@ -198,7 +200,7 @@ html.dark .showcase {
   }
 }
 
-/* ---------- Reduced motion: plain stacked cards ---------- */
+/* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
   .showcase {
