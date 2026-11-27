@@ -335,10 +335,17 @@ export default function ThoughtsPage() {
     setActiveTitle(note.label);
 
     if (window.innerWidth <= 820) {
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
       window.setTimeout(() => {
         document
           .getElementById("thought-content")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          ?.scrollIntoView({
+            behavior: reducedMotion ? "auto" : "smooth",
+            block: "start",
+          });
       }, 0);
     }
   }
