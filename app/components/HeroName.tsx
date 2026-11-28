@@ -157,6 +157,26 @@ export default function HeroName() {
 
   return (
     <h1 className="hero-name" aria-label="Akshat Lal">
+      <span className="hero-name-layer hero-name-shadow" aria-hidden="true">
+        {Array.from("AKSHAT LAL").map((letter, index) => (
+          <span
+            className={`hero-name-letter hero-name-shadow-letter${activeLetter === index ? " is-active" : ""}`}
+            key={index}
+          >
+            {letter === " " ? "\u00a0" : letter}
+          </span>
+        ))}
+      </span>
+      <span className="hero-name-layer hero-name-face" aria-hidden="true">
+        {Array.from("AKSHAT LAL").map((letter, index) => (
+          <span
+            className={`hero-name-letter hero-name-face-letter${activeLetter === index ? " is-active" : ""}`}
+            key={index}
+          >
+            {letter === " " ? "\u00a0" : letter}
+          </span>
+        ))}
+      </span>
       <svg
         ref={svgRef}
         className="hero-name-svg"
@@ -167,30 +187,7 @@ export default function HeroName() {
       >
         <text ref={textRef} className="hero-name-hit-target" x="0" y="0.88em">
           {Array.from("AKSHAT LAL").map((letter, index) => (
-            <tspan key={index}>{letter === " " ? "\u00a0" : letter}</tspan>
-          ))}
-        </text>
-        <text
-          className="hero-name-shadow"
-          x="0"
-          y="0.88em"
-          transform="translate(9 10)"
-        >
-          {Array.from("AKSHAT LAL").map((letter, index) => (
-            <tspan
-              className={`hero-name-shadow-letter${activeLetter === index ? " is-active" : ""}`}
-              key={index}
-            >
-              {letter === " " ? "\u00a0" : letter}
-            </tspan>
-          ))}
-        </text>
-        <text className="hero-name-text" x="0" y="0.88em">
-          {Array.from("AKSHAT LAL").map((letter, index) => (
-            <tspan
-              className={`hero-name-letter${activeLetter === index ? " is-active" : ""}`}
-              key={index}
-            >
+            <tspan key={index}>
               {letter === " " ? "\u00a0" : letter}
             </tspan>
           ))}
