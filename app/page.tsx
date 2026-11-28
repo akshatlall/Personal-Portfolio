@@ -398,11 +398,12 @@ export default function Home() {
           <p className="hero-role">
             <HoverPreview
               href="https://uwaterloo.ca/future-students/programs/computer-engineering"
-              title="Computer Engineering"
-              eyebrow="University of Waterloo"
-              description="Bachelor of Applied Science in Computer Engineering (co-op)."
+              title="Computer Engineering degree"
+              eyebrow="Official program page · University of Waterloo"
+              description="Undergraduate program covering software development, hardware engineering, and IT."
               mark="UW"
-              linkLabel="Explore the program"
+              linkLabel="Open official program page"
+              siteLabel="uwaterloo.ca/future-students/programs/computer-engineering"
               className="chip chip-yellow chip-role"
             >
               Computer Engineering

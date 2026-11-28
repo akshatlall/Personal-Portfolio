@@ -384,7 +384,7 @@ footer {
   letter-spacing: -3px;
   color: var(--text);
 
-  text-shadow: 9px 10px 0 var(--name-echo);
+  text-shadow: 4px 3px 0 var(--name-echo);
 
   opacity: 0;
   animation: fade-up-in 0.7s var(--ease-out) forwards;
@@ -393,6 +393,8 @@ footer {
 
 .hero-name-letter {
   display: inline-block;
+  line-height: 0.88;
+  vertical-align: baseline;
   transition:
     color 0.2s ease,
     text-shadow 0.2s ease;
@@ -400,7 +402,7 @@ footer {
 
 .hero-name-letter:hover {
   color: var(--annotation);
-  text-shadow: 0 0 18px color-mix(in srgb, var(--annotation) 56%, transparent);
+  text-shadow: 0 0 4px color-mix(in srgb, var(--annotation) 40%, transparent);
 }
 
 .hero-greeting,
@@ -685,6 +687,29 @@ footer {
   pointer-events: none;
   opacity: 0;
   animation: preview-card-appear 0.16s ease-out forwards;
+}
+
+.hover-preview-site {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.hover-preview-site-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .hover-preview-above {
