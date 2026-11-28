@@ -62,15 +62,18 @@ function NoteArrow({
   direction: "contact" | "projects" | "aside";
 }) {
   const paths = {
-    contact: "M 28 2 C 31 8, 25 16, 16 22 M 22 18 L 16 23 L 15 16",
-    projects: "M 1 2 C 10 5, 16 11, 18 20 M 13 15 L 19 21 L 24 14",
-    aside: "M 26 25 C 21 17, 12 9, 5 4 M 14 4 L 4 3 L 6 12",
+    contact:
+      "M 54 2 C 60 11, 57 22, 49 30 C 41 39, 33 43, 25 43 M 31 37 Q 28 41 25 43 Q 30 43 34 40",
+    projects:
+      "M 3 2 C 14 6, 20 12, 24 20 C 27 25, 27 30, 25 33 M 20 27 Q 23 31 25 33 Q 29 31 32 27",
+    aside:
+      "M 48 59 C 41 48, 34 37, 26 27 C 18 18, 11 10, 5 5 M 14 6 Q 9 5 5 5 Q 5 10 7 14",
   };
 
   return (
     <svg
       className={`note-arrow note-arrow-${direction}`}
-      viewBox="0 0 32 28"
+      viewBox={direction === "aside" ? "0 0 56 60" : "0 0 56 48"}
       fill="none"
       aria-hidden="true"
     >
