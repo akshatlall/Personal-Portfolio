@@ -59,21 +59,9 @@ export const PROJECTS = [
 
 export const EXPERIENCE = [
   {
-    role: "Team Lead",
-    org: "VEX Robotics Team",
-    date: "2022 - 2026",
-    accent: "peach",
-    bullets: [
-      "Led four seasons, progressing from team member to Team Lead across design, build, test, and iteration.",
-      "Directed mechanical design and robot assembly priorities.",
-      "Ran reliability tests before competitions to catch failure points early.",
-    ],
-  },
-  {
     role: "New Member, Electrical Team",
     org: "Student Design Team",
     date: "2026 - Present",
-    accent: "mint",
     bullets: [
       "Design and lay out circuit boards in Altium Designer.",
       "Collaborate with electrical and mechanical members on a robotic-arm subsystem.",
@@ -83,7 +71,6 @@ export const EXPERIENCE = [
     role: "Computer Engineering",
     org: "University of Waterloo",
     date: "2026 - 2031",
-    accent: "sky",
     bullets: [
       "Bachelor of Applied Science in Computer Engineering (co-op).",
     ],

@@ -14,23 +14,6 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        led{" "}
-        <HoverPreview
-          title="VEX Robotics"
-          eyebrow="Team Lead · four seasons"
-          description="Progressed from team member to Team Lead across design, build, and testing."
-          mark="VEX"
-          className="chip chip-sky"
-        >
-          VEX Robotics
-        </HoverPreview>{" "}
-        for four seasons, from member to Team Lead
-      </>
-    ),
-  },
-  {
-    text: (
-      <>
         built{" "}
         <HoverPreview
           title="Caissa"
@@ -498,7 +481,7 @@ export default function Home() {
         <div className="experience-list">
           {EXPERIENCE.map((job) => (
             <article
-              className={`experience-card accent-${job.accent}`}
+              className="experience-card"
               key={`${job.role}-${job.org}`}
             >
               <div className="experience-head">

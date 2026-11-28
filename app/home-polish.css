@@ -234,18 +234,6 @@
   transition-delay: 0s;
 }
 
-.experience-card.accent-peach::before {
-  background: var(--chip-peach-text);
-}
-
-.experience-card.accent-mint::before {
-  background: var(--chip-mint-text);
-}
-
-.experience-card.accent-sky::before {
-  background: var(--chip-sky-text);
-}
-
 .experience-head {
   align-items: flex-start;
 }

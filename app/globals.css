@@ -1541,18 +1541,6 @@ footer {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
 
-.experience-card.accent-peach {
-  border-left-color: var(--chip-peach-text);
-}
-
-.experience-card.accent-mint {
-  border-left-color: var(--chip-mint-text);
-}
-
-.experience-card.accent-sky {
-  border-left-color: var(--chip-sky-text);
-}
-
 .experience-head {
   display: flex;
   justify-content: space-between;
