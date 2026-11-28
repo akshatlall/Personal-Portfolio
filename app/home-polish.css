@@ -512,10 +512,17 @@
 }
 
 .thoughts-preview-arrow {
+  display: grid;
+  place-items: center;
+
   color: var(--accent);
-  font-size: 20px;
 
   transition: transform 0.2s var(--ease-out);
+}
+
+.thoughts-preview-arrow svg {
+  width: 20px;
+  height: 20px;
 }
 
 .thoughts-preview-card:hover .thoughts-preview-arrow {

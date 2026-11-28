@@ -306,7 +306,7 @@ footer {
 
 .doodle-line:nth-child(even) path {
   stroke: var(--accent);
-  opacity: 0.16;
+  opacity: 0.2;
 }
 
 .doodle-line g {
@@ -389,9 +389,7 @@ footer {
 }
 
 .hero-greeting,
-.contact-reply-note,
-.section-annotation,
-.projects-aside {
+.contact-reply-note {
   color: var(--annotation);
   font-family: var(--font-handwriting), cursive;
   font-weight: 600;
@@ -412,90 +410,51 @@ footer {
 
 .contact-reply-note {
   position: absolute;
-  top: -19px;
-  left: 0;
+  top: -38px;
+  left: 50%;
   z-index: 1;
   display: block;
   width: max-content;
+  padding-bottom: 14px;
   font-size: 17px;
   --note-rotation: -5deg;
   opacity: 0;
-  animation: note-arrive 0.45s var(--ease-out) 1.35s both;
-}
-
-.section-annotation {
-  position: relative;
-  width: max-content;
-  margin: 0 auto 5px;
-  font-size: 18px;
-  --note-rotation: -3deg;
-  opacity: 0;
-}
-
-.projects-aside {
-  position: relative;
-  width: max-content;
-  margin: 18px 0 0 auto;
-  font-size: 19px;
-  --note-rotation: -3deg;
-  opacity: 0;
+  animation: contact-note-arrive 0.45s var(--ease-out) 1.35s both;
 }
 
 .note-arrow {
   position: absolute;
-  overflow: visible;
-  width: 36px;
-  height: 34px;
+  top: 26px;
+  left: 50%;
+  width: 18px;
+  height: 14px;
   color: var(--annotation);
   pointer-events: none;
+  transform: translateX(-50%);
 }
 
 .note-arrow path {
   stroke: currentColor;
-  stroke-width: 1.7;
+  stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 64;
-  stroke-dashoffset: 64;
-}
-
-.note-arrow-down {
-  top: 10px;
-  right: 4px;
-}
-
-.note-arrow-up {
-  top: -29px;
-  right: 9px;
-  transform: rotate(-4deg);
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
 }
 
 .contact-reply-note .note-arrow path {
   animation: note-arrow-draw 0.55s var(--ease-out) 1.7s forwards;
 }
 
-.projects-section.reveal.is-visible .section-annotation {
-  animation: note-arrive 0.45s var(--ease-out) 0.12s both;
-}
-
-.projects-section.reveal.is-visible .section-annotation .note-arrow path,
-.projects-section.reveal.is-visible .projects-aside .note-arrow path {
-  animation: note-arrow-draw 0.55s var(--ease-out) 0.58s forwards;
-}
-
-.projects-section.reveal.is-visible .projects-aside {
-  animation: note-arrive 0.45s var(--ease-out) 0.48s both;
-}
-
-@keyframes note-arrive {
+@keyframes contact-note-arrive {
   from {
     opacity: 0;
-    transform: translateY(5px) rotate(var(--note-rotation));
+    transform: translate(-50%, 5px) rotate(var(--note-rotation));
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) rotate(var(--note-rotation));
+    transform: translate(-50%, 0) rotate(var(--note-rotation));
   }
 }
 
@@ -1533,12 +1492,10 @@ footer {
     transform: none;
   }
 
-  .contact-reply-note,
-  .section-annotation,
-  .projects-aside {
+  .contact-reply-note {
     opacity: 1;
     animation: none;
-    transform: rotate(var(--note-rotation));
+    transform: translateX(-50%) rotate(var(--note-rotation));
   }
 
   .note-arrow path {

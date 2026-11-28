@@ -56,20 +56,15 @@ const FACTS: { text: React.ReactNode }[] = [
   },
 ];
 
-function NoteArrow({ direction }: { direction: "down" | "up" }) {
-  const path =
-    direction === "down"
-      ? "M 3 3 C 11 5, 18 13, 23 25 M 15 19 L 23 26 L 29 17"
-      : "M 29 27 C 23 21, 17 13, 9 4 M 9 4 L 9 12 M 9 4 L 17 5";
-
+function NoteArrow() {
   return (
     <svg
-      className={`note-arrow note-arrow-${direction}`}
-      viewBox="0 0 34 32"
+      className="note-arrow"
+      viewBox="0 0 18 14"
       fill="none"
       aria-hidden="true"
     >
-      <path d={path} />
+      <path d="M 9 0 C 11 4, 7 6, 9 9 M 6 6 L 9 10 L 12 6" />
     </svg>
   );
 }
@@ -340,7 +335,7 @@ export default function Home() {
               <Link href="/contact">Contact</Link>
               <span className="contact-reply-note">
                 i actually reply
-                <NoteArrow direction="down" />
+                <NoteArrow />
               </span>
             </span>
           </nav>
@@ -352,10 +347,6 @@ export default function Home() {
         id="projects"
         className="container-wide projects-section reveal"
       >
-        <p className="section-annotation">
-          my stack
-          <NoteArrow direction="down" />
-        </p>
         <h2 className="section-title">Projects</h2>
 
         <div className="project-grid">
@@ -381,10 +372,6 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="projects-aside">
-          pretty cool, right?
-          <NoteArrow direction="up" />
-        </p>
       </section>
 
       {/* Experience */}
@@ -456,14 +443,23 @@ export default function Home() {
           </span>
 
           <span className="thoughts-preview-arrow" aria-hidden="true">
-            â†—
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 17 17 7M7 7h10v10" />
+            </svg>
           </span>
         </Link>
       </section>
 
       {/* Footer */}
       <footer className="reveal">
-        <span>Â© 2026 Akshat Lal</span>
+        <span>© 2026 Akshat Lal</span>
 
         <div className="footer-links">
           <button
