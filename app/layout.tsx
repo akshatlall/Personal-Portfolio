@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import {
   Anton,
+  Caveat,
   Inter,
   Permanent_Marker,
 } from "next/font/google";
@@ -29,6 +30,13 @@ const marker = Permanent_Marker({
   display: "swap",
 });
 
+const handwriting = Caveat({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-handwriting",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Akshat Lal",
   description:
@@ -43,7 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${anton.variable} ${inter.variable} ${marker.variable}`}
+        className={`${anton.variable} ${inter.variable} ${marker.variable} ${handwriting.variable}`}
       >
         {children}
       </body>

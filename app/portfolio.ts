@@ -6,13 +6,6 @@ export const LINKS = {
   resume: "/resume.pdf",
 };
 
-export const STICKERS = [
-  { label: "\u265e\uFE0E", cls: "sticker-peach", rotate: -8 },
-  { label: "C#", cls: "sticker-lavender", rotate: 5 },
-  { label: "\u26A1\uFE0E", cls: "sticker-sky", rotate: -3 },
-  { label: "</>", cls: "sticker-mint", rotate: 7 },
-] as const;
-
 export const PROJECTS = [
   {
     title: "Caissa",
