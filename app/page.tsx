@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import HeroName from "./components/HeroName";
 import HoverPreview from "./components/HoverPreview";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
@@ -114,10 +115,12 @@ const FACTS: { text: React.ReactNode }[] = [
           eyebrow="Incoming"
           description="Incoming at CIBC."
           mark="CIBC"
+          imageOnly
           previewImage={{
             src: "/cibc-preview.gif",
             width: 1920,
             height: 1080,
+            alt: "Animated CIBC preview",
           }}
           className="chip chip-rose"
         >
@@ -335,19 +338,6 @@ export default function Home() {
           <span>Resume</span>
         </a>
 
-        <a
-          href={LINKS.x}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="X, formerly Twitter"
-          className="toolbar-btn"
-          title="X, formerly Twitter"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.901 1.153h3.68l-8.038 9.185L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.83L0 1.153h7.594l5.24 6.932zm-1.29 19.494h2.039L6.486 3.24H4.298z" />
-          </svg>
-        </a>
-
         <span className="toolbar-divider" aria-hidden="true" />
 
         <button
@@ -392,13 +382,7 @@ export default function Home() {
         <div className="hero-inner">
           <span className="hero-greeting">hello, i&apos;m 👋</span>
 
-          <h1 className="hero-name" aria-label="Akshat Lal">
-            {Array.from("AKSHAT LAL").map((letter, index) => (
-              <span className="hero-name-letter" aria-hidden="true" key={index}>
-                {letter === " " ? "\u00a0" : letter}
-              </span>
-            ))}
-          </h1>
+          <HeroName />
 
           <p className="hero-role">
             <HoverPreview
@@ -406,8 +390,9 @@ export default function Home() {
               imageOnly
               previewImage={{
                 src: "/waterloo-computer-engineering.png",
-                width: 936,
-                height: 414,
+                width: 480,
+                height: 320,
+                alt: "Screenshot of the University of Waterloo Computer Engineering program page",
               }}
               className="chip chip-yellow chip-role"
             >
@@ -472,7 +457,7 @@ export default function Home() {
         className="container-wide projects-section reveal"
       >
         <p className="section-annotation">
-          my stack
+          my work
           <NoteArrow direction="projects" />
         </p>
         <h2 className="section-title">Projects</h2>
