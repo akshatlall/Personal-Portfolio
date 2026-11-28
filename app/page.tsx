@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
-import { EMAIL, EXPERIENCE, LINKS, PROJECTS, STICKERS } from "./portfolio";
+import { EMAIL, EXPERIENCE, LINKS, PROJECTS } from "./portfolio";
 import "./home-polish.css";
 
 const FACTS: { text: React.ReactNode }[] = [
@@ -278,19 +278,15 @@ export default function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="hero-inner">
-          <div className="hero-stickers" aria-hidden="true">
-            {STICKERS.map((sticker) => (
-              <span
-                key={sticker.label}
-                className={`sticker ${sticker.cls}`}
-                style={{ transform: `rotate(${sticker.rotate}deg)` }}
-              >
-                {sticker.label}
+          <span className="hero-greeting">hello, i&apos;m 👋</span>
+
+          <h1 className="hero-name" aria-label="Akshat Lal">
+            {Array.from("AKSHAT LAL").map((letter, index) => (
+              <span className="hero-name-letter" aria-hidden="true" key={index}>
+                {letter === " " ? "\u00a0" : letter}
               </span>
             ))}
-          </div>
-
-          <h1 className="hero-name">AKSHAT LAL</h1>
+          </h1>
 
           <p className="hero-role">
             <span className="chip chip-yellow chip-role">
@@ -322,8 +318,13 @@ export default function Home() {
             <a href="#projects">Projects</a>
             <a href="#experience">Experience</a>
             <a href="#thoughts">My Thoughts</a>
-            <Link href="/contact">Contact</Link>
+            <span className="contact-nav-item">
+              <Link href="/contact">Contact</Link>
+              <span className="contact-reply-note">i actually reply ↙</span>
+            </span>
           </nav>
+
+          <span className="hero-nav-note">pssst — keep reading ↙</span>
         </div>
       </section>
 
@@ -332,6 +333,7 @@ export default function Home() {
         id="projects"
         className="container-wide projects-section reveal"
       >
+        <p className="section-annotation">my stack ↘</p>
         <h2 className="section-title">Projects</h2>
 
         <div className="project-grid">
@@ -356,6 +358,8 @@ export default function Home() {
             </article>
           ))}
         </div>
+
+        <p className="projects-aside">pretty cool, right? ↗</p>
       </section>
 
       {/* Experience */}

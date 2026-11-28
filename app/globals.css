@@ -14,6 +14,7 @@
   --line: #e3e4e0;
   --panel: #f1f3f0;
   --name-echo: #cfe6da;
+  --annotation: #2f6f52;
 
   --chip-yellow-bg: #fbe98a;
   --chip-yellow-text: #4a3c05;
@@ -42,6 +43,7 @@ html.dark {
   --line: #2a2a2e;
   --panel: #18181b;
   --name-echo: #223930;
+  --annotation: #6fcf9d;
 }
 
 /* =========================================================
@@ -286,44 +288,29 @@ footer {
 
 .doodle-line {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+  max-width: 90vw;
+  height: auto;
   fill: none;
   opacity: 0;
   animation: doodle-in 1.2s var(--ease-out) forwards;
 }
 
-.doodle-line-2 {
-  animation-delay: 0.18s;
-}
-
-.doodle-line-3 {
-  animation-delay: 0.34s;
-}
-
 .doodle-line path {
   stroke: var(--name-echo);
-  stroke-width: 2.4;
+  stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
 }
 
-.doodle-line-2 path {
+.doodle-line-accent path {
   stroke: var(--accent);
   stroke-width: 1.5;
-  opacity: 0.18;
-}
-
-.doodle-line-3 path {
-  stroke-width: 1.8;
-  opacity: 0.6;
+  opacity: 0.42;
 }
 
 .doodle-line g {
   transition: transform 0.45s var(--ease-out);
-  will-change: transform;
 }
 
 @keyframes doodle-in {
@@ -332,14 +319,14 @@ footer {
   }
 
   to {
-    opacity: 0.46;
+    opacity: 0.36;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .doodle-line {
     animation: none;
-    opacity: 0.46;
+    opacity: 0.36;
   }
 
   .doodle-line g {
@@ -370,55 +357,6 @@ footer {
   margin: 0 auto;
 }
 
-.hero-stickers {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 18px;
-
-  opacity: 0;
-  animation: fade-up-in 0.6s var(--ease-out) forwards;
-}
-
-.sticker {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-family: var(--font-anton), Impact, sans-serif;
-  font-size: 13px;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s var(--ease-out);
-}
-
-.hero-stickers:hover .sticker {
-  transform: rotate(0deg) translateY(-2px);
-}
-
-.sticker-peach {
-  background: var(--chip-peach-bg);
-  color: var(--chip-peach-text);
-}
-
-.sticker-lavender {
-  background: var(--chip-lavender-bg);
-  color: var(--chip-lavender-text);
-}
-
-.sticker-sky {
-  background: var(--chip-sky-bg);
-  color: var(--chip-sky-text);
-}
-
-.sticker-mint {
-  background: var(--chip-mint-bg);
-  color: var(--chip-mint-text);
-}
-
 .hero-name {
   position: relative;
   z-index: 1;
@@ -437,6 +375,73 @@ footer {
   animation: fade-up-in 0.7s var(--ease-out) forwards;
   animation-delay: 0.05s;
 }
+
+.hero-name-letter {
+  display: inline-block;
+  transition:
+    color 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+.hero-name-letter:hover {
+  color: var(--annotation);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--annotation) 56%, transparent);
+}
+
+.hero-greeting,
+.hero-nav-note,
+.contact-reply-note,
+.section-annotation,
+.projects-aside {
+  color: var(--annotation);
+  font-family: var(--font-handwriting), cursive;
+  font-weight: 600;
+}
+
+.hero-greeting {
+  display: block;
+  width: max-content;
+  margin: 0 0 5px 2px;
+  font-size: 21px;
+  transform: rotate(-4deg);
+}
+
+.hero-nav-note {
+  display: block;
+  width: max-content;
+  margin: 14px 0 0 auto;
+  font-size: 19px;
+  transform: rotate(-3deg);
+}
+
+.contact-nav-item {
+  position: relative;
+}
+
+.contact-reply-note {
+  position: absolute;
+  top: -19px;
+  left: 0;
+  width: max-content;
+  font-size: 17px;
+  transform: rotate(-5deg);
+}
+
+.section-annotation {
+  width: max-content;
+  margin: 0 auto 5px;
+  font-size: 18px;
+  transform: rotate(-3deg);
+}
+
+.projects-aside {
+  width: max-content;
+  margin: 18px 0 0 auto;
+  font-size: 19px;
+  transform: rotate(-3deg);
+}
+
+
 
 .hero-role {
   margin: 20px 0 0;

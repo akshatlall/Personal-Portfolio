@@ -2,20 +2,72 @@
 
 import { useEffect, useRef } from "react";
 
-const PATHS = [
-  {
-    depth: 0.7,
-    d: "M80 -80 C390 110 1120 75 1310 350 C1490 610 1030 730 690 760 C350 790 120 980 240 1190 C365 1405 1045 1320 1210 1555 C1365 1770 1000 2030 660 2250",
-  },
-  {
-    depth: 0.45,
-    d: "M1450 -100 C1130 120 380 155 180 410 C-15 655 430 755 775 845 C1100 930 1360 1090 1190 1290 C1020 1495 380 1480 205 1710 C45 1925 410 2110 785 2300",
-  },
-  {
-    depth: 0.25,
-    d: "M-80 250 C260 90 510 290 730 390 C1010 520 1320 460 1500 650 C1660 820 1340 970 1080 1040 C770 1125 580 1275 670 1460 C780 1690 1330 1710 1510 1930 C1640 2090 1370 2220 1110 2330",
-  },
-] as const;
+type Doodle = {
+  top: number;
+  left: number;
+  width: number;
+  rotation: number;
+  delay: number;
+  depth: number;
+  path: string;
+};
+
+function createRandom(seed: number) {
+  let value = seed;
+
+  return () => {
+    value = (value * 16807) % 2147483647;
+    return (value - 1) / 2147483646;
+  };
+}
+
+function createSquiggle(random: () => number) {
+  const amplitude = 16 + random() * 28;
+  let y = 40 + random() * 60;
+  let path = `M -16 ${y.toFixed(1)}`;
+
+  for (let segment = 0; segment < 3; segment += 1) {
+    const startX = segment * 140 - 16;
+    const endY = Math.max(
+      18,
+      Math.min(122, y + (random() - 0.5) * amplitude * 2.8)
+    );
+    const controlY1 = Math.max(
+      12,
+      Math.min(128, y + (random() - 0.5) * amplitude * 2.4)
+    );
+    const controlY2 = Math.max(
+      12,
+      Math.min(128, endY + (random() - 0.5) * amplitude * 2.4)
+    );
+
+    path += ` C ${(startX + 46).toFixed(1)} ${controlY1.toFixed(1)}, ${(startX + 94).toFixed(1)} ${controlY2.toFixed(1)}, ${(startX + 140).toFixed(1)} ${endY.toFixed(1)}`;
+    y = endY;
+  }
+
+  return path;
+}
+
+function createDoodles(): Doodle[] {
+  const random = createRandom(48271);
+  const count = 22;
+
+  return Array.from({ length: count }, (_, index) => {
+    const band = index % 6;
+
+    return {
+      top: 2 + (index * 96) / (count - 1) + (random() - 0.5) * 2.5,
+      left: Math.max(0, Math.min(86, band * 16 + (random() - 0.5) * 12)),
+      width: 240 + random() * 520,
+      rotation: (random() - 0.5) * 18,
+      delay: random() * 0.65,
+      depth: 0.15 + random() * 0.55,
+      path: createSquiggle(random),
+    };
+  });
+}
+
+const DOODLES = createDoodles();
 
 export default function PageDoodles() {
   const doodlesRef = useRef<HTMLDivElement>(null);
@@ -26,6 +78,7 @@ export default function PageDoodles() {
 
     if (!root || !layers?.length) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
 
     let frame = 0;
     let pointerX = 0;
@@ -42,8 +95,8 @@ export default function PageDoodles() {
     function onPointerMove(event: PointerEvent) {
       if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
 
-      pointerX = (event.clientX / window.innerWidth - 0.5) * 9;
-      pointerY = (event.clientY / window.innerHeight - 0.5) * 9;
+      pointerX = (event.clientX / window.innerWidth - 0.5) * 12;
+      pointerY = (event.clientY / window.innerHeight - 0.5) * 12;
 
       if (!frame) frame = window.requestAnimationFrame(updateLayers);
     }
@@ -66,15 +119,22 @@ export default function PageDoodles() {
 
   return (
     <div ref={doodlesRef} className="page-doodles" aria-hidden="true">
-      {PATHS.map(({ depth, d }, index) => (
+      {DOODLES.map((doodle, index) => (
         <svg
           key={index}
-          className={`doodle-line doodle-line-${index + 1}`}
-          viewBox="0 0 1440 2300"
+          className={`doodle-line${index % 5 === 2 ? " doodle-line-accent" : ""}`}
+          viewBox="0 0 404 140"
           preserveAspectRatio="none"
+          style={{
+            top: `${doodle.top}%`,
+            left: `${doodle.left}%`,
+            width: `${doodle.width}px`,
+            animationDelay: `${doodle.delay}s`,
+            transform: `rotate(${doodle.rotation}deg)`,
+          }}
         >
-          <g data-depth={depth}>
-            <path d={d} />
+          <g data-depth={doodle.depth}>
+            <path d={doodle.path} />
           </g>
         </svg>
       ))}
