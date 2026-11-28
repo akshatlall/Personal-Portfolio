@@ -3,6 +3,7 @@ export const EMAIL = "a7lal@uwaterloo.ca";
 export const LINKS = {
   github: "https://github.com/lal-akshat",
   linkedin: "https://linkedin.com/in/lal-akshat",
+  x: "https://x.com",
   resume: "/resume.pdf",
 };
 
@@ -85,7 +86,7 @@ export const EXPERIENCE = [
     date: "2026 - 2031",
     accent: "sky",
     bullets: [
-      "Bachelor of Applied Science in Computer Engineering (co-op), seeking Spring 2027 co-op roles.",
+      "Bachelor of Applied Science in Computer Engineering (co-op).",
     ],
   },
 ];
