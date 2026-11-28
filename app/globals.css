@@ -306,7 +306,7 @@ footer {
 
 .doodle-line:nth-child(even) path {
   stroke: var(--accent);
-  opacity: 0.16;
+  opacity: 0.26;
 }
 
 .doodle-line g {
@@ -319,14 +319,14 @@ footer {
   }
 
   to {
-    opacity: 0.26;
+    opacity: 0.3;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .doodle-line {
     animation: none;
-    opacity: 0.26;
+    opacity: 0.3;
   }
 
   .doodle-line g {
@@ -412,15 +412,16 @@ footer {
 
 .contact-reply-note {
   position: absolute;
-  top: -19px;
-  left: 0;
+  top: -38px;
+  left: 50%;
   z-index: 1;
   display: block;
   width: max-content;
+  padding-bottom: 14px;
   font-size: 17px;
   --note-rotation: -5deg;
   opacity: 0;
-  animation: note-arrive 0.45s var(--ease-out) 1.35s both;
+  animation: contact-note-arrive 0.45s var(--ease-out) 1.35s both;
 }
 
 .section-annotation {
@@ -444,30 +445,34 @@ footer {
 .note-arrow {
   position: absolute;
   overflow: visible;
-  width: 36px;
-  height: 34px;
+  width: 32px;
+  height: 28px;
   color: var(--annotation);
   pointer-events: none;
 }
 
 .note-arrow path {
   stroke: currentColor;
-  stroke-width: 1.7;
+  stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 64;
-  stroke-dashoffset: 64;
+  stroke-dasharray: 56;
+  stroke-dashoffset: 56;
 }
 
-.note-arrow-down {
-  top: 10px;
-  right: 4px;
+.note-arrow-contact {
+  top: 13px;
+  right: 0;
 }
 
-.note-arrow-up {
-  top: -29px;
-  right: 9px;
-  transform: rotate(-4deg);
+.note-arrow-projects {
+  top: 7px;
+  left: calc(100% - 2px);
+}
+
+.note-arrow-aside {
+  top: -27px;
+  left: -4px;
 }
 
 .contact-reply-note .note-arrow path {
@@ -496,6 +501,18 @@ footer {
   to {
     opacity: 1;
     transform: translateY(0) rotate(var(--note-rotation));
+  }
+}
+
+@keyframes contact-note-arrive {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 5px) rotate(var(--note-rotation));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(var(--note-rotation));
   }
 }
 
