@@ -114,6 +114,11 @@ const FACTS: { text: React.ReactNode }[] = [
           eyebrow="Incoming"
           description="Incoming at CIBC."
           mark="CIBC"
+          previewImage={{
+            src: "/cibc-preview.gif",
+            width: 1920,
+            height: 1080,
+          }}
           className="chip chip-rose"
         >
           CIBC
@@ -398,13 +403,12 @@ export default function Home() {
           <p className="hero-role">
             <HoverPreview
               href="https://uwaterloo.ca/future-students/programs/computer-engineering"
-              title="Computer Engineering degree"
-              eyebrow="Official program page · University of Waterloo"
-              description="Undergraduate program covering software development, hardware engineering, and IT."
-              mark="UW"
-              linkLabel="Open official program page"
-              siteLabel="uwaterloo.ca"
-              previewImage="/waterloo-computer-engineering.png"
+              imageOnly
+              previewImage={{
+                src: "/waterloo-computer-engineering.png",
+                width: 936,
+                height: 414,
+              }}
               className="chip chip-yellow chip-role"
             >
               Computer Engineering

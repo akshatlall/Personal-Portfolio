@@ -1,7 +1,7 @@
 "use client";
 
-import { createPortal } from "react-dom";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 import {
   useId,
   useRef,
@@ -21,15 +21,18 @@ type PreviewPosition = {
 
 type HoverPreviewProps = {
   children: ReactNode;
-  title: string;
-  eyebrow: string;
-  description: string;
-  mark: string;
+  title?: string;
+  eyebrow?: string;
+  description?: string;
+  mark?: string;
   className?: string;
   href?: string;
-  linkLabel?: string;
-  siteLabel?: string;
-  previewImage?: string;
+  imageOnly?: boolean;
+  previewImage?: {
+    src: string;
+    width: number;
+    height: number;
+  };
 };
 
 export default function HoverPreview({
@@ -40,9 +43,8 @@ export default function HoverPreview({
   mark,
   className,
   href,
-  linkLabel,
-  siteLabel,
   previewImage,
+  imageOnly = false,
 }: HoverPreviewProps) {
   const previewId = useId();
   const anchorRef = useRef<HTMLAnchorElement>(null);
@@ -52,7 +54,7 @@ export default function HoverPreview({
 
   function showAt(x: number, y: number) {
     const cardWidth = previewImage ? 360 : 276;
-    const cardHeight = previewImage ? 300 : 176;
+    const cardHeight = imageOnly ? 180 : previewImage ? 300 : 176;
     const halfWidth = Math.min(
       cardWidth / 2,
       Math.max(0, (window.innerWidth - 24) / 2),
@@ -163,39 +165,58 @@ export default function HoverPreview({
         typeof document !== "undefined" &&
         createPortal(
           <div
-            className={`hover-preview-card hover-preview-${position.placement}${previewImage ? " hover-preview-with-image" : ""}`}
+            className={[
+              "hover-preview-card",
+              `hover-preview-${position.placement}`,
+              previewImage && "hover-preview-with-image",
+              imageOnly && "hover-preview-image-only",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             id={previewId}
             role="tooltip"
             style={{ left: position.x, top: position.y }}
           >
-            {siteLabel && (
-              <span className="hover-preview-site">
-                <span className="hover-preview-site-dot" aria-hidden="true" />
-                {siteLabel}
-              </span>
-            )}
             {previewImage && (
               <Image
-                src={previewImage}
-                width={936}
-                height={414}
-                alt=""
-                aria-hidden="true"
+                src={previewImage.src}
+                width={previewImage.width}
+                height={previewImage.height}
+                alt={
+                  imageOnly
+                    ? "Screenshot of the University of Waterloo Computer Engineering program page"
+                    : ""
+                }
+                aria-hidden={!imageOnly}
                 className="hover-preview-image"
-                sizes="(max-width: 384px) calc(100vw - 48px), 336px"
+                style={{
+                  aspectRatio: `${previewImage.width} / ${previewImage.height}`,
+                }}
+                unoptimized
               />
             )}
-            <span className="hover-preview-mark" aria-hidden="true">
-              {mark}
-            </span>
-            <span className="hover-preview-copy">
-              <span className="hover-preview-eyebrow">{eyebrow}</span>
-              <strong className="hover-preview-title">{title}</strong>
-              <span className="hover-preview-description">{description}</span>
-              {linkLabel && (
-                <span className="hover-preview-link">{linkLabel} ↗</span>
-              )}
-            </span>
+            {!imageOnly && (
+              <>
+                {mark && (
+                  <span className="hover-preview-mark" aria-hidden="true">
+                    {mark}
+                  </span>
+                )}
+                <span className="hover-preview-copy">
+                  {eyebrow && (
+                    <span className="hover-preview-eyebrow">{eyebrow}</span>
+                  )}
+                  {title && (
+                    <strong className="hover-preview-title">{title}</strong>
+                  )}
+                  {description && (
+                    <span className="hover-preview-description">
+                      {description}
+                    </span>
+                  )}
+                </span>
+              </>
+            )}
           </div>,
           document.body,
         )}
