@@ -389,7 +389,6 @@ footer {
 }
 
 .hero-greeting,
-.hero-nav-note,
 .contact-reply-note,
 .section-annotation,
 .projects-aside {
@@ -404,14 +403,7 @@ footer {
   margin: 0 0 5px 2px;
   font-size: 21px;
   transform: rotate(-4deg);
-}
-
-.hero-nav-note {
-  display: block;
-  width: max-content;
-  margin: 14px 0 0 auto;
-  font-size: 19px;
-  transform: rotate(-3deg);
+  animation: fade-up-in 0.5s var(--ease-out) both;
 }
 
 .contact-nav-item {
@@ -422,23 +414,95 @@ footer {
   position: absolute;
   top: -19px;
   left: 0;
+  z-index: 1;
+  display: block;
   width: max-content;
   font-size: 17px;
-  transform: rotate(-5deg);
+  --note-rotation: -5deg;
+  opacity: 0;
+  animation: note-arrive 0.45s var(--ease-out) 1.35s both;
 }
 
 .section-annotation {
+  position: relative;
   width: max-content;
   margin: 0 auto 5px;
   font-size: 18px;
-  transform: rotate(-3deg);
+  --note-rotation: -3deg;
+  opacity: 0;
 }
 
 .projects-aside {
+  position: relative;
   width: max-content;
   margin: 18px 0 0 auto;
   font-size: 19px;
-  transform: rotate(-3deg);
+  --note-rotation: -3deg;
+  opacity: 0;
+}
+
+.note-arrow {
+  position: absolute;
+  overflow: visible;
+  width: 36px;
+  height: 34px;
+  color: var(--annotation);
+  pointer-events: none;
+}
+
+.note-arrow path {
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 64;
+  stroke-dashoffset: 64;
+}
+
+.note-arrow-down {
+  top: 10px;
+  right: 4px;
+}
+
+.note-arrow-up {
+  top: -29px;
+  right: 9px;
+  transform: rotate(-4deg);
+}
+
+.contact-reply-note .note-arrow path {
+  animation: note-arrow-draw 0.55s var(--ease-out) 1.7s forwards;
+}
+
+.projects-section.reveal.is-visible .section-annotation {
+  animation: note-arrive 0.45s var(--ease-out) 0.12s both;
+}
+
+.projects-section.reveal.is-visible .section-annotation .note-arrow path,
+.projects-section.reveal.is-visible .projects-aside .note-arrow path {
+  animation: note-arrow-draw 0.55s var(--ease-out) 0.58s forwards;
+}
+
+.projects-section.reveal.is-visible .projects-aside {
+  animation: note-arrive 0.45s var(--ease-out) 0.48s both;
+}
+
+@keyframes note-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(5px) rotate(var(--note-rotation));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--note-rotation));
+  }
+}
+
+@keyframes note-arrow-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 
@@ -610,7 +674,8 @@ html.dark .circled::after {
 
   transition:
     color 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    transform 0.2s var(--ease-out);
 }
 
 .hero-nav a:hover {
@@ -1465,6 +1530,23 @@ footer {
 
   .reveal {
     opacity: 1;
+    transform: none;
+  }
+
+  .contact-reply-note,
+  .section-annotation,
+  .projects-aside {
+    opacity: 1;
+    animation: none;
+    transform: rotate(var(--note-rotation));
+  }
+
+  .note-arrow path {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+
+  .hero-nav a:hover {
     transform: none;
   }
 }
