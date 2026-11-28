@@ -211,20 +211,32 @@
   transform: translateY(12px);
 }
 
-.experience-card::before {
+.experience-icon {
   position: absolute;
-  top: 25px;
-  left: -31px;
+  top: 16px;
+  left: -47px;
+  z-index: 1;
 
-  width: 13px;
-  height: 13px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
 
-  border: 3px solid var(--background);
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 1px var(--line);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--background);
+  color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.035);
 
-  content: "";
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--ease-out);
+}
+
+.experience-icon svg {
+  width: 22px;
+  height: 22px;
 }
 
 .experience-card:hover {
@@ -232,6 +244,12 @@
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.07);
   transform: translateY(-3px);
   transition-delay: 0s;
+}
+
+.experience-card:hover .experience-icon {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  transform: scale(1.04);
 }
 
 .experience-head {
@@ -571,8 +589,17 @@
     left: 8px;
   }
 
-  .experience-card::before {
-    left: -25px;
+  .experience-icon {
+    top: 17px;
+    left: -40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+  }
+
+  .experience-icon svg {
+    width: 20px;
+    height: 20px;
   }
 
   .hero-name {
@@ -666,6 +693,10 @@
     transition-delay: 0s;
   }
 
+  .experience-icon {
+    transition: none;
+  }
+
   .project-art {
     transition: none;
   }
@@ -673,7 +704,8 @@
   .project:hover,
   .experience-card:hover,
   .thoughts-preview-card:hover,
-  .project:hover .project-art {
+  .project:hover .project-art,
+  .experience-card:hover .experience-icon {
     transform: none;
   }
 
