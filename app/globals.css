@@ -413,7 +413,7 @@ footer {
   top: 0;
   left: 0;
   color: color-mix(in srgb, var(--name-echo) 65%, var(--annotation));
-  transform: translate(9px, 10px);
+  transform: translate(7px, 8px);
 }
 
 .hero-name-face {
@@ -435,22 +435,24 @@ footer {
   line-height: 0.88;
   vertical-align: baseline;
   pointer-events: none;
-  transition: transform 0.32s var(--ease-out);
-}
-
-.hero-name-face-letter.is-active {
-  transform: translate(9px, 10px);
-}
-
-.hero-name-shadow-letter {
   transition:
-    color 0.32s var(--ease-out),
+    color 0.2s ease,
+    text-shadow 0.2s ease,
     transform 0.32s var(--ease-out);
 }
 
-.hero-name-shadow-letter.is-active {
+.hero-name-face-letter.is-active {
   color: var(--annotation);
-  transform: translate(-9px, -10px);
+  text-shadow: 0 0 18px
+    color-mix(in srgb, var(--annotation) 56%, transparent);
+}
+
+.hero-name-shadow-letter {
+  transition: transform 0.32s var(--ease-out);
+}
+
+.hero-name-shadow-letter.is-active {
+  transform: translate(2px, 2px);
 }
 
 .hero-greeting,
