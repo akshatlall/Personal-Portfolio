@@ -3,13 +3,9 @@
 import { useEffect, useRef } from "react";
 
 type Doodle = {
-  top: number;
-  left: number;
-  width: number;
-  rotation: number;
-  delay: number;
-  depth: number;
   path: string;
+  depth: number;
+  delay: number;
 };
 
 function createRandom(seed: number) {
@@ -21,28 +17,29 @@ function createRandom(seed: number) {
   };
 }
 
-function createSquiggle(random: () => number) {
-  const amplitude = 16 + random() * 28;
-  let y = 40 + random() * 60;
-  let path = `M -16 ${y.toFixed(1)}`;
+function createCornerPath(
+  center: number,
+  amplitude: number,
+  waves: number,
+  phase: number
+) {
+  const startY = -100;
+  const span = 3400;
+  const segments = Math.ceil(waves * 4);
+  const step = span / segments;
+  const frequency = (Math.PI * 2 * waves) / span;
+  const xAt = (y: number) => center + Math.sin(y * frequency + phase) * amplitude;
+  const slopeAt = (y: number) =>
+    Math.cos(y * frequency + phase) * amplitude * frequency;
+  let path = `M ${xAt(startY).toFixed(1)} ${startY}`;
 
-  for (let segment = 0; segment < 3; segment += 1) {
-    const startX = segment * 140 - 16;
-    const endY = Math.max(
-      18,
-      Math.min(122, y + (random() - 0.5) * amplitude * 2.8)
-    );
-    const controlY1 = Math.max(
-      12,
-      Math.min(128, y + (random() - 0.5) * amplitude * 2.4)
-    );
-    const controlY2 = Math.max(
-      12,
-      Math.min(128, endY + (random() - 0.5) * amplitude * 2.4)
-    );
+  for (let segment = 0; segment < segments; segment += 1) {
+    const y = startY + segment * step;
+    const endY = y + step;
+    const controlX1 = xAt(y) + slopeAt(y) * (step / 3);
+    const controlX2 = xAt(endY) - slopeAt(endY) * (step / 3);
 
-    path += ` C ${(startX + 46).toFixed(1)} ${controlY1.toFixed(1)}, ${(startX + 94).toFixed(1)} ${controlY2.toFixed(1)}, ${(startX + 140).toFixed(1)} ${endY.toFixed(1)}`;
-    y = endY;
+    path += ` C ${controlX1.toFixed(1)} ${(y + step / 3).toFixed(1)}, ${controlX2.toFixed(1)} ${(endY - step / 3).toFixed(1)}, ${xAt(endY).toFixed(1)} ${endY.toFixed(1)}`;
   }
 
   return path;
@@ -50,21 +47,17 @@ function createSquiggle(random: () => number) {
 
 function createDoodles(): Doodle[] {
   const random = createRandom(48271);
-  const count = 22;
 
-  return Array.from({ length: count }, (_, index) => {
-    const band = index % 6;
-
-    return {
-      top: 2 + (index * 96) / (count - 1) + (random() - 0.5) * 2.5,
-      left: Math.max(0, Math.min(86, band * 16 + (random() - 0.5) * 12)),
-      width: 240 + random() * 520,
-      rotation: (random() - 0.5) * 18,
-      delay: random() * 0.65,
-      depth: 0.15 + random() * 0.55,
-      path: createSquiggle(random),
-    };
-  });
+  return Array.from({ length: 4 }, (_, index) => ({
+    path: createCornerPath(
+      120 + index * 400 + (random() - 0.5) * 100,
+      130 + random() * 170,
+      3 + random() * 1.6,
+      random() * Math.PI * 2
+    ),
+    depth: 0.15 + random() * 0.35,
+    delay: random() * 0.4,
+  }));
 }
 
 const DOODLES = createDoodles();
@@ -95,8 +88,8 @@ export default function PageDoodles() {
     function onPointerMove(event: PointerEvent) {
       if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
 
-      pointerX = (event.clientX / window.innerWidth - 0.5) * 12;
-      pointerY = (event.clientY / window.innerHeight - 0.5) * 12;
+      pointerX = (event.clientX / window.innerWidth - 0.5) * 6;
+      pointerY = (event.clientY / window.innerHeight - 0.5) * 6;
 
       if (!frame) frame = window.requestAnimationFrame(updateLayers);
     }
@@ -122,16 +115,10 @@ export default function PageDoodles() {
       {DOODLES.map((doodle, index) => (
         <svg
           key={index}
-          className={`doodle-line${index % 5 === 2 ? " doodle-line-accent" : ""}`}
-          viewBox="0 0 404 140"
+          className="doodle-line"
+          viewBox="0 0 1440 3200"
           preserveAspectRatio="none"
-          style={{
-            top: `${doodle.top}%`,
-            left: `${doodle.left}%`,
-            width: `${doodle.width}px`,
-            animationDelay: `${doodle.delay}s`,
-            transform: `rotate(${doodle.rotation}deg)`,
-          }}
+          style={{ animationDelay: `${doodle.delay}s` }}
         >
           <g data-depth={doodle.depth}>
             <path d={doodle.path} />
