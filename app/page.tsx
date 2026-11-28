@@ -14,6 +14,23 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
+        led{" "}
+        <HoverPreview
+          title="VEX Robotics"
+          eyebrow="Team Lead · four seasons"
+          description="Progressed from team member to Team Lead across design, build, and testing."
+          mark="VEX"
+          className="chip chip-sky"
+        >
+          VEX Robotics
+        </HoverPreview>{" "}
+        for four seasons, from member to Team Lead
+      </>
+    ),
+  },
+  {
+    text: (
+      <>
         built{" "}
         <HoverPreview
           title="Caissa"
@@ -490,14 +507,18 @@ export default function Home() {
                   <p className="experience-org">{job.org}</p>
                 </div>
 
-                <span className="experience-date">{job.date}</span>
+                {job.date && (
+                  <span className="experience-date">{job.date}</span>
+                )}
               </div>
 
-              <ul className="experience-bullets">
-                {job.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
+              {job.bullets.length > 0 && (
+                <ul className="experience-bullets">
+                  {job.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              )}
             </article>
           ))}
         </div>

@@ -59,6 +59,11 @@ export const PROJECTS = [
 
 export const EXPERIENCE = [
   {
+    role: "Incoming",
+    org: "CIBC",
+    bullets: [],
+  },
+  {
     role: "New Member, Electrical Team",
     org: "Student Design Team",
     date: "2026 - Present",
