@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import HoverPreview from "./components/HoverPreview";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
 import { EMAIL, EXPERIENCE, LINKS, PROJECTS } from "./portfolio";
@@ -12,25 +13,61 @@ const FACTS: { text: React.ReactNode }[] = [
   {
     text: (
       <>
-        led <span className="chip chip-sky">VEX Robotics</span> for four
-        seasons, from member to Team Lead
+        led{" "}
+        <HoverPreview
+          title="VEX Robotics"
+          eyebrow="Team Lead · four seasons"
+          description="Progressed from team member to Team Lead across design, build, and testing."
+          mark="VEX"
+          className="chip chip-sky"
+        >
+          VEX Robotics
+        </HoverPreview>{" "}
+        for four seasons, from member to Team Lead
       </>
     ),
   },
   {
     text: (
       <>
-        built <span className="chip chip-peach">Caissa</span>, a chess engine
-        in <span className="chip chip-lavender">C#</span> with an AI opponent
-        across 3 rule sets
+        built{" "}
+        <HoverPreview
+          title="Caissa"
+          eyebrow="Chess engine"
+          description="A C# and WinForms chess engine with an AI opponent and three rule sets."
+          mark="C"
+          className="chip chip-peach"
+        >
+          Caissa
+        </HoverPreview>
+        , a chess engine in{" "}
+        <HoverPreview
+          title="C#"
+          eyebrow="Language"
+          description="Used to build Caissa, including its chess rules, move evaluation, and interface."
+          mark="C#"
+          className="chip chip-lavender"
+        >
+          C#
+        </HoverPreview>{" "}
+        with an AI opponent across 3 rule sets
       </>
     ),
   },
   {
     text: (
       <>
-        laying out PCBs in <span className="chip chip-mint">Altium</span> for a
-        robotic arm on the Student Design Team
+        laying out PCBs in{" "}
+        <HoverPreview
+          title="Altium Designer"
+          eyebrow="Student Design Team"
+          description="Designing circuit boards for a robotic-arm subsystem."
+          mark="AL"
+          className="chip chip-mint"
+        >
+          Altium
+        </HoverPreview>{" "}
+        for a robotic arm on the Student Design Team
       </>
     ),
   },
@@ -38,21 +75,51 @@ const FACTS: { text: React.ReactNode }[] = [
     text: (
       <>
         shipped a full-stack{" "}
-        <span className="chip chip-rose">task manager</span> with Next.js,
-        TypeScript &amp; SQL
+        <HoverPreview
+          title="TaskFlow"
+          eyebrow="Full-stack web app"
+          description="Built with Next.js, TypeScript, and SQL for task and project tracking."
+          mark="TF"
+          className="chip chip-rose"
+        >
+          task manager
+        </HoverPreview>{" "}
+        with Next.js, TypeScript &amp; SQL
       </>
     ),
   },
   {
     text: (
       <>
-        built a <span className="chip chip-yellow">Java Swing</span> image
-        editor with custom pixel-manipulation filters
+        built a{" "}
+        <HoverPreview
+          title="Java Image Editor"
+          eyebrow="Java Swing"
+          description="A desktop image editor with custom pixel-manipulation filters."
+          mark="JS"
+          className="chip chip-yellow"
+        >
+          Java Swing
+        </HoverPreview>{" "}
+        image editor with custom pixel-manipulation filters
       </>
     ),
   },
   {
-    text: <>seeking spring 2027 co-op opportunities</>,
+    text: (
+      <>
+        incoming at{" "}
+        <HoverPreview
+          title="CIBC"
+          eyebrow="Incoming"
+          description="Incoming at CIBC."
+          mark="CIBC"
+          className="chip chip-rose"
+        >
+          CIBC
+        </HoverPreview>
+      </>
+    ),
   },
 ];
 
@@ -244,8 +311,8 @@ export default function Home() {
         <a
           href={LINKS.resume}
           download
-          aria-label="Download resume"
-          className="toolbar-btn"
+          aria-label="Download resume PDF"
+          className="toolbar-btn toolbar-resume"
         >
           <svg
             viewBox="0 0 24 24"
@@ -259,6 +326,20 @@ export default function Home() {
             <path d="M12 3v12" />
             <path d="m7 10 5 5 5-5" />
             <path d="M5 21h14" />
+          </svg>
+          <span>Resume</span>
+        </a>
+
+        <a
+          href={LINKS.x}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="X, formerly Twitter"
+          className="toolbar-btn"
+          title="X, formerly Twitter"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.901 1.153h3.68l-8.038 9.185L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.83L0 1.153h7.594l5.24 6.932zm-1.29 19.494h2.039L6.486 3.24H4.298z" />
           </svg>
         </a>
 
@@ -315,16 +396,40 @@ export default function Home() {
           </h1>
 
           <p className="hero-role">
-            <span className="chip chip-yellow chip-role">
+            <HoverPreview
+              href="https://uwaterloo.ca/future-students/programs/computer-engineering"
+              title="Computer Engineering"
+              eyebrow="University of Waterloo"
+              description="Bachelor of Applied Science in Computer Engineering (co-op)."
+              mark="UW"
+              linkLabel="Explore the program"
+              className="chip chip-yellow chip-role"
+            >
               Computer Engineering
-            </span>
+            </HoverPreview>
 
             <span className="hero-role-muted">@University of Waterloo</span>
           </p>
 
           <p className="hero-bio">
-            i build at the <span className="circled">intersection</span> of
-            hardware and software
+            i build at the{" "}
+            <HoverPreview
+              title="Hardware meets software"
+              eyebrow="My engineering focus"
+              description="I build at the intersection of hardware and software."
+              mark="HW/SW"
+              className="circled"
+            >
+              intersection
+              <svg
+                className="circled-ring"
+                viewBox="0 0 200 90"
+                aria-hidden="true"
+              >
+                <path d="M20 45 C14 15 60 4 100 7 C152 10 188 20 181 46 C188 72 150 84 100 81 C53 84 13 73 20 45 Z" />
+              </svg>
+            </HoverPreview>{" "}
+            of hardware and software
           </p>
 
           <div className="facts-list">
