@@ -57,16 +57,26 @@ export const PROJECTS = [
   },
 ];
 
-export const EXPERIENCE = [
+type ExperienceEntry = {
+  role: string;
+  org: string;
+  date?: string;
+  icon: "bank" | "circuit" | "university";
+  bullets: string[];
+};
+
+export const EXPERIENCE: ExperienceEntry[] = [
   {
     role: "Incoming",
     org: "CIBC",
+    icon: "bank",
     bullets: [],
   },
   {
     role: "New Member, Electrical Team",
     org: "Student Design Team",
     date: "2026 - Present",
+    icon: "circuit",
     bullets: [
       "Design and lay out circuit boards in Altium Designer.",
       "Collaborate with electrical and mechanical members on a robotic-arm subsystem.",
@@ -76,6 +86,7 @@ export const EXPERIENCE = [
     role: "Computer Engineering",
     org: "University of Waterloo",
     date: "2026 - 2031",
+    icon: "university",
     bullets: [
       "Bachelor of Applied Science in Computer Engineering (co-op).",
     ],

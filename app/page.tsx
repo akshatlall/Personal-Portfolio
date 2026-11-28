@@ -131,6 +131,47 @@ const FACTS: { text: React.ReactNode }[] = [
   },
 ];
 
+function ExperienceIcon({
+  kind,
+}: {
+  kind: (typeof EXPERIENCE)[number]["icon"];
+}) {
+  const paths = {
+    bank: (
+      <>
+        <path d="m3 8 9-4 9 4" />
+        <path d="M4 10h16M6 10v8m4-8v8m4-8v8m4-8v8M4 20h16" />
+      </>
+    ),
+    circuit: (
+      <>
+        <rect x="5" y="5" width="14" height="14" rx="2" />
+        <path d="M9 9h6v6H9zM2 8h3m-3 8h3m14-8h3m-3 8h3M8 2v3m8-3v3m-8 14v3m8-3v3" />
+      </>
+    ),
+    university: (
+      <>
+        <path d="m2 9 10-5 10 5-10 5-10-5Z" />
+        <path d="M6 11v4.5c3.5 2.4 8.5 2.4 12 0V11M22 9v6" />
+      </>
+    ),
+  };
+
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {paths[kind]}
+    </svg>
+  );
+}
+
 function NoteArrow({
   direction,
 }: {
@@ -501,6 +542,10 @@ export default function Home() {
               className="experience-card"
               key={`${job.role}-${job.org}`}
             >
+              <span className="experience-icon" aria-hidden="true">
+                <ExperienceIcon kind={job.icon} />
+              </span>
+
               <div className="experience-head">
                 <div>
                   <p className="experience-role">{job.role}</p>
