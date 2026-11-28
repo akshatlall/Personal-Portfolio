@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import HeroName from "./components/HeroName";
 import HoverPreview from "./components/HoverPreview";
 import PageDoodles from "./components/PageDoodles";
 import ProjectArtwork from "./components/ProjectArtwork";
@@ -387,19 +388,13 @@ export default function Home() {
         <div className="hero-inner">
           <span className="hero-greeting">hello, i&apos;m 👋</span>
 
-          <h1 className="hero-name" aria-label="Akshat Lal">
-            {Array.from("AKSHAT LAL").map((letter, index) => (
-              <span className="hero-name-letter" aria-hidden="true" key={index}>
-                {letter === " " ? "\u00a0" : letter}
-              </span>
-            ))}
-          </h1>
+          <HeroName />
 
           <p className="hero-role">
             <HoverPreview
               href="https://uwaterloo.ca/future-students/programs/computer-engineering"
               title="Computer Engineering degree"
-              eyebrow="Official program page · University of Waterloo"
+              eyebrow="Undergraduate Programs · University of Waterloo"
               description="Undergraduate program covering software development, hardware engineering, and IT."
               mark="UW"
               linkLabel="Open official program page"
