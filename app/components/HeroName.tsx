@@ -15,6 +15,7 @@ type GlyphMask = {
 const HIT_ALPHA_THRESHOLD = 28;
 const MASK_PADDING = 4;
 
+// Build a small alpha mask so transparent font-box space never activates a letter.
 function createGlyphMask(
   character: string,
   font: string,
