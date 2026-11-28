@@ -1,6 +1,7 @@
 "use client";
 
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import {
   useId,
   useRef,
@@ -28,6 +29,7 @@ type HoverPreviewProps = {
   href?: string;
   linkLabel?: string;
   siteLabel?: string;
+  previewImage?: string;
 };
 
 export default function HoverPreview({
@@ -40,6 +42,7 @@ export default function HoverPreview({
   href,
   linkLabel,
   siteLabel,
+  previewImage,
 }: HoverPreviewProps) {
   const previewId = useId();
   const anchorRef = useRef<HTMLAnchorElement>(null);
@@ -48,17 +51,30 @@ export default function HoverPreview({
   const [pinned, setPinned] = useState(false);
 
   function showAt(x: number, y: number) {
-    const halfWidth = Math.min(136, Math.max(0, (window.innerWidth - 24) / 2));
+    const cardWidth = previewImage ? 360 : 276;
+    const cardHeight = previewImage ? 300 : 176;
+    const halfWidth = Math.min(
+      cardWidth / 2,
+      Math.max(0, (window.innerWidth - 24) / 2),
+    );
     const boundedX = Math.min(
       Math.max(x, halfWidth + 12),
       window.innerWidth - halfWidth - 12,
     );
-    const placement =
-      y > window.innerHeight - 176 ? "above" : "below";
+    const hasRoomBelow = y + cardHeight + 24 <= window.innerHeight;
+    const hasRoomAbove = y >= cardHeight + 24;
+    const placement = !hasRoomBelow && hasRoomAbove ? "above" : "below";
+    const boundedY =
+      placement === "above"
+        ? Math.max(y, cardHeight + 24)
+        : Math.min(
+            y + 12,
+            Math.max(12, window.innerHeight - cardHeight - 12),
+          );
 
     setPosition({
       x: boundedX,
-      y: placement === "above" ? y : Math.min(y + 12, window.innerHeight - 12),
+      y: boundedY,
       placement,
     });
   }
@@ -147,7 +163,7 @@ export default function HoverPreview({
         typeof document !== "undefined" &&
         createPortal(
           <div
-            className={`hover-preview-card hover-preview-${position.placement}`}
+            className={`hover-preview-card hover-preview-${position.placement}${previewImage ? " hover-preview-with-image" : ""}`}
             id={previewId}
             role="tooltip"
             style={{ left: position.x, top: position.y }}
@@ -157,6 +173,17 @@ export default function HoverPreview({
                 <span className="hover-preview-site-dot" aria-hidden="true" />
                 {siteLabel}
               </span>
+            )}
+            {previewImage && (
+              <Image
+                src={previewImage}
+                width={936}
+                height={414}
+                alt=""
+                aria-hidden="true"
+                className="hover-preview-image"
+                sizes="(max-width: 384px) calc(100vw - 48px), 336px"
+              />
             )}
             <span className="hover-preview-mark" aria-hidden="true">
               {mark}
