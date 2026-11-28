@@ -157,20 +157,10 @@ export default function HeroName() {
 
   return (
     <h1 className="hero-name" aria-label="Akshat Lal">
-      <span className="hero-name-layer hero-name-shadow" aria-hidden="true">
-        {Array.from("AKSHAT LAL").map((letter, index) => (
-          <span
-            className={`hero-name-letter hero-name-shadow-letter${activeLetter === index ? " is-active" : ""}`}
-            key={index}
-          >
-            {letter === " " ? "\u00a0" : letter}
-          </span>
-        ))}
-      </span>
       <span className="hero-name-layer hero-name-face" aria-hidden="true">
         {Array.from("AKSHAT LAL").map((letter, index) => (
           <span
-            className={`hero-name-letter hero-name-face-letter${activeLetter === index ? " is-active" : ""}`}
+            className={`hero-name-letter${activeLetter === index ? " is-active" : ""}`}
             key={index}
           >
             {letter === " " ? "\u00a0" : letter}
