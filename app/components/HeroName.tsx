@@ -165,7 +165,27 @@ export default function HeroName() {
         onPointerMove={handlePointerMove}
         onPointerLeave={clearActiveLetter}
       >
-        <text ref={textRef} className="hero-name-text" x="0" y="0.88em">
+        <text ref={textRef} className="hero-name-hit-target" x="0" y="0.88em">
+          {Array.from("AKSHAT LAL").map((letter, index) => (
+            <tspan key={index}>{letter === " " ? "\u00a0" : letter}</tspan>
+          ))}
+        </text>
+        <text
+          className="hero-name-shadow"
+          x="0"
+          y="0.88em"
+          transform="translate(9 10)"
+        >
+          {Array.from("AKSHAT LAL").map((letter, index) => (
+            <tspan
+              className={`hero-name-shadow-letter${activeLetter === index ? " is-active" : ""}`}
+              key={index}
+            >
+              {letter === " " ? "\u00a0" : letter}
+            </tspan>
+          ))}
+        </text>
+        <text className="hero-name-text" x="0" y="0.88em">
           {Array.from("AKSHAT LAL").map((letter, index) => (
             <tspan
               className={`hero-name-letter${activeLetter === index ? " is-active" : ""}`}

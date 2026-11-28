@@ -397,28 +397,50 @@ footer {
   pointer-events: all;
 }
 
+.hero-name-hit-target,
+.hero-name-shadow,
 .hero-name-text {
   font-family: inherit;
   font-size: 1em;
   font-weight: 400;
   letter-spacing: inherit;
-  filter: drop-shadow(4px 3px 0 var(--name-echo));
   pointer-events: none;
+}
+
+.hero-name-hit-target {
+  opacity: 0;
+}
+
+.hero-name-shadow {
+  fill: color-mix(in srgb, var(--name-echo) 65%, var(--annotation));
+  pointer-events: none;
+}
+
+.hero-name-text {
+  fill: var(--text);
+}
+
+.hero-name-letter,
+.hero-name-shadow-letter {
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    fill 0.32s var(--ease-out),
+    transform 0.32s var(--ease-out);
 }
 
 .hero-name-letter {
   fill: var(--text);
-  pointer-events: none;
-  transition:
-    fill 0.2s ease,
-    filter 0.2s ease;
 }
 
 .hero-name-letter.is-active {
+  transform: translate(9px, 10px);
+}
+
+.hero-name-shadow-letter.is-active {
   fill: var(--annotation);
-  filter: drop-shadow(
-    0 0 4px color-mix(in srgb, var(--annotation) 40%, transparent)
-  );
+  transform: translate(-9px, -10px);
 }
 
 .hero-greeting,
