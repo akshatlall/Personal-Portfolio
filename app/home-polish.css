@@ -33,6 +33,7 @@
   text-align: left;
   text-wrap: nowrap;
   white-space: nowrap;
+  animation: fade-up-in 0.55s var(--ease-out) 0.34s both;
 }
 
 .facts-list {
@@ -85,10 +86,65 @@
   min-height: 100%;
   flex-direction: column;
   text-align: left;
+
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.55s var(--ease-out),
+    transform 0.55s var(--ease-out);
+}
+
+.project:nth-child(2),
+.experience-card:nth-child(2),
+.thoughts-preview > :nth-child(2) {
+  transition-delay: 70ms;
+}
+
+.project:nth-child(3),
+.experience-card:nth-child(3),
+.thoughts-preview > :nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.project:nth-child(4),
+.experience-card:nth-child(4),
+.thoughts-preview > :nth-child(4) {
+  transition-delay: 210ms;
+}
+
+.projects-section.reveal.is-visible .project,
+#experience.reveal.is-visible .experience-card,
+.thoughts-preview.reveal.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.projects-section.reveal.is-visible .project:hover {
+  transform: translateY(-3px);
+}
+
+#experience.reveal.is-visible .experience-card:hover {
+  transform: translateY(-3px);
+}
+
+.thoughts-preview.reveal.is-visible > .thoughts-preview-card:hover {
+  transform: translateY(-3px);
 }
 
 .project-image-wrapper {
   flex-shrink: 0;
+}
+
+.project-art {
+  transition: transform 0.65s var(--ease-out);
+}
+
+.project:hover .project-art {
+  transform: scale(1.025);
+}
+
+.project:hover {
+  transition-delay: 0s;
 }
 
 .project-meta {
@@ -146,9 +202,13 @@
   text-align: left;
 
   transition:
+    opacity 0.55s var(--ease-out),
     border-color 0.25s ease,
     box-shadow 0.25s ease,
     transform 0.35s var(--ease-out);
+
+  opacity: 0;
+  transform: translateY(12px);
 }
 
 .experience-card::before {
@@ -171,6 +231,7 @@
   border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.07);
   transform: translateY(-3px);
+  transition-delay: 0s;
 }
 
 .experience-card.accent-peach::before {
@@ -393,10 +454,24 @@
     transform 0.25s var(--ease-out);
 }
 
+.thoughts-preview > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
+}
+
+.thoughts-preview.reveal.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .thoughts-preview-card:hover {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
   transform: translateY(-3px);
+  transition-delay: 0s;
 }
 
 .thoughts-preview-icon {
@@ -588,6 +663,25 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .project,
+  .experience-card,
+  .thoughts-preview > * {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .project-art {
+    transition: none;
+  }
+
+  .project:hover,
+  .experience-card:hover,
+  .thoughts-preview-card:hover,
+  .project:hover .project-art {
+    transform: none;
+  }
+
   .toolbar-email-status {
     animation: none;
   }

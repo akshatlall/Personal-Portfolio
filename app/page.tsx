@@ -56,6 +56,24 @@ const FACTS: { text: React.ReactNode }[] = [
   },
 ];
 
+function NoteArrow({ direction }: { direction: "down" | "up" }) {
+  const path =
+    direction === "down"
+      ? "M 3 3 C 11 5, 18 13, 23 25 M 15 19 L 23 26 L 29 17"
+      : "M 29 27 C 23 21, 17 13, 9 4 M 9 4 L 9 12 M 9 4 L 17 5";
+
+  return (
+    <svg
+      className={`note-arrow note-arrow-${direction}`}
+      viewBox="0 0 34 32"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d={path} />
+    </svg>
+  );
+}
+
 async function writeEmailToClipboard() {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(EMAIL);
@@ -320,11 +338,12 @@ export default function Home() {
             <a href="#thoughts">My Thoughts</a>
             <span className="contact-nav-item">
               <Link href="/contact">Contact</Link>
-              <span className="contact-reply-note">i actually reply ↙</span>
+              <span className="contact-reply-note">
+                i actually reply
+                <NoteArrow direction="down" />
+              </span>
             </span>
           </nav>
-
-          <span className="hero-nav-note">pssst — keep reading ↙</span>
         </div>
       </section>
 
@@ -333,7 +352,10 @@ export default function Home() {
         id="projects"
         className="container-wide projects-section reveal"
       >
-        <p className="section-annotation">my stack ↘</p>
+        <p className="section-annotation">
+          my stack
+          <NoteArrow direction="down" />
+        </p>
         <h2 className="section-title">Projects</h2>
 
         <div className="project-grid">
@@ -359,7 +381,10 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="projects-aside">pretty cool, right? ↗</p>
+        <p className="projects-aside">
+          pretty cool, right?
+          <NoteArrow direction="up" />
+        </p>
       </section>
 
       {/* Experience */}
