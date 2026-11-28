@@ -3,7 +3,6 @@ export const EMAIL = "a7lal@uwaterloo.ca";
 export const LINKS = {
   github: "https://github.com/lal-akshat",
   linkedin: "https://linkedin.com/in/lal-akshat",
-  x: "https://x.com",
   resume: "/resume.pdf",
 };
 

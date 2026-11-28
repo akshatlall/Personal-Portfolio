@@ -32,6 +32,7 @@ type HoverPreviewProps = {
     src: string;
     width: number;
     height: number;
+    alt?: string;
   };
 };
 
@@ -49,12 +50,27 @@ export default function HoverPreview({
   const previewId = useId();
   const anchorRef = useRef<HTMLAnchorElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const pointerOverRef = useRef(false);
+  const keyboardFocusRef = useRef(false);
+  const pointerTypeRef = useRef<string | null>(null);
   const [position, setPosition] = useState<PreviewPosition | null>(null);
   const [pinned, setPinned] = useState(false);
 
   function showAt(x: number, y: number) {
-    const cardWidth = previewImage ? 360 : 276;
-    const cardHeight = imageOnly ? 180 : previewImage ? 300 : 176;
+    const maxCardWidth = previewImage ? 360 : 276;
+    const cardWidth = Math.min(
+      maxCardWidth,
+      Math.max(0, window.innerWidth - 24),
+    );
+    const imageWidth = imageOnly ? cardWidth : cardWidth - 26;
+    const imageHeight = previewImage
+      ? (imageWidth * previewImage.height) / previewImage.width
+      : 0;
+    const cardHeight = imageOnly
+      ? imageHeight + 2
+      : previewImage
+        ? imageHeight + 112
+        : 176;
     const halfWidth = Math.min(
       cardWidth / 2,
       Math.max(0, (window.innerWidth - 24) / 2),
@@ -82,30 +98,42 @@ export default function HoverPreview({
   }
 
   function handlePointer(event: PointerEvent<HTMLElement>) {
+    pointerOverRef.current = true;
+    pointerTypeRef.current = event.pointerType;
     showAt(event.clientX, event.clientY);
   }
 
+  function handlePointerLeave(event: PointerEvent<HTMLElement>) {
+    pointerOverRef.current = false;
+    pointerTypeRef.current = event.pointerType;
+
+    if (!pinned && !keyboardFocusRef.current) {
+      setPosition(null);
+    }
+  }
+
   function handleFocus(event: FocusEvent<HTMLElement>) {
+    if (!event.currentTarget.matches(":focus-visible")) {
+      return;
+    }
+
+    keyboardFocusRef.current = true;
     const rect = event.currentTarget.getBoundingClientRect();
     showAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
   }
 
-  function closeIfUnfocused() {
-    const activeElement = document.activeElement;
-    if (
-      pinned ||
-      activeElement === anchorRef.current ||
-      activeElement === buttonRef.current
-    ) {
-      return;
-    }
+  function handleBlur() {
+    keyboardFocusRef.current = false;
 
-    setPosition(null);
+    if (!pinned && !pointerOverRef.current) {
+      setPosition(null);
+    }
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (event.key === "Escape") {
       setPinned(false);
+      keyboardFocusRef.current = false;
       setPosition(null);
     }
   }
@@ -113,7 +141,13 @@ export default function HoverPreview({
   function handleButtonClick(event: MouseEvent<HTMLButtonElement>) {
     if (pinned) {
       setPinned(false);
-      setPosition(null);
+      if (!pointerOverRef.current && !keyboardFocusRef.current) {
+        setPosition(null);
+      }
+      return;
+    }
+
+    if (event.detail === 0 || pointerTypeRef.current !== "touch") {
       return;
     }
 
@@ -129,9 +163,9 @@ export default function HoverPreview({
     className: `hover-preview-trigger${className ? ` ${className}` : ""}`,
     onPointerEnter: handlePointer,
     onPointerMove: handlePointer,
-    onPointerLeave: closeIfUnfocused,
+    onPointerLeave: handlePointerLeave,
     onFocus: handleFocus,
-    onBlur: closeIfUnfocused,
+    onBlur: handleBlur,
     onKeyDown: handleKeyDown,
     "aria-describedby": position ? previewId : undefined,
   };
@@ -182,11 +216,7 @@ export default function HoverPreview({
                 src={previewImage.src}
                 width={previewImage.width}
                 height={previewImage.height}
-                alt={
-                  imageOnly
-                    ? "Screenshot of the University of Waterloo Computer Engineering program page"
-                    : ""
-                }
+                alt={imageOnly ? (previewImage.alt ?? "") : ""}
                 aria-hidden={!imageOnly}
                 className="hover-preview-image"
                 style={{
