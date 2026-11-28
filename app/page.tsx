@@ -344,7 +344,7 @@ export default function Home() {
             <span className="contact-nav-item">
               <Link href="/contact">Contact</Link>
               <span className="contact-reply-note">
-                i actually reply
+                (i actually reply)
                 <NoteArrow direction="contact" />
               </span>
             </span>
@@ -386,6 +386,10 @@ export default function Home() {
           ))}
         </div>
 
+        <p className="projects-aside">
+          pretty cool, right?
+          <NoteArrow direction="aside" />
+        </p>
       </section>
 
       {/* Experience */}
@@ -416,10 +420,6 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="projects-aside">
-        pretty cool, right?
-        <NoteArrow direction="aside" />
-        </p>
       </section>
 
       {/* My Thoughts */}
