@@ -56,15 +56,25 @@ const FACTS: { text: React.ReactNode }[] = [
   },
 ];
 
-function NoteArrow() {
+function NoteArrow({
+  direction,
+}: {
+  direction: "contact" | "projects" | "aside";
+}) {
+  const paths = {
+    contact: "M 28 2 C 31 8, 25 16, 16 22 M 22 18 L 16 23 L 15 16",
+    projects: "M 1 2 C 10 5, 16 11, 18 20 M 13 15 L 19 21 L 24 14",
+    aside: "M 26 25 C 21 17, 12 9, 5 4 M 14 4 L 4 3 L 6 12",
+  };
+
   return (
     <svg
-      className="note-arrow"
-      viewBox="0 0 18 14"
+      className={`note-arrow note-arrow-${direction}`}
+      viewBox="0 0 32 28"
       fill="none"
       aria-hidden="true"
     >
-      <path d="M 9 0 C 11 4, 7 6, 9 9 M 6 6 L 9 10 L 12 6" />
+      <path d={paths[direction]} />
     </svg>
   );
 }
@@ -335,7 +345,7 @@ export default function Home() {
               <Link href="/contact">Contact</Link>
               <span className="contact-reply-note">
                 i actually reply
-                <NoteArrow />
+                <NoteArrow direction="contact" />
               </span>
             </span>
           </nav>
@@ -347,6 +357,10 @@ export default function Home() {
         id="projects"
         className="container-wide projects-section reveal"
       >
+        <p className="section-annotation">
+          my stack
+          <NoteArrow direction="projects" />
+        </p>
         <h2 className="section-title">Projects</h2>
 
         <div className="project-grid">
@@ -401,6 +415,11 @@ export default function Home() {
             </article>
           ))}
         </div>
+
+        <p className="projects-aside">
+        pretty cool, right?
+        <NoteArrow direction="aside" />
+        </p>
       </section>
 
       {/* My Thoughts */}
