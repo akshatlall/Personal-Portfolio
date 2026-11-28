@@ -27,6 +27,7 @@ type HoverPreviewProps = {
   className?: string;
   href?: string;
   linkLabel?: string;
+  siteLabel?: string;
 };
 
 export default function HoverPreview({
@@ -38,6 +39,7 @@ export default function HoverPreview({
   className,
   href,
   linkLabel,
+  siteLabel,
 }: HoverPreviewProps) {
   const previewId = useId();
   const anchorRef = useRef<HTMLAnchorElement>(null);
@@ -150,6 +152,12 @@ export default function HoverPreview({
             role="tooltip"
             style={{ left: position.x, top: position.y }}
           >
+            {siteLabel && (
+              <span className="hover-preview-site">
+                <span className="hover-preview-site-dot" aria-hidden="true" />
+                {siteLabel}
+              </span>
+            )}
             <span className="hover-preview-mark" aria-hidden="true">
               {mark}
             </span>
